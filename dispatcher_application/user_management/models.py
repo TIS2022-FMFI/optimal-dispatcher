@@ -5,7 +5,7 @@ from branch_management.models import Branch
 
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, email, first_name, last_name, password, **other_fields):
+    def create_user(self, email, first_name, last_name, branch, password, **other_fields):
         if not email:
             raise ValueError('User must have an email')
 
@@ -13,17 +13,20 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('User must have a first name')
 
         if not last_name:
-            raise ValueError('User must have an last name')
+            raise ValueError('User must have a last name')
+
+        if not branch:
+            raise ValueError('User must have a branch')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, first_name=first_name, last_name=last_name, **other_fields)
+        user = self.model(email=email, first_name=first_name, last_name=last_name, branch=branch, **other_fields)
 
         user.set_password(password)
         user.save()
         return user
 
 
-    def create_superuser(self, email, first_name, last_name, password, **other_fields):
+    def create_superuser(self, email, first_name, last_name, branch, password, **other_fields):
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
 
@@ -33,7 +36,7 @@ class CustomUserManager(BaseUserManager):
         if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must be assigned to is_superuser=True')
 
-        return self.create_user(email, first_name, last_name, password, **other_fields)
+        return self.create_user(email, first_name, last_name, branch, password, **other_fields)
 
 
 

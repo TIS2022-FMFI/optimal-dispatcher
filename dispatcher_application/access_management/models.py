@@ -12,7 +12,6 @@ class Groups(models.Model):
 class Group_branch_access(models.Model):
     group_id = models.ForeignKey(Groups,on_delete=models.CASCADE,null=False)
     branch_id = models.ForeignKey(Branch,on_delete=models.CASCADE,null=False)
-    write_access = models.BooleanField(default=False)
 
 
 class User_group_access(models.Model):
@@ -23,4 +22,3 @@ class User_group_access(models.Model):
 class User_branch_access(models.Model):
     user_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=False) 
     branch_id = models.ForeignKey(Branch,on_delete=models.CASCADE,null=False)
-    write_access = models.BooleanField(default=False)
