@@ -1,2 +1,4 @@
 venv
 dispatcher_application/config/.env
+
+**/__pycache__
