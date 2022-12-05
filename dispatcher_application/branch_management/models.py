@@ -7,4 +7,4 @@ class Branch(models.Model):
     location = models.ForeignKey(Known_location,on_delete=models.CASCADE, null=False)
 
     def __str__(self):
-        return self.location
+        return f'{self.name}, {self.location}'

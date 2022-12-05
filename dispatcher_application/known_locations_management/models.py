@@ -6,4 +6,4 @@ class Known_location(models.Model):
     country = models.CharField(max_length=4,null=False)
 
     def __str__(self):
-        return self.zip_code + "," + self.city + "," + self.country
+        return f'{self.zip_code}, {self.city}, {self.country}'
