@@ -1,9 +1,14 @@
 {% extends "base_template.html" %}
 
 {% block title %}Login{% endblock %}
+
 {% block static_imports %}
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block nav %}
+    {% include './navbar.html' %}
 {% endblock %}
 
 {% block content %}
@@ -23,9 +28,9 @@
             <button class="submit-btn">Login</button>
         </div>
 
-        <div class="bottom-links">
-            <p>Forgot password? <a href="">Reset password</a></p>
-        </div>
+        {% comment %} <div class="bottom-links">
+            <p>Forgot password? <a href="{% url 'password_reset' %}">Reset password</a></p>
+        </div> {% endcomment %}
         
         {% if error_message %}
             <div>

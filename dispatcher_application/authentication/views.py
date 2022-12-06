@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
@@ -8,6 +9,9 @@ from .decorators import is_not_authenticated
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 
+from django.contrib.auth.views import LoginView
+from django.contrib.messages.views import SuccessMessageMixin
+
 
 class LoginView(View):
     template = 'authentication/login.html'
@@ -16,6 +20,7 @@ class LoginView(View):
     def get(self, request):
         context = {}
         return render(request, self.template, context)
+
 
     @method_decorator(is_not_authenticated())
     def post(self, request):
@@ -27,16 +32,22 @@ class LoginView(View):
         if user is not None:
             login(request, user)
             if user.is_superuser:
-                return redirect('/management/create-user')
+                return redirect('/admin-panel/create-user')
             return redirect('/transports')
 
         context = {'email' : email, 'error_message' : 'Wrong email or password'}
         return render(request, self.template, context)
 
 
-class LogoutView(View):
 
-    @method_decorator(login_required(login_url='login'))
-    def get(self, request):
-        logout(request)
-        return redirect('/login') 
+
+# class CustomLoginView(SuccessMessageMixin, LoginView):
+#     template_name = 'authentication/login.html'
+#     fields = '__all__'
+#     redirect_authenticated_user = True
+#     success_message = 'Hello, '
+
+#     def get_success_url(self):
+#         # if self.user.is_superuser:
+#         return redirect('/admin-panel/create-user')
+        # return redirect('/transports')
