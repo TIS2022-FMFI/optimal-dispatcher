@@ -1,0 +1,70 @@
+{% extends 'templates/base_template.html' %}
+
+{% block "content" %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1">
+            <i class="bi bi-person-fill btn btn-lg" style="font-size: 1.8rem;"></i>
+            <i class="bi bi-person-plus-fill btn btn-lg" style="font-size: 1.8rem;"></i>
+            <i class="bi bi-people btn btn-lg" style="font-size: 1.8rem;"></i>
+            <i class="bi bi-person-plus btn btn-lg" style="font-size: 1.8rem;"></i>
+        </div>
+    </div>
+</div>
+
+<div>
+    <form>
+        <br>
+
+        <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label"></label>
+            <label for="inputName" class="col-sm-1 col-form-label">Name:</label>
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="inputName" placeholder="Group1">
+            </div>
+        </div>
+        <br>
+
+        <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label"></label>
+            <label for="inputBranch" class="col-sm-1 col-form-label">Branch:</label>
+            <div class="col-sm-2">
+                <select class="custom-select">
+                    <option selected>---</option>
+                    <option value="1">Trnava</option>
+                    <option value="2">Bratislava</option>
+                    <option value="3">Kosice</option>
+                  </select>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label"></label>
+            <label for="inputRR" class="col-sm-1 col-form-label">Read rights:</label>
+            <div class="col-sm-2">
+                <select class="custom-select">
+                    <option selected>---</option>
+                    <option value="1">Trnava</option>
+                    <option value="2">Bratislava</option>
+                    <option value="3">Kosice</option>
+                  </select>
+            </div>
+
+            <label for="inputSelected" class="col-sm-1 col-form-label">Selected:</label>
+            <div class="col-sm-2">
+                <input type="text" readonly class="form-control" id="inputSelected" placeholder="---">
+            </div>
+        </div>
+
+        <br>
+        <div class="form-group row">
+            <div class="col-sm-7"></div>
+            <div class="col-sm-5">
+            <button type="submit" class="btn btn-primary">Add group</button>
+        </div>
+        </div>
+    </form>
+</div>
+{% endblock  %}

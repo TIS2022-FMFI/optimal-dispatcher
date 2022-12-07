@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 config = dotenv_values("./config/.env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!5dv*48=jv1dnt_$xsm++%a6%56#xv_e(cmbj9wzx7%6=xa(1t"
+SECRET_KEY = config["key"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
