@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -51,3 +50,6 @@ class LoginView(View):
 #         # if self.user.is_superuser:
 #         return redirect('/admin-panel/create-user')
         # return redirect('/transports')
+        
+        
+        

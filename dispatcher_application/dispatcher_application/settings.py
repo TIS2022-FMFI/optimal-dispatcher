@@ -20,6 +20,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+AUTH_USER_MODEL = 'user_management.MyUser'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -31,7 +33,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'user_management',
+    'access_management',
+    'branch_management',
     'authentication',
+    'user_settings',
+    'transport_management',
+    'transport_viewer',
+    'known_locations_management',
 ]
 
 MIDDLEWARE = [
