@@ -5,5 +5,10 @@ class Location(models.Model):
     city = models.CharField(max_length=70,null=False)
     country = models.CharField(max_length=4,null=False)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['zip_code', 'city', 'country'], name='unique_location'),
+        ]
+
     def __str__(self):
         return self.zip_code + "," + self.city + "," + self.country
