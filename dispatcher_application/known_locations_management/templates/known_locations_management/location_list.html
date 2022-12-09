@@ -1,0 +1,35 @@
+{% extends "base_template.html" %}
+
+{% block title %}List of Location{% endblock %}
+
+{% block content %}
+    <h1>Locations</h1>
+    <a class="add-record-link"href="{% url 'location-add' %}"><i class="bi bi-plus-circle"></i></a>
+
+    <table>
+        <tr>
+            <th>Zip Code</th>
+            <th>City</th>
+            <th>Country</th>
+        </tr>
+
+
+        {% for location in object_list %}
+            <tr>
+                <td>{{ location.zip_code }}</td>
+                <td>{{ location.city }}</td>
+                <td>{{ location.country }}</td>
+                <td>
+                    <a class="" href="{% url 'location-update' location.id %}"><i class="bi bi-pencil-square"></i></a>
+                </td>
+                <td>
+                    <a class="" href="{% url 'location-delete' location.id %}"><i class="bi bi-x-lg"></i></a>
+                </td>   
+            </tr>
+        {% empty %}
+            <h2>No locations yet.</h2>
+        {% endfor %}
+
+    </table>
+
+{% endblock %}
