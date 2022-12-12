@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 config = dotenv_values("./config/.env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config["key"]
+SECRET_KEY = "django-insecure-!5dv*48=jv1dnt_$xsm++%a6%56#xv_e(cmbj9wzx7%6=xa(1t"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'transport_management',
     'transport_viewer',
     'known_locations_management',
-    'group_management',
 ]
 
 MIDDLEWARE = [
@@ -82,9 +81,9 @@ WSGI_APPLICATION = 'dispatcher_application.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase',
-        'USER': 'mydatabaseuser',
-        'PASSWORD': 'mypassword',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'MinecrafT_9',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
