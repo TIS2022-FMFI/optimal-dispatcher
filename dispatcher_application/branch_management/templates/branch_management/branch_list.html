@@ -1,0 +1,30 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Branch list{% endblock %}
+
+{% block content %}
+    <h1>List of Branches</h1>
+    <a class="" href="{% url 'branch-add' %}"><i class="bi bi-plus-circle"></i></a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        {% for branch in object_list %}
+            <tr>
+                <td>{{ branch.id }}</td>
+                <td>{{ branch.name }}</td>
+                <td>
+                    <a class="" href="{% url 'branch-update' branch.id %}"><i class="bi bi-pencil-square"></i></a>
+                </td>
+                <td>
+                    <a class="" href="{% url 'branch-delete' branch.id %}"><i class="bi bi-x-lg"></i></a>
+                </td>
+            </tr>
+        {% empty %}
+            <h2>No branches yet.</h2>
+        {% endfor %}
+    </table>
+{% endblock %}
