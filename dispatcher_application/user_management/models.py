@@ -46,6 +46,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE,null=False)
     is_staff = models.BooleanField(default=True) 
     is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
 
     objects = CustomUserManager()

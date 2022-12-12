@@ -41,4 +41,3 @@ class DeleteUserView(DeleteView):
     template_name = 'user_management/user_delete.html'
     success_url = reverse_lazy('user-list')
 
-
