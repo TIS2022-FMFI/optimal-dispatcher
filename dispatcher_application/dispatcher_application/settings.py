@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 config = dotenv_values("./config/.env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config["key"]
+SECRET_KEY = "config_key_123"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
