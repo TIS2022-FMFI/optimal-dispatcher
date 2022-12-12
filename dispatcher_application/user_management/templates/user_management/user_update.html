@@ -1,0 +1,14 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Update user{% endblock %}
+
+{% block content %}
+    <a class="back-link" href="{% url 'user-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Update">
+    </form>
+
+{% endblock %}
