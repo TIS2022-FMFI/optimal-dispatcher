@@ -13,6 +13,18 @@
       </tr>
     </thead>
     <tbody>
+
+      {% for group in groups %}
+
+        <tr>
+          <td>{{group.id}}</td>
+          <td>{{group.name}}</td>
+          <td>{{group.branch.location.city}}</td>
+          <td><i href="" class="bi bi-eye-fill btn btn-sm"></i></td>
+          <td><input href="" type="checkbox" name="data" id="data"></td>
+        </tr>
+      
+      {% endfor %}
       <tr>
         <th scope="row">1</th>
         <td>Group1</td>
