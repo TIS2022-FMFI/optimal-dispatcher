@@ -1,0 +1,15 @@
+{% extends './base_template.html' %}
+
+{% block content %}
+<br>
+<div class="form-group">
+        <div class="col-lg-5">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <br>
+        <input type="submit" name="Submit" value="Add Group">
+    </form>
+</div>
+</div>
+{% endblock  %}
