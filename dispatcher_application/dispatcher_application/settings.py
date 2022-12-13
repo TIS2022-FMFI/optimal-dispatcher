@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'transport_management',
     'transport_viewer',
     'known_locations_management',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
