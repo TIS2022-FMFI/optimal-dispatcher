@@ -1,0 +1,68 @@
+{% extends "base_template.html" %} 
+{% block title %}Transportations{% endblock %}
+{% block content %} 
+
+
+
+<div class="container-fluid">
+<div class="row">
+    <div class="col-xl-7 col-md-4 col-sm-3 col-3 p-1">
+        <i class="bi bi-person-fill btn btn-lg"></i>
+        <i class="bi bi-plus-lg btn btn-lg"></i>
+    </div>
+    <div class="col-xl-2 col-md-2 col-sm-3 col-4 p-3">
+        <input type="text" placeholder= "from" name="from" id="from" size="16">
+    </div>
+    <div class=" col-xl-2 col-md-4 col-sm-3 col-2 p-3">
+        <input type="date" id="inputdate" name="inputdate">
+    </div>
+    <div class="col-xl-1 col-md-2 col-sm-3 col-4 p-3">
+        <i class="bi bi-search btn"></i>
+    </div>
+
+</div>
+</div>
+
+
+
+<div class="container-fluid">
+<div class="row">
+    <div class="col-10">
+        <table class="table" id ="dispecer">
+            <thead  class="table table-active table-sm" cellspacing="0">
+                <tr>
+                    <th class="th-sm" onclick="sortTable(0)" scope="col">Date</th>
+                    <th class="th-sm" onclick="sortTable(1)" scope="col">From</th>
+                    <th class="th-sm" onclick="sortTable(2)" scope="col">To</th>
+                    <th class="th-sm" onclick="sortTable(3)" scope="col">L(m)</th>
+                    <th class="th-sm" onclick="sortTable(4)" scope="col">Dispatcher</th>
+                    <th class="th-sm" onclick="sortTable(5)" scope="col">Actions</th>
+                    <th ><i class="bi bi-eye-fill btn btn-lg" scope="col"></i></th>
+                    <th> <i class="bi bi-trash-fill btn btn-lg" scope="col"></i></th>
+
+    </div>
+                </tr>
+            </thead>
+            <tbody>
+
+{% for transport in object_lists %}
+<tr>
+    <td>{{ transport.departure_time }}</td>
+    <td>{{ transport.from_id }}</td>
+    <td>{{ transport.to_id }}</td>
+    <td>{{ transport.ldm }}</td>
+    <td>{{ transport.owner_id }}</td>
+    <td>{{ transport.info }}</td>
+    <td><input type="checkbox" class="checkoption" value="1"></td>
+    <td><input type="checkbox"></td>
+</tr>
+{% empty %}
+    <h2>No transports found</h2>
+
+{% endfor %}
+</tbody>
+
+
+
+
+{% endblock %}
