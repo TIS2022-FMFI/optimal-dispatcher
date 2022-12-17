@@ -20,12 +20,26 @@
 
         <div class="input-box">
             <label for="from_id">From:</label>
-            <input type="text" name="from_id" id="from_id" value="{{ from_id }}" required>
+            <input list="from_locations" name="from_id" id="from_id">
+            <datalist id="from_locations">
+                {% for location in location_list %}
+                    <option id={{ location.id }} value={{ location.zip_code }},{{ location.city }},{{ location.country }}></option>
+                {% empty %}
+                    <option value="empty">no location found</option>
+                {% endfor %}
+            </datalist>
         </div>
 
         <div class="input-box">
             <label for="to_id">To:</label>
-            <input type="text" name="to_id" id="to_id" value="{{ to_id }}" required>
+            <input list="to_locations" name="to_id" id="to_id">
+            <datalist id="to_locations">
+                {% for location in location_list %}
+                    <option id={{ location.id }} value={{ location.zip_code }},{{ location.city }},{{ location.country }}></option>
+                {% empty %}
+                    <option value="empty">no location found</option>
+                {% endfor %}
+            </datalist>
         </div>
 
         <div class="input-box">
@@ -59,16 +73,6 @@
             <label for="notes">Notes:</label>
             <input type="text" name="notes" id="notes" value="{{ notes }}">
         </div>
-
-        <select name="locations" id="location">
-
-            {% for location in object_lists %}
-                <option value={{ location.zip_code }}>{{ location.zip_code }},{{ location.city }},{{ location.country }}</option>
-            {% empty %}
-                <option value="empty">no location found</option>
-
-            {% endfor %}
-        </select>
 
         <button type="submit" class="submit-btn">Add</button>
 
