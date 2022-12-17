@@ -1,0 +1,91 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Add transportation{% endblock %}
+
+{% block static_imports %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/transport.css' %}">
+
+{% endblock %}
+
+{% block nav %}
+    {% include './navbar.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+    <form method="POST" action="" class="form-class">
+        {% csrf_token %}
+
+        <div class="input-box">
+            <label for="from_id">From:</label>
+            <input type="text" name="from_id" id="from_id" value="{{ from_id }}" required>
+        </div>
+
+        <div class="input-box">
+            <label for="to_id">To:</label>
+            <input type="text" name="to_id" id="to_id" value="{{ to_id }}" required>
+        </div>
+
+        <div class="input-box">
+
+            <label for="departure_date">Departure date:</label>
+            <input type="date" name="departure_date" id="departure_date" value="{{ departure_date }}" required>
+            &emsp;
+            <label for="departure_time">Time:</label>
+            <input type="time" name="departure_time" id="departure_time" value="{{ departure_time }}" required>
+        </div>
+
+        <div class="input-box">
+            <label for="arrival_date">Arrival date:</label>
+            <input type="date" name="arrival_date" id="arrival_date" value="{{ arrival_date }}" required>
+            &emsp;
+            <label for="arrival_time">Time:</label>
+            <input type="time" name="arrival_time" id="arrival_time" value="{{ arrival_time }}" required>
+        </div>
+
+        <div class="input-box">
+            <label for="ldm">L(m):</label>
+            <input type="number" name="ldm" id="ldm" value="{{ ldm }}" required>
+        </div>
+
+        <div class="input-box">
+            <label for="weight">Weight:</label>
+            <input type="number" name="weight" id="weight" value="{{ weight }}" required>
+        </div>
+
+        <div class="input-box">
+            <label for="notes">Notes:</label>
+            <input type="text" name="notes" id="notes" value="{{ notes }}">
+        </div>
+
+        <select name="locations" id="location">
+
+            {% for location in object_lists %}
+                <option value={{ location.zip_code }}>{{ location.zip_code }},{{ location.city }},{{ location.country }}</option>
+            {% empty %}
+                <option value="empty">no location found</option>
+
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="submit-btn">Add</button>
+
+        {% if error_message %}
+            <div>
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+    </form>
+
+{% endblock %}
+
+{% block js_scripts %}
+    <script>
+
+    </script>
+
+{% endblock %}
+
