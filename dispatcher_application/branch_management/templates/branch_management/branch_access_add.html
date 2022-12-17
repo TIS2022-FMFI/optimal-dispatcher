@@ -1,0 +1,14 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Add access{% endblock %}
+
+{% block content %}
+    <h1>Add access {{ branch.name }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="" type="submit" value="Add">
+    </form>
+    
+{% endblock %}

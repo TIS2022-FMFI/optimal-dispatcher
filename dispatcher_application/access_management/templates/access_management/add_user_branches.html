@@ -1,0 +1,24 @@
+{% extends "base_template.html" %}
+
+{% block title %}Manage User Branches{% endblock %}
+
+{% comment %} {% block static_imports %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+{% endblock %} {% endcomment %}
+
+{% block nav %}
+    {% include './navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    <h2>Manage User Branches</h2>
+
+    <form method="POST" action="" class="form-class">
+        {% csrf_token %}
+        {{ form.as_p }}
+       
+        <input type="submit" class="" value="Save">
+    </form>
+    
+{% endblock %}
