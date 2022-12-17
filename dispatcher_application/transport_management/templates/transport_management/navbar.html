@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xl-5 col-md-2 col-sm-1 col-4 p-1">
+            <a class="bi bi-person-fill btn btn-lg" style="font-size: 1.6rem;"></a>
+            <a class="bi bi-plus-lg btn btn-lg" style="font-size: 1.6rem;" href={% url 'add_transport' %}></a>
+        </div>
+        
+        {% if show %}
+        <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1">
+            <form method="GET">
+                {{filter.form}}
+                <button class="bi bi-search btn btn-lg" type="submit"></button>
+            </form>
+            </div>
+            {% endif %}
+    </div>
+</div>

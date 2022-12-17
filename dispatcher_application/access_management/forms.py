@@ -11,5 +11,5 @@ class GroupForm(ModelForm):
     
         widgets = {
             "group_name": forms.TextInput(attrs={"class":"form-control"}),
-            "branch_id": forms.Select(attrs={"class":"form-control","id":"branch","name":"branch"}),
+            "branch_id": forms.Select(attrs={"class":"form-control","id":"branch","name":"branch","label":"Branch:"}),
         }
