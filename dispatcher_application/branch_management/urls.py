@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import BranchListView, AddBranchView, UpdateBranchView, DeleteBranchView, BranchAccessView, AddAccessView #RemoveAccessView, 
+from .views import BranchListView, AddBranchView, UpdateBranchView, DeleteBranchView, BranchAccessView, AddAccessView, RemoveAccessView
 
 
 urlpatterns = [
@@ -12,5 +12,5 @@ urlpatterns = [
     # branch access management
     path('access/<int:pk>/', BranchAccessView.as_view(), name='branch-access'),
     path('access/<int:pk>/add/', AddAccessView.as_view(), name='branch-access-add'),
-    # path('access/<int:pk>/delete/<int:upk>', RemoveAccessView.as_view(), name='branch-access-delete'),
+    path('access/<int:pk>/delete/<int:upk>', RemoveAccessView.as_view(), name='branch-access-delete'),
 ]

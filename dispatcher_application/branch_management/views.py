@@ -60,104 +60,47 @@ class BranchAccessView(DetailView):
 
 
 class AddAccessView(CreateView):
-    # template = 'branch_management/branch_access_add.html'
-    # model = User_branch_access
     template_name = 'branch_management/branch_access_add.html'
     form_class = AddBranchAccessForm
     success_url = reverse_lazy('branch-list')
+
 
     def get_form(self, form_class=None):
         if form_class is None:
             form_class = self.get_form_class()
 
-        kwargs = self.get_form_kwargs()
-
         pk = self.kwargs['pk']
+
+        kwargs = self.get_form_kwargs()
         kwargs['branch_id'] = pk
-
         return form_class(**kwargs)
-    # fields = [ 'user_id', 'branch_id']
-
-    # def get(self, request):
-    #     context = {}
-    #     return render(request, "access_management/group_main.html", context)
-
-    # def post(self, request):
-    #     ...
+   
 
 
-# class RemoveAccessView(DeleteView):
-#     model = User_branch_access
-#     template_name = 'branch_management/branch_access_remove.html'
-#     success_url = reverse_lazy('branch-list')
+class RemoveAccessView(DeleteView):
+    model = User_branch_access
+    template_name = 'branch_management/branch_access_delete.html'
+    success_url = reverse_lazy('branch-list')
 
 
-    # model = ReportSchedule
-    # template_name = "report/report_confirm_delete.html"
-    # success_url = lazy(reverse, str)('jsclient-list')
-
-    # def get_object(self, queryset=None):
-    #     if queryset is None:
-    #         queryset = self.get_queryset()
-
-    #     branch = self.kwargs['pk']
-    #     user = self.kwargs['upk']
-
-    #     queryset = User_branch_access.objects.filter(branch_id=branch, user_id=user)
-
-    #     if not queryset:
-    #        raise Http404
-
-    #     context = { 'branch_id':branch, 'user_id':user }
-    #     print('------------------------------------------')
-    #     return context
-
-    # # Override the delete function to delete report Y from client X
-    # # Finally redirect back to the client X page with the list of reports
-    # def delete(self, request, *args, **kwargs):
-    #     branch = self.kwargs['pk']
-    #     user = self.kwargs['upk']
-        
-    #     remove_access = User_branch_access.objects.filter(branch_id=branch, user_id=user)
-        
-    #     print(remove_access)
-    #     remove_access.delete()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        upk = self.kwargs['upk']
+        user = MyUser.objects.get(id=upk)
+        context['user'] = user
+        return context
 
 
-# class RemoveAccessView(View):
-#     # model = User_branch_access
-#     # template_name = 'branch_management/branch_access_remove.html'
-#     # success_url = reverse_lazy('branch-list')
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
 
-#     template = 'branch_management/branch_access_remove.html'
+        branch = self.kwargs['pk']
+        user = self.kwargs['upk']
 
-#     def get(self, request):
-#         to_remove_access = request.GET.getlist("remove_data")
+        queryset = User_branch_access.objects.filter(branch_id=branch, user_id=user)
 
-#         users = []
-#         for selected_id in to_remove_access:
-#             users.append(MyUser.objects.get(id=selected_id))
-          
-#         context = { 'users' : users }
-#         return render(request, self.template, context)
+        if not queryset:
+           raise Http404
 
-
-#     def post(self, request):
-#         # User_branch_access.objects.filter(branch_id=pk).values_list('user_id')
-
-#         x = request.POST.getlist("remove_data")
-#         print('---------------------------0')
-#         print(x)
-#         return redirect('branch-list') #redirect('branch-access', pk=3)
- 
-    #     pole = request.POST.getlist("data")
-    #     print(pole)
-    #     for i in pole:
-    #         obj = User_branch_access.objects.get(id=i)
-    #         obj.delete()
-
-    #     return redirect(request.META.get('HTTP_REFERER', 'list-of-branches/'))
-
-    #     groups = Groups.objects.all()
-    #     context = {"groups":groups}
-    #     return render(request, "access_management/group_main.html", context)
+        return queryset
