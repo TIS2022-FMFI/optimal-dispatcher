@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'authentication',
     'user_settings',
     'transport_management',
-    'transport_viewer',
     'known_locations_management',
     'django_filters',
 ]
