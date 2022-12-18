@@ -20,24 +20,24 @@
 
         <div class="input-box">
             <label for="from_id">From:</label>
-            <input list="from_locations" name="from_id" id="from_id">
+            <input list="from_locations" name="from_id" id="from_id" required>
             <datalist id="from_locations">
                 {% for location in location_list %}
                     <option id={{ location.id }} value={{ location.zip_code }},{{ location.city }},{{ location.country }}></option>
                 {% empty %}
-                    <option value="empty">no location found</option>
+                    <option></option>
                 {% endfor %}
             </datalist>
         </div>
 
         <div class="input-box">
             <label for="to_id">To:</label>
-            <input list="to_locations" name="to_id" id="to_id">
+            <input list="to_locations" name="to_id" id="to_id" required>
             <datalist id="to_locations">
                 {% for location in location_list %}
                     <option id={{ location.id }} value={{ location.zip_code }},{{ location.city }},{{ location.country }}></option>
                 {% empty %}
-                    <option value="empty">no location found</option>
+                    <option value></option>
                 {% endfor %}
             </datalist>
         </div>
@@ -61,17 +61,17 @@
 
         <div class="input-box">
             <label for="ldm">L(m):</label>
-            <input type="number" name="ldm" id="ldm" value="{{ ldm }}" required>
+            <input type="number" name="ldm" id="ldm" value="{{ ldm }}" required min="0" max="100">
         </div>
 
         <div class="input-box">
             <label for="weight">Weight:</label>
-            <input type="number" name="weight" id="weight" value="{{ weight }}" required>
+            <input type="number" name="weight" id="weight" value="{{ weight }}" required min="0" max="1000000">
         </div>
 
         <div class="input-box">
-            <label for="notes">Notes:</label>
-            <input type="text" name="notes" id="notes" value="{{ notes }}">
+            <label for="info">Notes:</label>
+            <input type="text" name="info" id="info" value="{{ info }}">
         </div>
 
         <button type="submit" class="submit-btn">Add</button>
@@ -83,13 +83,6 @@
         {% endif %}
 
     </form>
-
-{% endblock %}
-
-{% block js_scripts %}
-    <script>
-
-    </script>
 
 {% endblock %}
 
