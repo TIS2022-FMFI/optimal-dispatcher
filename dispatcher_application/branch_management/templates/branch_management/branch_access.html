@@ -17,10 +17,15 @@
             <tr>
                 <td>{{ user.email }}</td>
                 <td>
-                    <a class="" href="{% url 'branch-access-delete' branch.id user.id %}"><i class="bi bi-x-lg"></i></a>
+                    {% if branch.id != user.branch_id %}
+                        <a class="" href="{% url 'branch-access-delete' branch.id user.id %}"><i class="bi bi-x-lg"></i></a>
+                    {% else %}
+                        <p>ROOT</p>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
     </table>
+
     
 {% endblock %}

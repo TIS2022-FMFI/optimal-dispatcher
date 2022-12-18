@@ -1,20 +1,21 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
+from django.db.models import Q
 
-from django.http import Http404
+from django.http import HttpResponseRedirect, Http404
 
-from .models import Branch
 
-from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, View
+
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.views.generic.list import ListView 
 
 
 from .forms import AddBranchAccessForm
 
 ############################
-from access_management.models import User_branch_access
+from access_management.models import UserBranchAccess 
 from user_management.models import MyUser
-
+from .models import Branch
 ###########################
 
 class  BranchListView(ListView):
@@ -45,6 +46,15 @@ class DeleteBranchView(DeleteView):
     success_url = reverse_lazy('branch-list')
 
 
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        user = self.request.user
+        pk = self.kwargs['pk']
+        if user.branch_id != pk:
+            self.object.delete()
+        return HttpResponseRedirect(success_url)
+
+
 class BranchAccessView(DetailView):
     model = Branch
     template_name = 'branch_management/branch_access.html'
@@ -53,8 +63,8 @@ class BranchAccessView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         pk = self.kwargs['pk']
-        access_list = User_branch_access.objects.filter(branch_id=pk).values_list('user_id')
-        users_with_access = MyUser.objects.filter(id__in=access_list)
+        access_list = UserBranchAccess.objects.filter(branch_id=pk).values_list('user_id')
+        users_with_access = MyUser.objects.filter(Q(id__in=access_list) | Q(branch_id=pk))
         context['users'] = users_with_access
         return context
 
@@ -74,11 +84,18 @@ class AddAccessView(CreateView):
         kwargs = self.get_form_kwargs()
         kwargs['branch_id'] = pk
         return form_class(**kwargs)
+
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        context['branch_id'] = pk
+        return context
    
 
 
 class RemoveAccessView(DeleteView):
-    model = User_branch_access
+    model = UserBranchAccess
     template_name = 'branch_management/branch_access_delete.html'
     success_url = reverse_lazy('branch-list')
 
@@ -98,9 +115,13 @@ class RemoveAccessView(DeleteView):
         branch = self.kwargs['pk']
         user = self.kwargs['upk']
 
-        queryset = User_branch_access.objects.filter(branch_id=branch, user_id=user)
+        queryset = UserBranchAccess.objects.filter(branch_id=branch, user_id=user)
 
         if not queryset:
            raise Http404
 
         return queryset
+
+
+
+    

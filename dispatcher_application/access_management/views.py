@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
 
-from .models import User_branch_access
+from .models import UserBranchAccess
 from branch_management.models import Branch
 
 from .forms import UserBrnachForm
@@ -24,7 +24,7 @@ class ManageUserBranchesView(View):
         selected_values = request.POST.getlist('branch')
 
         for value in selected_values:
-            User_branch_access.objects.create(
+            UserBranchAccess.objects.create(
               user_id = user, 
               branch_id = Branch.objects.get(id=value)
             )
@@ -40,7 +40,7 @@ class TestTempView(View):
     
     def get(self, request):
         user = request.user
-        branches_access = User_branch_access.objects.filter(user_id=user.id).values_list('branch_id')
+        branches_access = UserBranchAccess.objects.filter(user_id=user.id).values_list('branch_id')
         branches = Branch.objects.filter(id__in=branches_access)
         context = { 'user_branches' : branches }
         print(branches)
