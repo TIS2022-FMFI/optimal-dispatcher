@@ -4,6 +4,7 @@ from branch_management.models import Branch
 
 class Groups(models.Model):
     group_name = models.CharField(max_length=40,null=False)
+    branch_id = models.ForeignKey(Branch,on_delete=models.CASCADE,null=False)
 
     class Meta:
         constraints = [
