@@ -55,11 +55,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'dispatcher_application.urls'
 
+# Build paths inside the project (example -> BASE_DIR / 'subdir')
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-             BASE_DIR / 'templates'
+            BASE_DIR / 'templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -122,6 +125,8 @@ USE_I18N = True
 USE_TZ = True
 
 
+AUTH_USER_MODEL = 'user_management.MyUser'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -139,3 +144,11 @@ STATICFILES_FINDERS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SMTP
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = 'email from which to sent reset password emails'
+# EMAIL_HOST_PASSWORD = 'password to that email'

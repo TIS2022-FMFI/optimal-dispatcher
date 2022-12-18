@@ -1,15 +1,6 @@
 from django.db import models
 from user_management.models import MyUser
-
-
-class Location(models.Model):
-    zip_code = models.CharField(max_length=10, null=False)
-    city = models.CharField(max_length=70, null=False)
-    country = models.CharField(max_length=4, null=False)
-
-    def __str__(self):
-        return self.zip_code + "," + self.city + "," + self.country
-
+from known_locations_management.models import Location
      
 class Transportations(models.Model):
     owner_id = models.ForeignKey(MyUser,on_delete=models.CASCADE,null=False)

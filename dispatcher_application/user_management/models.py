@@ -39,7 +39,6 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, first_name, last_name, branch, password, **other_fields)
 
 
-
 class MyUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=60, unique=True)
     first_name = models.CharField(max_length=70)
@@ -47,6 +46,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE,null=False)
     is_staff = models.BooleanField(default=True) 
     is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     
 
     objects = CustomUserManager()

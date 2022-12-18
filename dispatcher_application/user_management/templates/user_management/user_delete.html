@@ -1,0 +1,16 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Delete user{% endblock %}
+
+{% block content %}
+
+    <div class="base-class">
+        <a class="back-link" href="{% url 'user-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
+        <form method="POST">
+            {% csrf_token %}
+            <p>Are you sure you want to delete user with email "{{ object.email }}"?</p>
+            <input class="button-class" type="submit" value="Delete"/>
+        </form>
+    </div>
+
+{% endblock %}
