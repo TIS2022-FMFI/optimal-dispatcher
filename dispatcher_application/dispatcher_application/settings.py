@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 config = dotenv_values("./config/.env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config['SECRET_KEY']
+SECRET_KEY = "config_key_123"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'user_settings',
     'transport_management',
     'known_locations_management',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -86,8 +87,8 @@ DATABASES = {
         'NAME': config["DB_NAME"],
         'USER': config["DB_USER"],
         'PASSWORD': config["DB_PASSWORD"],
-        'HOST': config["HOST"],
-        'PORT' : config["PORT"],
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 

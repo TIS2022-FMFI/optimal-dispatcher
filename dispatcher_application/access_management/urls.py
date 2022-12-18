@@ -1,9 +1,11 @@
 from django.urls import path
 from .views import ManageUserBranchesView, TestTempView
-
-
+from . import views
 
 urlpatterns = [
-    path('manage-user-branches/', ManageUserBranchesView.as_view(), name='user-branch-management'),
-    path('test-temp/', TestTempView.as_view(), name='test-temp'),
+    path('', views.main, name="groups"),
+    path('add_group/', views.createGroup, name="add_group"),
+    path('edit_group/<str:pk>/', views.updateGroup, name="update_group"),
+    path('delete_group/', views.deleteGroup, name="delete_group"),
 ]
+
