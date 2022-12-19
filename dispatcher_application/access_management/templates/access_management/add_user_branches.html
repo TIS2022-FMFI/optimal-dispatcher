@@ -1,11 +1,11 @@
-{% extends "base_template.html" %}
+{% comment %} {% extends "base_template.html" %}
 
 {% block title %}Manage User Branches{% endblock %}
 
-{% comment %} {% block static_imports %}
+{% block static_imports %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-{% endblock %} {% endcomment %}
+{% endblock %}
 
 {% block nav %}
     {% include './navbar.html' %}
@@ -21,4 +21,4 @@
         <input type="submit" class="" value="">
     </form>
     
-{% endblock %}
+{% endblock %} {% endcomment %}

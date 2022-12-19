@@ -1,15 +1,15 @@
-{% extends './base_template.html' %}
+{% extends 'base_template.html' %}
+
+{% block title %}Add access{% endblock %}
 
 {% block content %}
-<br>
-<div class="form-group">
-        <div class="col-lg-5">
-    <form action="" method="POST">
+    <a class="back-link" href="{% url 'group-list'  %}"><i class="bi bi-arrow-bar-left"></i></a>
+    <h1>Create Group</h1>
+
+    <form method="POST">
         {% csrf_token %}
-        {{form}}
-        <br>
-        <input type="submit" name="Submit" value="Add Group">
+        {{ form.as_p }}
+        <input class="" type="submit" value="Create">
     </form>
-</div>
-</div>
-{% endblock  %}
+    
+{% endblock %}
