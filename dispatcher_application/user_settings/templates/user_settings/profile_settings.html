@@ -14,10 +14,24 @@
         {% endfor %}
     {% endif %}
 
-    <div class="settings-class">    
-        <h4>Profile information</h4>
-        <p class="settings-data" >Name: {{ last_name }} {{ first_name }}</p>
-        <p class="settings-data" >Email: {{ email }}</p>
-        <p class="settings-data" >Root branch: {{ branch }}</p>
+    <div class="">    
+        <h4>Profile Information</h4>
+        <p>Name: {{ last_name }} {{ first_name }}</p>
+        <p>Email: {{ email }}</p>
+        <p>Root branch: {{ branch }}</p>
+    </div>
+
+    <div class="">
+        <h4>Branch Access</h4>
+        {% for access in access_list %}
+            <p>{{ access }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="">
+        <h4>Group Access</h4>
+        {% for group in group_list %}
+            <p>{{ group }}</p>
+        {% endfor %}
     </div>
 {% endblock %}

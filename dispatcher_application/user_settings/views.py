@@ -15,11 +15,16 @@ class UserSettingsView(View):
 
     def get(self, request):
         logged_user = request.user
+        branch_access = [logged_user.branch_id]
+        group_access = []
+
         context = { 
             'email' : logged_user.email,
             'first_name' : logged_user.first_name ,
             'last_name' : logged_user.last_name,
-            'branch' : logged_user.branch 
+            'branch' : logged_user.branch,
+            'access_list' : branch_access,
+            'group_list' : group_access
         }
         return render(request, self.template, context)
 
