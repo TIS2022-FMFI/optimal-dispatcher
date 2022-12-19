@@ -36,3 +36,13 @@ form input {
     background-color: rgb(100, 100, 100);
 }
 
+.blue {
+    background-color: #021D49;
+    padding: 0%;
+}
+
+.red {
+    background-color: #E1261C;
+    padding: 0%;
+}
+
