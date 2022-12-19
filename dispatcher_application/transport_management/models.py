@@ -7,12 +7,13 @@ class Transportations(models.Model):
     from_id = models.ForeignKey(Location,related_name='from_id',on_delete=models.CASCADE,null=False)
     to_id = models.ForeignKey(Location,related_name='to_id',on_delete=models.CASCADE,null=False)
     departure_time = models.DateTimeField(null=False)
+    arrival_time = models.DateTimeField(null=False)
     ldm = models.FloatField(null=False)
     weight = models.FloatField(null=False)
     info = models.TextField(null=True)
 
     def __str__(self):
-        return f'owner_id : {id}'
+        return f'owner : {self.owner_id}, from : {self.from_id}, to : {self.to_id}'
 
 
 

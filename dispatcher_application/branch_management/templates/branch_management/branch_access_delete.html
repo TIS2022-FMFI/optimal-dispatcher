@@ -1,0 +1,15 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Remove Access{% endblock %}
+
+{% block content %}
+    <a class="back-link" href="{{ request.META.HTTP_REFERER }}"><i class="bi bi-arrow-bar-left"></i></a>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure you want to remove access to user "{{ user.email }}"?</p>
+        <input class="" type="submit" value="Remove"/>
+    </form>
+
+{% endblock %}
+  

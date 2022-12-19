@@ -1,0 +1,31 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Access list{% endblock %}
+
+{% block content %}
+    <a class="back-link" href="{% url 'branch-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
+    <h1>Access to {{ branch.name }}</h1>
+    
+    <a class="" href="{% url 'branch-access-add' branch.id %}"><i class="bi bi-plus-circle"></i></a>
+
+    <table>
+        <tr>
+            <th>Email</th>
+            <th>Remove</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if branch.id != user.branch_id %}
+                        <a class="" href="{% url 'branch-access-delete' branch.id user.id %}"><i class="bi bi-x-lg"></i></a>
+                    {% else %}
+                        <p>ROOT</p>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    
+{% endblock %}
