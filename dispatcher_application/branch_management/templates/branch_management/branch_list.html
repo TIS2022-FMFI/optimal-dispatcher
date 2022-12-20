@@ -2,10 +2,18 @@
 
 {% block title %}Branch list{% endblock %}
 
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
+
 {% block content %}
-    <h1>List of Branches</h1>
-    <a class="" href="{% url 'branch-add' %}"><i class="bi bi-plus-circle"></i></a>
-    <table>
+<br>
+<div>
+    <h2>List of Branches</h2>
+    <br>
+    <a class="bi bi-plus-circle btn btn-lg" href="{% url 'branch-add' %}"></a>
+    <table class="table table-hover">
+        <thead class="thead-dark">
         <tr>
             <th>ID</th>
             <th>Name</th>
@@ -13,22 +21,24 @@
             <th>Manage</th>
             <th>Delete</th>
         </tr>
+    </thead>
+    <tbody>
         {% for branch in object_list %}
             <tr>
                 <td>{{ branch.id }}</td>
                 <td>{{ branch.name }}</td>
                 <td>
-                    <a class="" href="{% url 'branch-update' branch.id %}"><i class="bi bi-pencil-square"></i></a>
+                    <a class="bi bi-pencil-square btn btn-sm" href="{% url 'branch-update' branch.id %}"></a>
                 </td>
                 <td>
-                    <a class="" href="{% url 'branch-access' branch.id %}"><i class="bi bi-gear"></i></a>
+                    <a class="bi bi-gear btn btn-sm" href="{% url 'branch-access' branch.id %}"></a>
                 </td>
                 <td>
-                    <a class="" href="{% url 'branch-delete' branch.id %}"><i class="bi bi-x-lg"></i></a>
+                    <a class="bi bi-x-lg btn btn-sm" href="{% url 'branch-delete' branch.id %}"></a>
                 </td>
             </tr>
-        {% empty %}
-            <h2>No branches yet.</h2>
         {% endfor %}
+        </tbody>
     </table>
+</div>
 {% endblock %}

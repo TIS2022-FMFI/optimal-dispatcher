@@ -2,14 +2,21 @@
 
 {% block title %}Remove Access{% endblock %}
 
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
+
+
 {% block content %}
-    <a class="back-link" href="{{ request.META.HTTP_REFERER }}"><i class="bi bi-arrow-bar-left"></i></a>
+    <a class="bi bi-arrow-bar-left btn btn-lg" href="{{ request.META.HTTP_REFERER }}" style="text-align: left;"></a>
     
+    <div class="container" style="text-align: left; padding: auto; margin: auto;">
+        <br>
     <form method="POST">
         {% csrf_token %}
         <p>Are you sure you want to remove access to user "{{ user.email }}"?</p>
         <input class="" type="submit" value="Remove"/>
     </form>
-
+</div>
 {% endblock %}
   

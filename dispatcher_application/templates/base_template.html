@@ -26,9 +26,11 @@
 
     {% include './logo_panel.html' %}
 
-    {% if True %}
-        {% include './navbar_superuser.html' %}
-    {% endif %}
+    {% block nav %}
+
+
+    {% endblock nav %}
+
     
     <div class="container">
         {% block content %} 

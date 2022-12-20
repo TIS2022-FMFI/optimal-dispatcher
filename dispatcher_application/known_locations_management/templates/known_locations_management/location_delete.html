@@ -2,14 +2,25 @@
 
 {% block title %}Delete Location{% endblock %}
 
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
+
+
 {% block content %}
-    <a class="back-link" href="{% url 'location-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
-    <h1>Delete Location</h1>
-   
+<div class="row">
+    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
+    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'location-list' %}"></a>
+    </div>
+    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>Delete Location</h2></div>
+</div>
+
+<div class="container" style="text-align: left; padding: auto;">
+    <br>
     <form method="POST">
         {% csrf_token %}
         <p>Are you sure you want to delete location "{{ object }}" ?</p>
         <input class="" type="submit" value="Delete"/>
     </form>
-  
+</div>
 {% endblock %}

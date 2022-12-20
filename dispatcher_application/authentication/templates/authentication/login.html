@@ -4,15 +4,16 @@
 
 {% block static_imports %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login2.css' %}">
 {% endblock %}
 
 {% block nav %}
-    {% include './navbar.html' %}
+    {% include 'navbar.html' %}
 {% endblock %}
 
 {% block content %}
-
+<br>
+<br>
     <form method="POST" action="" class="form-class">
         {% csrf_token %}
     
@@ -38,5 +39,6 @@
             </div> 
         {% endif %}
     </form>
+
     
 {% endblock %}

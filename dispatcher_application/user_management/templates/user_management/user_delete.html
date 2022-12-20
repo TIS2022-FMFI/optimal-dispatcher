@@ -2,15 +2,22 @@
 
 {% block title %}Delete user{% endblock %}
 
-{% block content %}
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
 
-    <div class="base-class">
-        <a class="back-link" href="{% url 'user-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
+{% block content %}
+<br>
+    <div class="container" style="text-align: left;">
+        <a class="bi bi-arrow-bar-left" href="{% url 'user-list' %}"></a>
+        
+        <div class="container" style="text-align: left; padding: auto;">
+            <br>
         <form method="POST">
             {% csrf_token %}
             <p>Are you sure you want to delete user with email "{{ object.email }}"?</p>
             <input class="button-class" type="submit" value="Delete"/>
         </form>
     </div>
-
+</div>
 {% endblock %}

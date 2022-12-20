@@ -2,34 +2,39 @@
 
 {% block title %}List of Location{% endblock %}
 
-{% block content %}
-    <h1>Locations</h1>
-    <a class="add-record-link"href="{% url 'location-add' %}"><i class="bi bi-plus-circle"></i></a>
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
 
-    <table>
+
+{% block content %}
+<br>
+<div>
+    <h2>Locations</h2>
+    <a class="bi bi-plus-circle btn btn-lg" href="{% url 'location-add' %}"></a>
+    <table class="table table-hover">
+        <thead class="thead-dark">
         <tr>
             <th>Zip Code</th>
             <th>City</th>
             <th>Country</th>
         </tr>
-
-
+    </thead>
+    <tbody>
         {% for location in object_list %}
             <tr>
                 <td>{{ location.zip_code }}</td>
                 <td>{{ location.city }}</td>
                 <td>{{ location.country }}</td>
                 <td>
-                    <a class="" href="{% url 'location-update' location.id %}"><i class="bi bi-pencil-square"></i></a>
+                    <a class="bi bi-pencil-square btn btn-sm" href="{% url 'location-update' location.id %}"></a>
                 </td>
                 <td>
-                    <a class="" href="{% url 'location-delete' location.id %}"><i class="bi bi-x-lg"></i></a>
+                    <a class="bi bi-x-lg btn btn-sm" href="{% url 'location-delete' location.id %}"></a>
                 </td>   
             </tr>
-        {% empty %}
-            <h2>No locations yet.</h2>
         {% endfor %}
-
+        </tbody >
     </table>
-
+</div>
 {% endblock %}

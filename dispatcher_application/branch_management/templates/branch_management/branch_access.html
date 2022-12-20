@@ -2,29 +2,42 @@
 
 {% block title %}Access list{% endblock %}
 
-{% block content %}
-    <a class="back-link" href="{% url 'branch-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
-    <h1>Access to {{ branch.name }}</h1>
-    
-    <a class="" href="{% url 'branch-access-add' branch.id %}"><i class="bi bi-plus-circle"></i></a>
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
 
-    <table>
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
+    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'branch-list' %}"></a>
+    </div>
+    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>Access to {{ branch.name }}</h2></div>
+</div>
+<br>
+    <a class="bi bi-plus-circle btn btn-lg" href="{% url 'branch-access-add' branch.id %}"></a>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
         <tr>
             <th>Email</th>
             <th>Remove</th>
         </tr>
+    </thead>
+    <tbody>
         {% for user in users %}
             <tr>
                 <td>{{ user.email }}</td>
                 <td>
                     {% if branch.id != user.branch_id %}
-                        <a class="" href="{% url 'branch-access-delete' branch.id user.id %}"><i class="bi bi-x-lg"></i></a>
+                        <a class="bi bi-x-lg btn btn-sm" href="{% url 'branch-access-delete' branch.id user.id %}"></a>
                     {% else %}
                         <p>ROOT</p>
                     {% endif %}
                 </td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 
     
