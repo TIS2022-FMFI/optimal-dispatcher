@@ -1,0 +1,33 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Group list{% endblock %}
+
+{% block content %}
+    <h1>List of Groups</h1>
+    <a class="" href="{% url 'group-add' %}"><i class="bi bi-plus-circle"></i></a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Group Name</th>
+            <th>Edit</th>
+            {% comment %} <th>Manage</th> {% endcomment %}
+            <th>Delete</th>
+        </tr>
+        {% for group in object_list %}
+            <tr>
+                <td>{{ group.id }}</td>
+                <td>{{ group.name }}</td>
+                <td>
+                    <a class="" href="{% url 'group-update' group.id %}"><i class="bi bi-pencil-square"></i></a>
+                </td>
+                {% comment %}
+                <td>
+                    <a class="" href="{% url 'group-access' group.id %}"><i class="bi bi-gear"></i></a>
+                </td>{% endcomment %}
+                <td>
+                    <a class="" href="{% url 'group-delete' group.id %}"><i class="bi bi-x-lg"></i></a>
+                </td> 
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

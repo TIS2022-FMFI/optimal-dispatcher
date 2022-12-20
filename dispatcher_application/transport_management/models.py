@@ -14,4 +14,4 @@ class Transportations(models.Model):
     info = models.TextField(null=True)
 
     def __str__(self):
-        return f'owner_id : {id}'
+        return f'owner : {self.owner_id}, from : {self.from_id}, to : {self.to_id}'
