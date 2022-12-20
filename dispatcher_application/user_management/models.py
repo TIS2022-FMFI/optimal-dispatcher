@@ -40,7 +40,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=60, unique=True)
+    email = models.EmailField(max_length=60,unique=True)
     first_name = models.CharField(max_length=70)
     last_name = models.CharField(max_length=70)
     branch = models.ForeignKey(Branch,on_delete=models.CASCADE,null=False)

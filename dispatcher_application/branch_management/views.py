@@ -79,10 +79,8 @@ class AddAccessView(CreateView):
         if form_class is None:
             form_class = self.get_form_class()
 
-        pk = self.kwargs['pk']
-
         kwargs = self.get_form_kwargs()
-        kwargs['branch_id'] = pk
+        kwargs['branch_id'] = self.kwargs['pk']
         return form_class(**kwargs)
 
     

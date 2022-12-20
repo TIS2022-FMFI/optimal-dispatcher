@@ -2,3 +2,4 @@ venv
 dispatcher_application/config/
 
 **/__pycache__
+.idea

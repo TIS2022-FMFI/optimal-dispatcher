@@ -16,9 +16,8 @@
     <br>
     <form action="" method="POST">
         {% csrf_token %}
-        {{form}}
-        <br>
-        <input type="submit" name="Submit" value="Add Group">
+        {{ form.as_p }}
+        <input class="" type="submit" value="{{ form_action_type }}">
     </form>
 </div>
 
