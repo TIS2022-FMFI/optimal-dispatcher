@@ -23,7 +23,7 @@
             <input list="from_locations" name="from_id" id="from_id" required>
             <datalist id="from_locations">
                 {% for location in location_list %}
-                    <option id={{ location.id }} value={{ location.zip_code }},{{ location.city }},{{ location.country }}></option>
+                    <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
                 {% empty %}
                     <option></option>
                 {% endfor %}
@@ -35,7 +35,7 @@
             <input list="to_locations" name="to_id" id="to_id" required>
             <datalist id="to_locations">
                 {% for location in location_list %}
-                    <option id={{ location.id }} value={{ location.zip_code }},{{ location.city }},{{ location.country }}></option>
+                    <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
                 {% empty %}
                     <option value></option>
                 {% endfor %}
@@ -74,7 +74,7 @@
             <input type="text" name="info" id="info" value="{{ info }}">
         </div>
 
-        <button type="submit" class="submit-btn">Add</button>
+        <button type="submit" class="submit-btn">{{ button_text }}</button>
 
         {% if error_message %}
             <div>
