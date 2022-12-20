@@ -1,0 +1,88 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Add transportation{% endblock %}
+
+{% block static_imports %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/transport.css' %}">
+
+{% endblock %}
+
+{% block nav %}
+    {% include './navbar.html' %}
+{% endblock %}
+
+
+{% block content %}
+
+    <form method="POST" action="" class="form-class">
+        {% csrf_token %}
+
+        <div class="input-box">
+            <label for="from_id">From:</label>
+            <input list="from_locations" name="from_id" id="from_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
+            <datalist id="from_locations">
+                {% for location in location_list %}
+                    <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
+                {% empty %}
+                    <option></option>
+                {% endfor %}
+            </datalist>
+        </div>
+
+        <div class="input-box">
+            <label for="to_id">To:</label>
+            <input list="to_locations" name="to_id" id="to_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
+            <datalist id="to_locations">
+                {% for location in location_list %}
+                    <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
+                {% empty %}
+                    <option value></option>
+                {% endfor %}
+            </datalist>
+        </div>
+
+        <div class="input-box">
+
+            <label for="departure_date">Departure date:</label>
+            <input type="date" name="departure_date" id="departure_date" value="{{ departure_date }}" required>
+            &emsp;
+            <label for="departure_time">Time:</label>
+            <input type="time" name="departure_time" id="departure_time" value="{{ departure_time }}" required>
+        </div>
+
+        <div class="input-box">
+            <label for="arrival_date">Arrival date:</label>
+            <input type="date" name="arrival_date" id="arrival_date" value="{{ arrival_date }}" required>
+            &emsp;
+            <label for="arrival_time">Time:</label>
+            <input type="time" name="arrival_time" id="arrival_time" value="{{ arrival_time }}" required>
+        </div>
+
+        <div class="input-box">
+            <label for="ldm">L(m):</label>
+            <input type="number" name="ldm" id="ldm" value="{{ ldm }}" required min="0" max="100" placeholder="0-100">
+        </div>
+
+        <div class="input-box">
+            <label for="weight">Weight:</label>
+            <input type="number" name="weight" id="weight" value="{{ weight }}" required min="0" max="1000000" placeholder="0-1 000 000">
+        </div>
+
+        <div class="input-box">
+            <label for="info">Notes:</label>
+            <input type="text" name="info" id="info" value="{{ info }}">
+        </div>
+
+        <button type="submit" class="submit-btn">{{ button_text }}</button>
+
+        {% if error_message %}
+            <div>
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+    </form>
+
+{% endblock %}
+

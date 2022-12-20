@@ -1,0 +1,44 @@
+/* colors variable */
+:root {
+    --blue: #0b0bdb;
+}
+
+
+/* form style */
+.form-class {
+  border: 1px solid #e7e7e7;
+  margin: 80px auto;
+  /*width: 300px;*/
+  padding: 40px 40px 40px 40px;
+}
+
+div {
+    padding: 5px;
+}
+
+.input-box {
+    display: block;
+    position: relative;
+}
+
+input {
+    background: none;
+    /*width: 260px;*/
+    outline: none;
+}
+
+input[type=text], input[type=date], input[type=time], input[type=number]
+{
+  border:none;
+  background-color: white;
+  border-bottom: 2px solid rgb(99, 99, 99);
+  border-radius: 0;
+}
+
+.bottom-links a {
+    text-decoration: none;
+}
+
+.bottom-links a:hover {
+    color: var(--blue);
+}
