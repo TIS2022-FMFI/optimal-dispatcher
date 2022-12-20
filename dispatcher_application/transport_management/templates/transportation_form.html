@@ -20,7 +20,7 @@
 
         <div class="input-box">
             <label for="from_id">From:</label>
-            <input list="from_locations" name="from_id" id="from_id" required>
+            <input list="from_locations" name="from_id" id="from_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
             <datalist id="from_locations">
                 {% for location in location_list %}
                     <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
@@ -32,7 +32,7 @@
 
         <div class="input-box">
             <label for="to_id">To:</label>
-            <input list="to_locations" name="to_id" id="to_id" required>
+            <input list="to_locations" name="to_id" id="to_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
             <datalist id="to_locations">
                 {% for location in location_list %}
                     <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
@@ -61,12 +61,12 @@
 
         <div class="input-box">
             <label for="ldm">L(m):</label>
-            <input type="number" name="ldm" id="ldm" value="{{ ldm }}" required min="0" max="100">
+            <input type="number" name="ldm" id="ldm" value="{{ ldm }}" required min="0" max="100" placeholder="0-100">
         </div>
 
         <div class="input-box">
             <label for="weight">Weight:</label>
-            <input type="number" name="weight" id="weight" value="{{ weight }}" required min="0" max="1000000">
+            <input type="number" name="weight" id="weight" value="{{ weight }}" required min="0" max="1000000" placeholder="0-1 000 000">
         </div>
 
         <div class="input-box">

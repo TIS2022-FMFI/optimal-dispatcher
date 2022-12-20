@@ -11,4 +11,4 @@ class Location(models.Model):
         ]
 
     def __str__(self):
-        return f'{self.zip_code}, {self.city}, {self.country}'
+        return f'{self.zip_code},{self.city},{self.country}'

@@ -27,30 +27,20 @@ class TransportationView(View):
         weight = request.POST['weight']
         info = request.POST['info']
 
-        error_message = ""
-
         from_id = get_location_id(from_location.split(","))
         to_id = get_location_id(to_location.split(","))
-
-        if from_id == -1 or to_id == -1 or from_id == to_id:
-            error_message = "Wrong location input"
 
         departure = datetime.combine(parse_date(departure_date), parse_time(departure_time))
         arrival = datetime.combine(parse_date(arrival_date), parse_time(arrival_time))
 
-        if departure >= arrival:
-            if error_message != "":
-                error_message += '\n'
-            error_message = "Departure cannot be later than arrival"
-
+        error_message = check_data(from_id, to_id, departure, arrival)
         if error_message != "":
             context = {'from_id': from_location, 'to_id': to_location, 'departure_date': departure_date,
                        'departure_time': departure_time, 'arrival_date': arrival_date, 'arrival_time': arrival_time,
                        'ldm': ldm, 'weight': weight, 'info': info, 'error_message': error_message, 'button_text': 'Add'}
             return render(request, self.template, context)
 
-        insert_transport(from_id, to_id, departure, arrival, ldm, weight, info)
-        # insert_transport(self.request.user.id, from_id, to_id, departure, arrival, ldm, weight, info)
+        insert_transport(self.request.user.id, from_id, to_id, departure, arrival, ldm, weight, info)
         return redirect('/transports')
 
 
@@ -74,27 +64,19 @@ def get_location_id(location):
         new_location.save()
         return new_location.id
 
-
-def insert_transport(from_id, to_id, departure, arrival, ldm, weight, info):
+def insert_transport(user_id, from_id, to_id, departure, arrival, ldm, weight, info):
     cursor = connections['default'].cursor()
     cursor.execute(
-        "INSERT INTO transportations(from_id, to_id, departure, arrival, ldm, weight, info)"
-        "VALUES( %s, %s, %s, %s, %s, %s, %s)",
-        [from_id, to_id, departure, arrival, ldm, weight, info])
+        "INSERT INTO transport_management_transportations(owner_id_id,from_id_id,to_id_id,departure_time, arrival_time, ldm, weight, info) "
+        "VALUES( %s, %s, %s, %s, %s, %s, %s, %s)",
+        [user_id, from_id, to_id, departure, arrival, ldm, weight, info])
 
-
-# def insert_transport(self, user_id, from_id, to_id, departure, arrival, ldm, weight, info):
-#     cursor = connections['default'].cursor()
-#     cursor.execute(
-#         "INSERT INTO transport_management_transportations(owner_id_id,from_id_id,to_id_id,departure_time, arrival_time, ldm, weight, info)"
-#         "VALUES( %s, %s, %s, %s, %s, %s, %s, %s)",
-#         [user_id,from_id, to_id, departure, arrival, ldm, weight, info])
 
 def update_transport(transportation_id, from_id, to_id, departure, arrival, ldm, weight, info):
     cursor = connections['default'].cursor()
     cursor.execute(
         "UPDATE transportations "
-        "SET from_id = %s, to_id= %s, departure= %s, arrival= %s, ldm= %s, weight= %s, info= %s)"
+        "SET from_id = %s, to_id= %s, departure= %s, arrival= %s, ldm= %s, weight= %s, info= %s) "
         "WHERE id = %s",
         [from_id, to_id, departure, arrival, ldm, weight, info, transportation_id])
 
@@ -104,10 +86,15 @@ class EditTransportationView(View):
 
     def get(self, request, **kwargs):
         transportation = Transportations.objects.get(id=kwargs["pk"])
-        context = {'from_id': transportation.from_location, 'to_id': transportation.to_location,
-                   'departure_date': transportation.departure_date, 'departure_time': transportation.departure_time,
-                   'arrival_date': transportation.arrival_date, 'arrival_time': transportation.arrival_time,
-                   'ldm': transportation.ldm, 'weight': transportation.weight, 'info': transportation.info,
+        context = {'from_id': Location.objects.get(id=transportation.from_id_id),
+                   'to_id': Location.objects.get(id=transportation.to_id_id),
+                   'departure_date': str(transportation.departure_time.date()),
+                   'departure_time': str(transportation.departure_time.time()),
+                   'arrival_date': str(transportation.arrival_time.date()),
+                   'arrival_time': str(transportation.arrival_time.time()),
+                   'ldm': transportation.ldm,
+                   'weight': transportation.weight,
+                   'info': transportation.info,
                    'button_text': 'Edit'}
 
         return render(request, self.template, context)
@@ -125,22 +112,13 @@ class EditTransportationView(View):
         weight = request.POST['weight']
         info = request.POST['info']
 
-        error_message = ""
-
         from_id = get_location_id(from_location.split(","))
         to_id = get_location_id(to_location.split(","))
-
-        if from_id == -1 or to_id == -1 or from_id == to_id:
-            error_message = "Wrong location input"
 
         departure = datetime.combine(parse_date(departure_date), parse_time(departure_time))
         arrival = datetime.combine(parse_date(arrival_date), parse_time(arrival_time))
 
-        if departure >= arrival:
-            if error_message != "":
-                error_message += '\n'
-            error_message = "Departure cannot be later than arrival"
-
+        error_message = check_data(from_id, to_id, departure, arrival)
         if error_message != "":
             context = {'from_id': from_location, 'to_id': to_location, 'departure_date': departure_date,
                        'departure_time': departure_time, 'arrival_date': arrival_date, 'arrival_time': arrival_time,
@@ -149,3 +127,16 @@ class EditTransportationView(View):
 
         update_transport(transportation_id, from_id, to_id, departure, arrival, ldm, weight, info)
         return redirect('/transports')
+
+
+def check_data(from_id, to_id, departure, arrival):
+    error_message = ""
+    if from_id == -1 or to_id == -1 or from_id == to_id:
+        error_message = "Wrong location input"
+
+    if departure >= arrival:
+        if error_message != "":
+            error_message += '\n'
+        error_message += "Departure cannot be later than arrival"
+
+    return error_message
