@@ -1,143 +1,168 @@
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.views.generic import View
+from django.http import HttpResponseRedirect
 
-from .models import UserBranchAccess
+from django.db import transaction
+
+from django.views.generic.list import ListView
+from django.views.generic import CreateView, DeleteView, FormView
+
+from .forms import GroupAddForm, GroupUpdateForm
+
+from .models import Group, GroupBranchAccess
 from branch_management.models import Branch
 
-from .forms import UserBrnachForm
+from django.db import IntegrityError
+from django.db.models import Q
 
 
-class ManageUserBranchesView(View):
-    template = 'access_management/add_user_branches.html'
+class ListGroupsView(ListView):
+    model = Group
+    template_name = 'access_management/group_list.html'
+    paginate_by = 20
 
 
-    def get(self, request):
-        form = UserBrnachForm()
-        context = { 'form':form }
-        return render(request, self.template, context)
+class CreateGroupView(FormView):
+    template_name = 'access_management/group_add.html'
+    form_class = GroupAddForm
+    success_url = reverse_lazy('group-list')
 
 
-    def post(self, request):
-        user = request.user
-        selected_values = request.POST.getlist('branch')
-
-        for value in selected_values:
-            UserBranchAccess.objects.create(
-              user_id = user, 
-              branch_id = Branch.objects.get(id=value)
-            )
-           
-
-        form = UserBrnachForm()
-        context = { 'form':form }
-        return render(request, self.template, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_name'] = 'Create Group'
+        context['form_action_type'] = 'Add'
+        return context
 
 
-class TestTempView(View):
-    template = 'access_management/test_temp.html'
+    def form_valid(self, form):
+        form_fields = form.cleaned_data
+        
+        try:
+            with transaction.atomic(): 
+                group = Group.objects.create(name=form_fields['name'])
+                for b_id in form_fields['branch']:
+                    branch = Branch.objects.get(id=b_id)
+                    GroupBranchAccess.objects.create(group_id=group, branch_id=branch)
+        except IntegrityError:
+            ...
+        return HttpResponseRedirect(self.get_success_url())
+
+
+
+class UpdateGroupView(FormView):
+    template_name = 'access_management/group_add.html'
+    form_class = GroupUpdateForm
+    success_url = reverse_lazy('group-list')
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form_name'] = 'Update Group'
+        context['form_action_type'] = 'Update'
+        return context
+
+
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+
+        kwargs = self.get_form_kwargs()
+        kwargs['g_id'] = self.kwargs['pk']
+        return form_class(**kwargs)
+
+
+    def form_valid(self, form):
+        form_fields = form.cleaned_data
+        pk = self.kwargs['pk']
+
+        group = Group.objects.get(id=pk)
+        group_access_list = {obj.branch_id for obj in GroupBranchAccess.objects.filter(group_id=pk)}
+        new_group_access_list = {Branch.objects.get(id=b_id) for b_id in form_fields['branch']}
+
+        to_delete_access = group_access_list - new_group_access_list
+        to_add_access = new_group_access_list - group_access_list 
+        
+        try:
+            with transaction.atomic():
+                # to_delete_branch_id_list = [obj.id for obj in to_delete_access]
+                to_delete_access_list = GroupBranchAccess.objects.filter(Q(group_id=group) & Q(branch_id__in=to_delete_access))
+                for obj in to_delete_access_list:
+                    obj.delete()
+
+                for branch in to_add_access:
+                    GroupBranchAccess.objects.create(group_id=group, branch_id=branch)
+        except IntegrityError:
+            ...
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class DeleteGroupView(DeleteView):
+    model = Group
+    template_name = 'access_management/group_delete.html'
+    success_url = reverse_lazy('group-list')
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from django.shortcuts import render, redirect
+# from django.http import HttpResponse
+# from .models import *
+# from .forms import *
+
+# def main(request):
+#     groups = Groups.objects.all()
     
-    def get(self, request):
-        user = request.user
-        branches_access = UserBranchAccess.objects.filter(user_id=user.id).values_list('branch_id')
-        branches = Branch.objects.filter(id__in=branches_access)
-        context = { 'user_branches' : branches }
-        print(branches)
-        return render(request, self.template, context)
+#     context = {"groups":groups}
+    
+#     return render(request, "access_management/group_main.html", context)
 
-#  if request.method == "POST":
-#         form = ChangePasswordForm(request.user, request.POST)
+# def createGroup(request):
+#     form = GroupForm()
+#     if request.method == "POST":
+#         form = GroupForm(request.POST)
 #         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)
-#             messages.success(request, 'Your password have been successfully changed')
-#             return redirect('change-password')
-#         else:
-#             messages.error(request, 'Old password is invalid or new password does not meet requirements')
-#     form = ChangePasswordForm(request.user)
-#     context = {'form':form}
-#     return render(request, 'notesApp/change_password.html', context)
-
-
-
-# class LoginView(View):
-#     template = 'authentication/login.html'
-
-#     @method_decorator(is_not_authenticated())
-#     def get(self, request):
-#         context = {}
-#         return render(request, self.template, context)
-
-
-#     @method_decorator(is_not_authenticated())
-#     def post(self, request):
-#         email = request.POST['email']
-#         password = request.POST['password']
-
-#         user = authenticate(request, email=email, password=password)
-
-#         if user is not None:
-#             login(request, user)
-#             if user.is_superuser:
-#                 return redirect('/admin-panel/create-user')
-#             return redirect('/transports')
-
-#         context = {'email' : email, 'error_message' : 'Wrong email or password'}
-#         return render(request, self.template, context)
-
-
-
-
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import *
-from .forms import *
-
-def main(request):
-    groups = Groups.objects.all()
+#             form.save()
+#             return redirect("groups")
     
-    context = {"groups":groups}
-    
-    return render(request, "access_management/group_main.html", context)
+#     context = {"form":form}
+#     return render(request, "access_management/group_add.html", context)
 
-def createGroup(request):
-    form = GroupForm()
-    if request.method == "POST":
-        form = GroupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("groups")
+# def updateGroup(request,pk):
+#     group = Groups.objects.get(id=pk)
+#     form = GroupForm(instance=group)
+#     if request.method == "POST":
+#         form = GroupForm(request.POST,instance=group)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("groups")
     
-    context = {"form":form}
-    return render(request, "access_management/group_add.html", context)
-
-def updateGroup(request,pk):
-    group = Groups.objects.get(id=pk)
-    form = GroupForm(instance=group)
-    if request.method == "POST":
-        form = GroupForm(request.POST,instance=group)
-        if form.is_valid():
-            form.save()
-            return redirect("groups")
-    
-    context = {"form":form}
-    return render(request, "access_management/group_add.html", context)
+#     context = {"form":form}
+#     return render(request, "access_management/group_add.html", context)
 
 
-def deleteGroup(request):
-    groups = Groups.objects.all()
+# def deleteGroup(request):
+#     groups = Groups.objects.all()
     
-    if request.method == "POST":
-        pole = request.POST.getlist("data")
-        print(pole)
-        for i in pole:
-            obj = Groups.objects.get(id=i)
-            obj.delete()
+#     if request.method == "POST":
+#         pole = request.POST.getlist("data")
+#         print(pole)
+#         for i in pole:
+#             obj = Groups.objects.get(id=i)
+#             obj.delete()
             
-        return redirect("groups")
+#         return redirect("groups")
             
      
-    context = {"groups":groups}
-    return render(request, "access_management/group_main.html", context)
+#     context = {"groups":groups}
+#     return render(request, "access_management/group_main.html", context)
 
