@@ -1,0 +1,37 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+    {% comment %} <a class="back-link" href="{% url '' %}"><i class="bi bi-arrow-bar-left"></i></a> {% endcomment %}
+    <h1>Settings</h1>
+    
+    <p class="settings-data"><a href="{% url 'user-password-change' %}">Change password</a></p>
+    
+    {% if messages %}    
+        {% for message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div class="">    
+        <h4>Profile Information</h4>
+        <p>Name: {{ last_name }} {{ first_name }}</p>
+        <p>Email: {{ email }}</p>
+        <p>Root branch: {{ branch }}</p>
+    </div>
+
+    <div class="">
+        <h4>Branch Access</h4>
+        {% for access in access_list %}
+            <p>{{ access }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="">
+        <h4>Group Access</h4>
+        {% for group in group_list %}
+            <p>{{ group }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}
