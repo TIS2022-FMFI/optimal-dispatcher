@@ -17,7 +17,7 @@ class UserBrnachForm(ModelForm):
     
 
 class GroupForm(ModelForm):
-    selected = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","readonly":"readonly"}))
+    #selected = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","readonly":"readonly"}))
     
     class Meta:
         model = Groups

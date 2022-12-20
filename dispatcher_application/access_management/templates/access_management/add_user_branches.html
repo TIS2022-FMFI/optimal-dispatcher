@@ -2,14 +2,14 @@
 
 {% block title %}Manage User Branches{% endblock %}
 
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
+
 {% comment %} {% block static_imports %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
 {% endblock %} {% endcomment %}
-
-{% block nav %}
-    {% include './navbar.html' %}
-{% endblock %}
 
 {% block content %}
     <h2>Manage User Branches</h2>

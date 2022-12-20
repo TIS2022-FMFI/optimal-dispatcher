@@ -2,15 +2,22 @@
 
 {% block title %}Add branch{% endblock %}
 
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
+
+
 {% block content %}
 
-    <a class="back-link" href="{% url 'branch-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
+    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'branch-list' %}" style="text-align: left;">back</a>
+    <div class="container" style="text-align: center;">
     <form method="POST">
         {% csrf_token %}
         <p>Are you sure you want to delete branch with name "{{ object.name }}"?</p>
         <p>All users under this branch will be delete with it!</p>
         <input class="" type="submit" value="Delete"/>
     </form>
+</div>
 
 {% endblock %}
   

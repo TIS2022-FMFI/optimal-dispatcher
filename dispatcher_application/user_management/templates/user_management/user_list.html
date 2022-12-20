@@ -8,16 +8,17 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/table_style.css' %}">
 {% endblock %}
 
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
 
 {% block content %}
-
+<br>
+<div>
     <h2>System users</h2>
-    <div class="functions-bar">
-        <a class="add-user-link"href="{% url 'user-add' %}"><i class="bi bi-plus-circle"></i></a>
-    </div>
-
-    <div class="notes-list-wrapper">
-        <table>
+        <a class="bi bi-plus-circle btn btn-lg" href="{% url 'user-add' %}"></a>
+        <table class="table table-hover">
+            <thead class="thead-dark">
             <tr>
                 <th>Email</th>
                 <th>First Name</th>
@@ -26,15 +27,16 @@
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
-            
+        </thead>
+        <tbody>
         {% for user in object_list %}
             <tr>
                 <td>{{ user.email }}</td>
                 <td>{{ user.last_name }}</td>
                 <td>{{ user.first_name }}</td>
                 <td>{{ user.branch }}</td>
-                <td><a class="user-link" href="{% url 'user-update' user.id %}"><i class="bi bi-pencil-square"></i></a></td>
-                <td><a class="user-link" href="{% url 'user-delete' user.id %}"><i class="bi bi-x-lg"></i></a></td>
+                <td><a class="bi bi-pencil-square btn btn-sm" href="{% url 'user-update' user.id %}"></a></td>
+                <td><a class="bi bi-x-lg btn btn-sm" href="{% url 'user-delete' user.id %}"></a></td>
             </tr>
 
             <div class="note-wrapper">
@@ -48,8 +50,10 @@
                 </div> {% endcomment %}
             </div>
         {% endfor %}
+        </tbody>
         <table>
     </div>
+</div>
 
 {% include 'pagination.html' %}
 {% endblock %}

@@ -1,9 +1,19 @@
-{% extends './base_template.html' %}
+{% extends 'base_template.html' %}
+
+{% block title %}List of Location{% endblock %}
+
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
 
 {% block content %}
 <br>
 <form action="{% url 'delete_group' %}" method="POST">
   {% csrf_token %}
+  <h2>List of Groups</h2>
+    <br>
+    <a class="bi bi-plus-circle btn btn-lg" href="{% url 'add_group' %}"></a>
+    <button class="bi bi-trash3-fill btn btn-lg" style="font-size: 1.6rem;" type="submit"></button>
 <table class="table table-hover">
     <thead class="thead-dark">
       <tr>
@@ -29,12 +39,5 @@
     </tbody>
 
   </table>
-
-  <div class="row">
-    <div class="col-sm-11"></div>
-    <div class="col-sm-1">
-        <button class="bi bi-trash3-fill btn btn-lg" style="font-size: 1.6rem;" type="submit"></button>
-    </div>
-  </div>
 </form>
   {% endblock  %}

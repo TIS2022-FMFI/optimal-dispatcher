@@ -2,13 +2,29 @@
 
 {% block title %}Add branch{% endblock %}
 
+{% block static_imports %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock static_imports %}
+
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
+
 {% block content %}
-    <a class="back-link" href="{% url 'branch-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
-    <h1>Update branch</h1>
+<div class="row">
+    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
+    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'branch-list' %}"></a>
+    </div>
+    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>Update Branch</h2></div>
+</div>
     
+<div class="container" style="text-align: left; padding: auto;">
+    <br>
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <input class="" type="submit" value="Update" >
     </form>
+</div>
 {% endblock %}
