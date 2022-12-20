@@ -4,12 +4,12 @@
 
 {% block content %}
     <a class="back-link" href="{% url 'group-list'  %}"><i class="bi bi-arrow-bar-left"></i></a>
-    <h1>Create Group</h1>
+    <h1>{{ form_name }}</h1>
 
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
-        <input class="" type="submit" value="Create">
+        <input class="" type="submit" value="{{ form_action_type }}">
     </form>
     
 {% endblock %}

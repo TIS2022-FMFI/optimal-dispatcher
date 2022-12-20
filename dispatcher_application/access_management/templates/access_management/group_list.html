@@ -10,16 +10,17 @@
             <th>ID</th>
             <th>Group Name</th>
             <th>Edit</th>
-            <th>Manage</th>
+            {% comment %} <th>Manage</th> {% endcomment %}
             <th>Delete</th>
         </tr>
         {% for group in object_list %}
             <tr>
                 <td>{{ group.id }}</td>
                 <td>{{ group.name }}</td>
-                {% comment %} <td>
+                <td>
                     <a class="" href="{% url 'group-update' group.id %}"><i class="bi bi-pencil-square"></i></a>
                 </td>
+                {% comment %}
                 <td>
                     <a class="" href="{% url 'group-access' group.id %}"><i class="bi bi-gear"></i></a>
                 </td>{% endcomment %}
