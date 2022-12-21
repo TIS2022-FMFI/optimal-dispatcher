@@ -5,15 +5,16 @@
 {% block static_imports %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/transport.css' %}">
-
 {% endblock %}
-
-{% block nav %}
-    {% include './navbar.html' %}
-{% endblock %}
-
 
 {% block content %}
+    <div class="row">
+        <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
+        <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'transportation-list' %}"></a>
+        </div>
+        <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>Add access</h2></div>
+    </div>
+
 
     <form method="POST" action="" class="form-class">
         {% csrf_token %}

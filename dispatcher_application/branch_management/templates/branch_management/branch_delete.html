@@ -1,15 +1,10 @@
 {% extends 'base_template.html' %}
 
-{% block title %}Add branch{% endblock %}
-
-{% block nav %} 
-    {% include "navbar.html" %}
-{% endblock nav %}
-
+{% block title %}Delete branch{% endblock %}
 
 {% block content %}
 
-    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'branch-list' %}" style="text-align: left;">back</a>
+    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'branch-list' %}" style="text-align: left;"></a>
     <div class="container" style="text-align: center;">
     <form method="POST">
         {% csrf_token %}

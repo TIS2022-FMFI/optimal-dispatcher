@@ -10,9 +10,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.db import IntegrityError
 
+from django.views.generic.list import ListView
+
+
+class ListTransportationsView(ListView):
+    model = Transportations
+    template_name = 'transport_management/transportation_list.html'
+    paginate_by = 20
+    
 
 class TransportationView(View):
-    template = "transportation_form.html"
+    template = "transport_management/transportation_form.html"
 
     def get(self, request):
         location_list = Location.objects.all()
@@ -66,7 +74,7 @@ class TransportationView(View):
 
 
 # class EditTransportationView(View):
-#     template = "transportation_form.html"
+#     template = "transport_management/transportation_form.html"
 
 #     def get(self, request, **kwargs):
 #         transportation = Transportations.objects.get(id=kwargs["pk"])

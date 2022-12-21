@@ -1,11 +1,6 @@
 {% extends "base_template.html" %}
 
-{% block title %}List of Location{% endblock %}
-
-{% block nav %} 
-    {% include "navbar.html" %}
-{% endblock nav %}
-
+{% block title %}Locations{% endblock %}
 
 {% block content %}
 <br>
@@ -18,6 +13,8 @@
             <th>Zip Code</th>
             <th>City</th>
             <th>Country</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
     <tbody>

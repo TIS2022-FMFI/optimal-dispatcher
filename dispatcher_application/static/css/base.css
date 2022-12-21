@@ -4,10 +4,17 @@ body {
 }
 
 .container {
-    max-width: 750px;
+    /* max-width: 750px; */
     margin: auto;
     background-color: #fff;
     padding: 0;
+    
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
 }
 
 form div {

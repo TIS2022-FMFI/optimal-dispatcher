@@ -1,16 +1,11 @@
 {% extends 'base_template.html' %}
 
-{% block title %}Branch list{% endblock %}
-
-{% block nav %} 
-    {% include "navbar.html" %}
-{% endblock nav %}
+{% block title %}Branches{% endblock %}
 
 {% block content %}
 <br>
 <div>
-    <h2>List of Branches</h2>
-    <br>
+    <h2>Branches</h2>
     <a class="bi bi-plus-circle btn btn-lg" href="{% url 'branch-add' %}"></a>
     <table class="table table-hover">
         <thead class="thead-dark">

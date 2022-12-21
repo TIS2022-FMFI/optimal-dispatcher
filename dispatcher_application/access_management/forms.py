@@ -13,7 +13,7 @@ class GroupAddForm(forms.Form):
 
         # branch list dropdown
         branch_list = [[i.id, i.name] for i in Branch.objects.all()]
-        self.fields['branch'] = forms.MultipleChoiceField(choices=branch_list,widget=forms.SelectMultiple(), required=True)
+        self.fields['branch'] = forms.MultipleChoiceField(choices=branch_list,widget=forms.SelectMultiple(), required=True) # CheckboxSelectMultiple
        
 
     def clean_name(self):
