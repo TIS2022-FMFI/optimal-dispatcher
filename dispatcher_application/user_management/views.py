@@ -19,7 +19,6 @@ class ListAllUsersView(ListView):
     paginate_by = 25
     
 
-
 class RegisterNewUserView(CreateView):
     model = MyUser
     template_name = 'user_management/user_add.html'
@@ -31,8 +30,7 @@ class RegisterNewUserView(CreateView):
 class UpdateUserView(UpdateView):
     model = MyUser
     template_name = 'user_management/user_update.html'
-    fields = ['first_name', 'last_name', 'branch', 'is_superuser']
-    # form_class = CustomUserChangeForm
+    form_class = CustomUserChangeForm
     success_url = reverse_lazy('user-list')
 
 

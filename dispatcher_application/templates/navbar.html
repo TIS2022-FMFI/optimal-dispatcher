@@ -1,25 +1,27 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xl-3 col-md-2 col-sm-1 col-4 p-1">
-            <a class="bi bi-person-square btn btn-lg" style="font-size: 1.6rem;"></a>
-            <a class="bi bi-map btn btn-lg" style="font-size: 1.6rem;"></a>
+            <a class="bi bi-box-arrow-left btn btn-lg" style="font-size: 1.6rem;" href="{% url 'logout' %}"></a>
+            <a class="bi bi-person-square btn btn-lg" style="font-size: 1.6rem;" href="{% url 'user-settings' %}"></a>
+            <a class="bi bi-map btn btn-lg" style="font-size: 1.6rem;" href="{% url 'transportation-list' %}"></a>
         </div>
         
-        <div class="col-xl-6 col-md-2 col-sm-1 col-4 p-1">
-            {% if superuser %}
-            <form method="GET">
-                {{filter.form}}
-                <button class="bi bi-search btn btn-lg" type="submit"></button>
-            </form>
-            {% endif %}
-        </div>
+        {% if request.user.is_superuser %}
+            <div class="col-xl-6 col-md-2 col-sm-1 col-4 p-1">
+                
+                <form method="GET">
+                    {{filter.form}}
+                    {% comment %} <button class="bi bi-search btn btn-lg" type="submit"></button> {% endcomment %}
+                </form>
+                
+            </div>
 
-        <div class="col-xl-3 col-md-2 col-sm-1 col-4 p-1">
-            <a class="bi bi-person-fill btn btn-lg" style="font-size: 1.6rem;" href={% url 'user-list' %}></a>
-            <a class="bi bi-people-fill btn btn-lg" style="font-size: 1.6rem;" href={% url 'groups' %}></a>
-            <a class="bi bi-diagram-3 btn btn-lg" style="font-size: 1.6rem;" href={% url 'branch-list' %}></a>
-            <a class="bi bi-geo-alt btn btn-lg" style="font-size: 1.6rem;" href={% url 'location-list' %}></a>
-        </div>
-
+            <div class="col-xl-3 col-md-2 col-sm-1 col-4 p-1">
+                <a class="bi bi-person-fill btn btn-lg" style="font-size: 1.6rem;" href="{% url 'user-list' %}"></a>
+                <a class="bi bi-people-fill btn btn-lg" style="font-size: 1.6rem;" href="{% url 'group-list' %}"></a>
+                <a class="bi bi-diagram-3 btn btn-lg" style="font-size: 1.6rem;" href="{% url 'branch-list' %}"></a>
+                <a class="bi bi-geo-alt btn btn-lg" style="font-size: 1.6rem;" href="{% url 'location-list' %}"></a>
+            </div>
+        {% endif %}
     </div>
 </div>

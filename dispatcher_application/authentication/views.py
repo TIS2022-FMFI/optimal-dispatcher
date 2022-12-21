@@ -31,8 +31,8 @@ class LoginView(View):
         if user is not None:
             login(request, user)
             if user.is_superuser:
-                return redirect('/admin-panel/create-user')
-            return redirect('/transports')
+                return redirect('user-list')
+            return redirect('transportation-list')
 
         context = {'email' : email, 'error_message' : 'Wrong email or password'}
         return render(request, self.template, context)

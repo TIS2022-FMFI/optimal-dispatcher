@@ -1,16 +1,14 @@
 {% extends 'base_template.html' %}
 
-{% block title %}User list{% endblock %}
+{% block title %}Users{% endblock %}
 
 
-{% block static_imports %}
+{% comment %} {% block static_imports %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/table_style.css' %}">
-{% endblock %}
+{% endblock %} {% endcomment %}
 
-{% block nav %} 
-    {% include "navbar.html" %}
-{% endblock nav %}
+
 
 {% block content %}
 <br>
@@ -38,22 +36,11 @@
                 <td><a class="bi bi-pencil-square btn btn-sm" href="{% url 'user-update' user.id %}"></a></td>
                 <td><a class="bi bi-x-lg btn btn-sm" href="{% url 'user-delete' user.id %}"></a></td>
             </tr>
-
-            <div class="note-wrapper">
-                {% comment %} <div>
-                    <i><a href="{% url 'user-profile-read-only' user.id %}">{{user.note_name}}</a></i> 
-                </div> {% endcomment %}
-                
-                {% comment %} <div>
-                    <a class="user-link" href="{% url 'user-update' user.id %}"><i class="bi bi-pencil-square"></i></a>
-                    <a class="user-link" href="{% url 'user-delete' user.id %}"><i class="bi bi-x-lg"></i></a>
-                </div> {% endcomment %}
-            </div>
         {% endfor %}
         </tbody>
         <table>
     </div>
 </div>
 
-{% include 'pagination.html' %}
+{% comment %} {% include 'pagination.html' %} {% endcomment %}
 {% endblock %}

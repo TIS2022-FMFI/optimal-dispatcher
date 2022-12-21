@@ -26,10 +26,9 @@
 
     {% include './logo_panel.html' %}
 
-    {% block nav %}
-
-
-    {% endblock nav %}
+    {% if request.user.is_authenticated %}
+        {% include './navbar.html' %}
+    {% endif %}
 
     
     <div class="container">
