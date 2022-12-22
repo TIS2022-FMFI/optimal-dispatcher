@@ -1,0 +1,37 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Group access list{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
+        <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'group-list' %}"></a>
+    </div>
+    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;">
+        <h2>Access to {{ group.name }}</h2>
+    </div>
+</div>
+<br>
+    <a class="bi bi-plus-circle btn btn-lg" href="{% url 'group-access-add' group.id %}"></a>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Email</th>
+            <th>Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>
+                    <a class="bi bi-x-lg btn btn-sm" href="{% url 'group-access-delete' group.id user.id %}"></a> 
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ListGroupsView, CreateGroupView, UpdateGroupView, DeleteGroupView
+from .views import ListGroupsView, CreateGroupView, UpdateGroupView, DeleteGroupView, GroupAccessView, AddGroupAccessView, DeleteGroupAccessView
 
 
 urlpatterns = [
@@ -9,8 +9,8 @@ urlpatterns = [
     path('group/delete/<int:pk>/', DeleteGroupView.as_view(), name="group-delete"),
 
     # group access management view
-    # path('group/add-access/<int:pk>/', GroupAccessView.as_view(), name="group-access"),
-    # path('group/add/<int:pk>/add/', AddGroupAccessView.as_view(), name="group-access-add"),
-    # path('group/add/<int:pk>/delete/<int:upk>', DeleteGroupAccessView.as_view(), name="group-access-delete"),
+    path('group/access/<int:pk>/', GroupAccessView.as_view(), name="group-access"),
+    path('group/access/<int:pk>/add/', AddGroupAccessView.as_view(), name="group-access-add"),
+    path('group/access/<int:pk>/delete/<int:upk>', DeleteGroupAccessView.as_view(), name="group-access-delete"),
 ]
 

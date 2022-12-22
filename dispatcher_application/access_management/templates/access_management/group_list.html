@@ -12,7 +12,7 @@
             <th>ID</th>
             <th>Group Name</th>
             <th>Edit</th>
-            {% comment %} <th>Manage</th> {% endcomment %}
+            <th>Manage</th>
             <th>Delete</th>
         </tr>
     </thead>
@@ -24,10 +24,9 @@
                 <td>
                     <a class="bi bi-pencil-square btn btn-sm" href="{% url 'group-update' group.id %}"></a>
                 </td>
-                {% comment %}
                 <td>
                     <a class="" href="{% url 'group-access' group.id %}"><i class="bi bi-gear"></i></a>
-                </td>{% endcomment %}
+                </td>
                 <td>
                     <a class="bi bi-x-lg btn btn-sm" href="{% url 'group-delete' group.id %}"></a>
                 </td> 

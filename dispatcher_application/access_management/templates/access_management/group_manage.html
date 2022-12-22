@@ -2,6 +2,16 @@
 
 {% block title %}Add group{% endblock %}
 
+{% block static_imports %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form_style.css' %}">
+{% endblock %}
+
+{% block js_content %}
+    <script src="{% static 'js/form_functions.js' %}"></script>
+{% endblock %}
+
+
 {% block content %}
 <div class="row">
     <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
@@ -12,11 +22,22 @@
 
 <div class="container" style="text-align: left; padding: auto;">
     <br>
-    <form action="" method="POST">
+    <form action="" method="POST" onSubmit="return validateForm(this)">
         {% csrf_token %}
         {{ form.as_p }}
         <input class="" type="submit" value="{{ form_action_type }}">
+        
+        <div class="error-class">
+            {% for field in form %}
+                {% if field.errors %}
+                    <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+                {% endif %}
+            {% endfor %} 
+        </div>
     </form>
+    
 </div>
 
+
 {% endblock  %}
+

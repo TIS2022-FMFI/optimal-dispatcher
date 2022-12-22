@@ -1,19 +1,21 @@
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 
 from django.db import transaction
 
 from django.views.generic.list import ListView
-from django.views.generic import CreateView, DeleteView, FormView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView
 
-from .forms import GroupAddForm, GroupUpdateForm
+from .forms import GroupAddForm, GroupUpdateForm, AddGroupAccessForm
 
-from .models import Group, GroupBranchAccess
+from .models import Group, GroupBranchAccess, UserGroupAccess
 from branch_management.models import Branch
+from user_management.models import MyUser
 
 from django.db import IntegrityError
 from django.db.models import Q
+
 
 
 class ListGroupsView(ListView):
@@ -23,7 +25,7 @@ class ListGroupsView(ListView):
 
 
 class CreateGroupView(FormView):
-    template_name = 'access_management/group_add.html'
+    template_name = 'access_management/group_manage.html'
     form_class = GroupAddForm
     success_url = reverse_lazy('group-list')
 
@@ -51,7 +53,7 @@ class CreateGroupView(FormView):
 
 
 class UpdateGroupView(FormView):
-    template_name = 'access_management/group_add.html'
+    template_name = 'access_management/group_manage.html'
     form_class = GroupUpdateForm
     success_url = reverse_lazy('group-list')
 
@@ -105,13 +107,83 @@ class DeleteGroupView(DeleteView):
 
 
 
+class GroupAccessView(DetailView):
+    model = Group
+    template_name = 'access_management/group_access.html'
 
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        access_list = UserGroupAccess.objects.filter(group_id=pk).values_list('user_id')
+        users_with_access = MyUser.objects.filter(id__in=access_list)
+        context['users'] = users_with_access
+        return context
+
+        
+class AddGroupAccessView(CreateView):
+    template_name = 'access_management/group_access_add.html'
+    form_class = AddGroupAccessForm
+    success_url = reverse_lazy('group-list')
 
 
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+
+        kwargs = self.get_form_kwargs()
+        kwargs['group_id'] = self.kwargs['pk']
+        return form_class(**kwargs)
+
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        context['group_id'] = pk
+        return context
+
+    
+    def get_success_url(self, **kwargs): 
+        pk = self.kwargs['pk']
+        if  kwargs != None:
+            return reverse_lazy('group-access', kwargs = {'pk': pk})
+        return reverse_lazy('group-list')
 
 
+class DeleteGroupAccessView(DeleteView):
+    model = UserGroupAccess
+    template_name = 'access_management/group_access_delete.html'
+    success_url = reverse_lazy('group-list')
 
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        upk = self.kwargs['upk']
+        user = MyUser.objects.get(id=upk)
+        context['user'] = user
+        return context
+
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        group = self.kwargs['pk']
+        user = self.kwargs['upk']
+
+        queryset = UserGroupAccess.objects.filter(group_id=group, user_id=user)
+
+        if not queryset:
+           raise Http404
+
+        return queryset
+
+
+    def get_success_url(self, **kwargs): 
+        pk = self.kwargs['pk']
+        if  kwargs != None:
+            return reverse_lazy('group-access', kwargs = {'pk': pk})
+        return reverse_lazy('group-list')
 
 
 # from django.shortcuts import render, redirect
