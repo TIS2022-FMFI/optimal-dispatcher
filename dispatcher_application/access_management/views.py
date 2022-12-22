@@ -25,7 +25,7 @@ class ListGroupsView(ListView):
 
 
 class CreateGroupView(FormView):
-    template_name = 'access_management/group_add.html'
+    template_name = 'access_management/group_manage.html'
     form_class = GroupAddForm
     success_url = reverse_lazy('group-list')
 
@@ -53,7 +53,7 @@ class CreateGroupView(FormView):
 
 
 class UpdateGroupView(FormView):
-    template_name = 'access_management/group_add.html'
+    template_name = 'access_management/group_manage.html'
     form_class = GroupUpdateForm
     success_url = reverse_lazy('group-list')
 

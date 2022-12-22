@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 
 from django.views.generic import View
 from .forms import ChangePasswordForm
-from access_management.models import UserBranchAccess, UserGroupAccess
+from access_management.models import UserBranchAccess, UserGroupAccess, GroupBranchAccess
 
 
 ### change password
@@ -15,14 +15,17 @@ class UserSettingsView(View):
     template = 'user_settings/profile_settings.html'
 
     def get(self, request):
-        logged_user = request.user
-        branch_access = [i.branch_id for i in UserBranchAccess.objects.filter(user_id=logged_user.id)]
+        user = request.user
+        branch_access = {i.branch_id for i in UserBranchAccess.objects.filter(user_id=user.id)}
+        groups = {group_access.group_id for group_access in UserGroupAccess.objects.filter(user_id=user.id)}
+        user_group_access = {access.branch_id for group in groups for access in GroupBranchAccess.objects.filter(group_id=group)} 
+        branch_access.update(user_group_access)
 
         context = { 
-            'email' : logged_user.email,
-            'first_name' : logged_user.first_name ,
-            'last_name' : logged_user.last_name,
-            'branch' : logged_user.branch,
+            'email' : user.email,
+            'first_name' : user.first_name ,
+            'last_name' : user.last_name,
+            'branch' : user.branch,
             'access_list' : branch_access,
         }
         return render(request, self.template, context)
