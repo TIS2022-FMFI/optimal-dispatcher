@@ -4,7 +4,7 @@
 
 {% block content %}
 <br>
-    <h2>Groups</h2>
+  <h2>Groups</h2>
     <a class="bi bi-plus-circle btn btn-lg" href="{% url 'group-add' %}"></a>
     <table class="table table-hover">
         <thead class="thead-dark">
@@ -34,6 +34,9 @@
         {% endfor %}
         </tbody>
     </table>
+
+{% comment %} {% include 'pagination.html' %} {% endcomment %}
+
 {% endblock %}
 
 

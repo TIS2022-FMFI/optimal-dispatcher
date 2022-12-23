@@ -1,4 +1,3 @@
-from django.forms import ModelForm
 from django import forms
 from .models import GroupBranchAccess, Group
 from branch_management.models import Branch
@@ -15,7 +14,7 @@ class GroupAddForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['name'] = forms.CharField(label='Name', max_length=50)
+        self.fields['name'] = forms.CharField(label='Group name', max_length=50)
         self.fields['name'].widget.attrs['size'] = 50
         
         # branch list dropdown
@@ -27,16 +26,15 @@ class GroupAddForm(forms.Form):
         group_name = self.cleaned_data['name']
         pattern = r'^[a-zA-Z0-9._-]{5,50}$'
         if not(re.match(pattern, group_name)):
-            raise ValidationError(('Name must consist only from alphanumeric characters and .-_.'), params={'value': group_name})
+            raise ValidationError(('Allowed only alphanumeric characters and .-_'))
 
         exists = Group.objects.filter(name=group_name).exists()
         if exists:
-            raise ValidationError(('Group with name \"%(value)s\" already exists'), params={'value': group_name})
+            raise ValidationError(('\"%(value)s\" already exists'), params={'value': group_name})
         return group_name
 
 
     def as_p(self):
-        "Returns this form rendered as HTML <p>s."
         return self._html_output(
             normal_row = u'<p%(html_class_attr)s>%(label)s %(field)s%(help_text)s</p>',
             error_row = u'%s',
@@ -63,6 +61,10 @@ class GroupUpdateForm(GroupAddForm):
     
     def clean_name(self):
         group_name = self.cleaned_data['name']
+        pattern = r'^[a-zA-Z0-9._-]{5,50}$'
+        if not(re.match(pattern, group_name)):
+            raise ValidationError(('Name must consist only from alphanumeric characters and .-_.'))
+
         exists = Group.objects.filter(name=group_name).exclude(name=self.group_obj.name).exists()
         if exists:
             raise ValidationError(('Group with name \"%(value)s\" already exists'), params={'value': group_name})
