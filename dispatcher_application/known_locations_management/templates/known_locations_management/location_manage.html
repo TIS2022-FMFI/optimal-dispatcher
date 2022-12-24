@@ -1,0 +1,51 @@
+{% extends "base_template.html" %}
+
+{% block title %}Add location{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
+    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'location-list' %}"></a>
+    </div>
+    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>{{ form_name }}</h2></div>
+</div>
+
+<div class="container" style="text-align: left; padding: auto;">
+    <br>
+    <form method="POST" onSubmit="return validateForm()">
+        {% csrf_token %}
+        <p>
+            <label for="{{ form.zip_code.auto_id }}">{{form.zip_code.label}}</label>
+            {{ form.zip_code }}
+        </p>
+        <p>
+            <label for="{{ form.city.auto_id }}">{{ form.city.label}}</label>
+            {{ form.city }}
+        </p>
+        <p>
+            <label for="{{ form.country.auto_id }}">{{ form.country.label}}</label>
+            {{ form.country }}
+        </p>
+        
+        
+        <input class="" type="submit" value="{{ form_action_type }}">
+
+        <div id="err">
+            {% for field in form %}
+                {% if field.errors %}
+                    <li>{{ field.label }} : {{ field.errors|striptags }}</li>
+                {% endif %}
+            {% endfor %} 
+            {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block js_content %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/location_form_functions.js' %}"></script> 
+{% endblock %}

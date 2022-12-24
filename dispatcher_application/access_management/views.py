@@ -105,8 +105,6 @@ class DeleteGroupView(DeleteView):
     success_url = reverse_lazy('group-list')
 
 
-
-
 class GroupAccessView(DetailView):
     model = Group
     template_name = 'access_management/group_access.html'
