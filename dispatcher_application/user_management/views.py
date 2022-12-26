@@ -4,13 +4,9 @@ from django.urls import reverse_lazy
 # view imports
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.views.generic.edit import FormView
 
-# model imports
 from .models import MyUser
-
-
-from .user_form import CreateRegistrationForm, CustomUserChangeForm
+from .forms import CustomUserCreateForm, CustomUserUpdateForm
 
 
 class ListAllUsersView(ListView):
@@ -22,15 +18,14 @@ class ListAllUsersView(ListView):
 class RegisterNewUserView(CreateView):
     model = MyUser
     template_name = 'user_management/user_add.html'
-    form_class = CreateRegistrationForm
-    # fields = ['first_name', 'last_name', 'email', 'password', 'branch', 'is_superuser']
+    form_class = CustomUserCreateForm
     success_url = reverse_lazy('user-list')
 
 
 class UpdateUserView(UpdateView):
     model = MyUser
     template_name = 'user_management/user_update.html'
-    form_class = CustomUserChangeForm
+    form_class = CustomUserUpdateForm
     success_url = reverse_lazy('user-list')
 
 

@@ -10,7 +10,7 @@ from django.contrib.postgres.search import SearchVector
 class ListLocatiosView(ListView):
     model = Location
     template_name = 'known_locations_management/location_list.html'
-    paginate_by = 3
+    paginate_by = 25
 
 
     def get_queryset(self): 
