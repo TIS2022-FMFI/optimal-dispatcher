@@ -7,19 +7,26 @@
 {% endblock nav %}
 
 {% block content %}
-<div class="row">
-    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
-        <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'user-list' %}"></a>
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'user-list' %}"></a>
+      </div>
+      <div class="col-6" style="text-align: center;">
+        <h2>Update User</h2>
+      </div>
+      <div class="col">
+      </div>
     </div>
-    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>Update User</h2></div>
 </div>
+<br>
 
-<div class="container" style="text-align: left; padding: auto;">
+<div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
     <br>
-    <form method="POST" action="">
+    <form method="POST" action="" class="formular2">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Update">
+        <input class="btn btn-primary" id="btn-f2" type="submit" value="Add" style="float: right;">
     </form>
 </div>
 {% endblock %}

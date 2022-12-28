@@ -5,6 +5,7 @@
 {% block content %}
     {% comment %} <a class="back-link" href="{% url '' %}"><i class="bi bi-arrow-bar-left"></i></a> {% endcomment %}
     <br>
+    {% comment "" %}
     <div class="container" style="text-align:center;">
         <h2>Settings</h2>
         
@@ -29,5 +30,34 @@
                 <p>{{ access }}</p>
             {% endfor %}
         </div>
+    </div>
+{% endcomment %}
+<div class="d-flex justify-content-center">
+    <div class="card" style="width: 18rem;;">
+		<div class="card-body">
+		  <h2 class="card-title">Settings</h2>
+		  <p class="card-text"><a href="{% url 'user-password-change' %}">Change password</a></p>
+		</div>
+		<ul class="list-group list-group-flush">
+        {% if messages %}    
+            {% for message in messages %}
+                <li class="list-group-item">{{ message }}</li>
+            {% endfor %}
+        {% endif %}
+		</ul>
+        <div class="card-body">
+            <h3 class="card-title">Profile Information</h3>
+            <p class="card-text">Name: {{ last_name }} {{ first_name }}</p>
+            <p class="card-text">Email: {{ email }}</p>
+            <p class="card-text">Root branch: {{ branch }}</p>
+        </div>
+        <ul class="list-group list-group-flush"></ul>
+        <div class="card-body">
+            <h3 class="card-title">Branch Access</h3>
+            {% for access in access_list %}
+                <p class="card-text">{{ access }}</p>
+            {% endfor %}
+        </div>
+	  </div>
     </div>
 {% endblock %}

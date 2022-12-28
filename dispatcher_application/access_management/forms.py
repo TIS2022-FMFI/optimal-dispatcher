@@ -16,10 +16,12 @@ class GroupAddForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['name'] = forms.CharField(label='Group name', max_length=50)
         self.fields['name'].widget.attrs['size'] = 50
+        self.fields['name'].widget.attrs['style'] = 'margin-left:50px;'
         
         # branch list dropdown
         branch_list = [[i.id, i.name] for i in Branch.objects.all()]
         self.fields['branch'] = forms.MultipleChoiceField(choices=branch_list,widget=forms.CheckboxSelectMultiple(), required=True)
+        self.fields['branch'].widget.attrs['class'] = 'margin-left:50px;'
        
 
     def clean_name(self):

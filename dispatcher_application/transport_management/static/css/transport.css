@@ -8,17 +8,12 @@
 .form-class {
   /* border: 1px solid #e7e7e7; */
   /* margin: 80px auto; */
-  /*width: 300px;*/
+  /* width: 300px; */
   padding: 40px 40px 40px 40px;
 }
 
 form div {
     padding: 5px;
-}
-
-.input-box {
-    display: block;
-    position: relative;
 }
 
 input {
@@ -41,4 +36,29 @@ input[type=text], input[type=date], input[type=time], input[type=number]
 
 .bottom-links a:hover {
     color: var(--blue);
+}
+
+.input {
+    width: 300px;
+    padding: auto;
+}
+
+.label {
+    padding-right: 20px;
+}
+
+.label2 {
+    padding-right: 26px;
+}
+
+.label3 {
+    padding-right: 17px;
+}
+
+.label4 {
+    padding-right: 8px;
+}
+
+.input-box label {
+    color: black;
 }
