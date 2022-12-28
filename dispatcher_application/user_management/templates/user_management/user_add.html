@@ -12,16 +12,24 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
-    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'user-list' %}"></a>
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'user-list' %}"></a>
+      </div>
+      <div class="col-6" style="text-align: center;">
+        <h2>Add User</h2>
+      </div>
+      <div class="col">
+      </div>
     </div>
-    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>Add User</h2></div>
 </div>
+<br>
 
-<div class="container" style="text-align: left; padding: auto;">
+
+<div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
     <br>
-    <form method="POST" onSubmit="return validateCreateForm()">
+    <form method="POST" class="formular2" onSubmit="return validateCreateForm()">
         {% csrf_token %}
         <p>
             <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label><br>
@@ -52,7 +60,7 @@
             {{ form.is_superuser }}
         </p>
 
-        <input class="submit-btn" type="submit" value="Add">
+        <input class="btn btn-primary" id="btn-f2" type="submit" value="Add" style="float: right;">
 
         <div id="err">
             {% for field in form %}

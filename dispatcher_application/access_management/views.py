@@ -16,12 +16,35 @@ from user_management.models import MyUser
 from django.db import IntegrityError
 from django.db.models import Q
 
+from django.contrib.postgres.search import SearchVector
+
 
 
 class ListGroupsView(ListView):
     model = Group
     template_name = 'access_management/group_list.html'
     paginate_by = 20
+    
+    def get_queryset(self): 
+        search_value = self.request.GET.get('search-box')
+        self.filtered_by = ''
+        self.search_val = ''
+        if search_value is None or search_value.strip() == '':
+           return Group.objects.all()
+
+        self.search_val = search_value
+        self.filtered_by = f'&search-box={search_value}'
+        result = Group.objects.annotate(
+            search=SearchVector('name'),
+            ).filter(search=search_value)
+        return result
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filtered_by
+        context['search_value'] = self.search_val
+        return context
 
 
 class CreateGroupView(FormView):
@@ -183,56 +206,4 @@ class DeleteGroupAccessView(DeleteView):
             return reverse_lazy('group-access', kwargs = {'pk': pk})
         return reverse_lazy('group-list')
 
-
-# from django.shortcuts import render, redirect
-# from django.http import HttpResponse
-# from .models import *
-# from .forms import *
-
-# def main(request):
-#     groups = Groups.objects.all()
-    
-#     context = {"groups":groups}
-    
-#     return render(request, "access_management/group_main.html", context)
-
-# def createGroup(request):
-#     form = GroupForm()
-#     if request.method == "POST":
-#         form = GroupForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("groups")
-    
-#     context = {"form":form}
-#     return render(request, "access_management/group_add.html", context)
-
-# def updateGroup(request,pk):
-#     group = Groups.objects.get(id=pk)
-#     form = GroupForm(instance=group)
-#     if request.method == "POST":
-#         form = GroupForm(request.POST,instance=group)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("groups")
-    
-#     context = {"form":form}
-#     return render(request, "access_management/group_add.html", context)
-
-
-# def deleteGroup(request):
-#     groups = Groups.objects.all()
-    
-#     if request.method == "POST":
-#         pole = request.POST.getlist("data")
-#         print(pole)
-#         for i in pole:
-#             obj = Groups.objects.get(id=i)
-#             obj.delete()
-            
-#         return redirect("groups")
-            
-     
-#     context = {"groups":groups}
-#     return render(request, "access_management/group_main.html", context)
 

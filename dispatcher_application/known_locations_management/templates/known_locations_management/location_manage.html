@@ -3,32 +3,39 @@
 {% block title %}Add location{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
-    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'location-list' %}"></a>
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'location-list' %}"></a>
+      </div>
+      <div class="col-6" style="text-align: center;">
+        <h2>Add location</h2>
+      </div>
+      <div class="col">
+      </div>
     </div>
-    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>{{ form_name }}</h2></div>
 </div>
+<br>
 
-<div class="container" style="text-align: left; padding: auto;">
+<div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
     <br>
-    <form method="POST" onSubmit="return validateForm()">
+    <form method="POST" onSubmit="return validateForm()" class="formular2">
         {% csrf_token %}
         <p>
-            <label for="{{ form.zip_code.auto_id }}">{{form.zip_code.label}}</label>
+            <label for="{{ form.zip_code.auto_id }}">{{form.zip_code.label}}:</label>
             {{ form.zip_code }}
         </p>
         <p>
-            <label for="{{ form.city.auto_id }}">{{ form.city.label}}</label>
+            <label for="{{ form.city.auto_id }}">{{ form.city.label}}:</label>
             {{ form.city }}
         </p>
         <p>
-            <label for="{{ form.country.auto_id }}">{{ form.country.label}}</label>
+            <label for="{{ form.country.auto_id }}">{{ form.country.label}}:</label>
             {{ form.country }}
         </p>
         
         
-        <input class="" type="submit" value="{{ form_action_type }}">
+        <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}">
 
         <div id="err">
             {% for field in form %}

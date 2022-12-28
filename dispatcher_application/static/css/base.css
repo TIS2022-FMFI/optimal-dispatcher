@@ -98,6 +98,10 @@ form input[type=checkbox] {
     color:var(--gefco-blue);
 }
 
+.submit-btn:hover {
+    color:var(--gefco-blue);
+}
+
 .search-field {
     border: 2px solid var(--gray);
     padding: 0.5px; 
@@ -124,4 +128,89 @@ form input[type=checkbox] {
 
 .errInput {
     border-color: var(--gefco-red);
+    color: var(--dark-gray);
+}
+
+h2 {
+    color:var(--gefco-blue); 
+}
+
+.bi:hover {
+    color:var(--gefco-red); 
+}
+
+.btn-primary:hover {
+    background-color: #021D49;
+    border-color: #021D49;
+  }
+  
+.btn-primary {
+    background-color: grey;
+    color: white;
+    border-color: grey;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-right: 20px;
+} 
+
+#back {
+    float: right;
+    padding-right: 35px;
+}
+
+.text {
+    color: black; 
+    font-size: 20px;
+}
+
+.formular {
+    color:black;
+}
+
+.formular2 input, select{
+    color:black;
+    float: right;
+    width: 300px;
+}
+
+.formular2{
+    color: black;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+#btn-f2{
+    width: 100px;
+    float: right;
+    background-color: grey;
+    color: white;
+    border-color: grey;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    margin-left: auto;
+}
+
+#id_is_superuser {
+    width: 15px;
+    float: right;
+    margin-left: auto;
+}
+
+#id_is_active {
+    width: 15px;
+    float: right;
+    margin-left: auto;
+}
+
+#btn-f2:hover {
+    background-color: #021D49;
+    border-color: #021D49;
+}
+
+
+#id_branch {
+    padding-right: 105px;
 }

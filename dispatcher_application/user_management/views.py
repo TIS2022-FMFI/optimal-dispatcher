@@ -10,6 +10,7 @@ from .models import MyUser
 from .forms import CustomUserCreateForm, CustomUserUpdateForm
 
 
+
 class ListAllUsersView(ListView):
     model = MyUser
     template_name = 'user_management/user_list.html'
@@ -28,6 +29,9 @@ class ListAllUsersView(ListView):
         # result = MyUser.objects.annotate(
         #     search=SearchVector('email'),
         #     ).filter(search=search_value)
+        # result = MyUser.objects.annotate(
+        #     search=SearchVector('last_name'),
+        #     ).filter(search=search_value)
         return result
 
 
@@ -37,7 +41,7 @@ class ListAllUsersView(ListView):
         context['search_value'] = self.search_val
         return context
     
-
+    
 class RegisterNewUserView(CreateView):
     model = MyUser
     template_name = 'user_management/user_add.html'

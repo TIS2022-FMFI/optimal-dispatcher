@@ -5,7 +5,21 @@
 {% block content %}
 <br>
   <h2>Groups</h2>
-    <a class="bi bi-plus-circle btn btn-lg" href="{% url 'group-add' %}"></a>
+
+    <div class="functions-bar">
+      <a class="bi bi-plus-circle btn btn-lg" href="{% url 'group-add' %}"></a>
+
+      <form method="GET">
+          <button type="submit" class="search-button"><i class="bi bi-search"></i></button>
+          <input class="search-field" type="text" name="search-box" id="s-box" value="{{ search_value }}" placeholder="group name">
+      </form>
+
+      <form method="GET">
+        {{filter.form}}
+        <button class="bi bi-search btn btn-lg" type="submit"></button>
+    </form>
+  </div>
+
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
@@ -25,7 +39,7 @@
                     <a class="bi bi-pencil-square btn btn-sm" href="{% url 'group-update' group.id %}"></a>
                 </td>
                 <td>
-                    <a class="" href="{% url 'group-access' group.id %}"><i class="bi bi-gear"></i></a>
+                    <a class="bi bi-gear btn btn-sm" href="{% url 'group-access' group.id %}"></a>
                 </td>
                 <td>
                     <a class="bi bi-x-lg btn btn-sm" href="{% url 'group-delete' group.id %}"></a>
@@ -38,48 +52,3 @@
 {% comment %} {% include 'pagination.html' %} {% endcomment %}
 
 {% endblock %}
-
-
-{% comment %} {% extends 'base_template.html' %}
-
-{% block title %}List of Location{% endblock %}
-
-{% block nav %} 
-    {% include "navbar.html" %}
-{% endblock nav %}
-
-{% block content %}
-<br>
-<form action="{% url 'delete_group' %}" method="POST">
-  {% csrf_token %}
-  <h2>List of Groups</h2>
-    <br>
-    <a class="bi bi-plus-circle btn btn-lg" href="{% url 'add_group' %}"></a>
-    <button class="bi bi-trash3-fill btn btn-lg" style="font-size: 1.6rem;" type="submit"></button>
-<table class="table table-hover">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Group</th>
-        <th scope="col">Branches</th>
-        <th scope="col">Edit</th>
-        <th scope="col">Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-
-      {% for group in groups %}
-
-        <tr>
-          <td>{{group.id}}</td>
-          <td>{{group.group_name}}</td>
-          <td>{{group.branch_id.branch_name}}</td>
-          <td><a class="bi bi-eye-fill btn btn-sm" href="{% url 'update_group' group.id %}"></a></td>
-          <td><input href="" class="form-check-input" type="checkbox" name="data" id="data" value={{group.id}}></td>
-        </tr>
-      
-      {% endfor %}
-    </tbody>
-
-  </table>
-</form>
-  {% endblock  %} {% endcomment %}

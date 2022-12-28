@@ -40,10 +40,6 @@ class GeneralUserForm(forms.ModelForm):
         return self.name_check('last_name')
 
 
-    
-        
-
-
 class CustomUserCreateForm(UserCreationForm, GeneralUserForm):
 
     class Meta:

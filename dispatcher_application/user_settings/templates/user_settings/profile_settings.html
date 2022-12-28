@@ -3,31 +3,32 @@
 {% block title %}Settings{% endblock %}
 
 {% block content %}
-    {% comment %} <a class="back-link" href="{% url '' %}"><i class="bi bi-arrow-bar-left"></i></a> {% endcomment %}
-    <br>
-    <div class="container" style="text-align:center;">
-        <h2>Settings</h2>
-        
-        <p class="settings-data"><a href="{% url 'user-password-change' %}">Change password</a></p>
-        
+<div class="d-flex justify-content-center">
+    <div class="card" style="width: 18rem;;">
+		<div class="card-body">
+		  <h2 class="card-title">Settings</h2>
+		  <p class="card-text"><a href="{% url 'user-password-change' %}">Change password</a></p>
+		</div>
+		<ul class="list-group list-group-flush">
         {% if messages %}    
             {% for message in messages %}
-                <p class="message">{{ message }}</p>
+                <li class="list-group-item">{{ message }}</li>
             {% endfor %}
         {% endif %}
-
-        <div class="">    
-            <h4>Profile Information</h4>
-            <p>Name: {{ last_name }} {{ first_name }}</p>
-            <p>Email: {{ email }}</p>
-            <p>Root branch: {{ branch }}</p>
+		</ul>
+        <div class="card-body">
+            <h3 class="card-title">Profile Information</h3>
+            <p class="card-text">Name: {{ last_name }} {{ first_name }}</p>
+            <p class="card-text">Email: {{ email }}</p>
+            <p class="card-text">Root branch: {{ branch }}</p>
         </div>
-
-        <div class="">
-            <h4>Branch Access</h4>
+        <ul class="list-group list-group-flush"></ul>
+        <div class="card-body">
+            <h3 class="card-title">Branch Access</h3>
             {% for access in access_list %}
-                <p>{{ access }}</p>
+                <p class="card-text">{{ access }}</p>
             {% endfor %}
         </div>
+	  </div>
     </div>
 {% endblock %}
