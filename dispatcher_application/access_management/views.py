@@ -16,12 +16,35 @@ from user_management.models import MyUser
 from django.db import IntegrityError
 from django.db.models import Q
 
+from django.contrib.postgres.search import SearchVector
+
 
 
 class ListGroupsView(ListView):
     model = Group
     template_name = 'access_management/group_list.html'
     paginate_by = 20
+    
+    def get_queryset(self): 
+        search_value = self.request.GET.get('search-box')
+        self.filtered_by = ''
+        self.search_val = ''
+        if search_value is None or search_value.strip() == '':
+           return Group.objects.all()
+
+        self.search_val = search_value
+        self.filtered_by = f'&search-box={search_value}'
+        result = Group.objects.annotate(
+            search=SearchVector('name'),
+            ).filter(search=search_value)
+        return result
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filtered_by
+        context['search_value'] = self.search_val
+        return context
 
 
 class CreateGroupView(FormView):

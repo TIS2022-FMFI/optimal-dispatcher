@@ -70,7 +70,6 @@ class CreateRegistrationForm(UserCreationForm):
 
 class CustomUserChangeForm(forms.ModelForm):
     
-
     class Meta:
         model = MyUser
         fields = [

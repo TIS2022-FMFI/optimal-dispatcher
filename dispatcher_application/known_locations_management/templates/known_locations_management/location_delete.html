@@ -2,7 +2,12 @@
 
 {% block title %}Delete location{% endblock %}
 
+{% block nav %} 
+    {% include "navbar.html" %}
+{% endblock nav %}
+
 {% block content %}
+{% comment "" %}
 <div class="row">
     <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
     <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'location-list' %}"></a>
@@ -18,4 +23,16 @@
         <input class="" type="submit" value="Delete"/>
     </form>
 </div>
+{% endcomment %}
+
+<br>
+<a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'location-list' %}" style="padding-left: 350px"></a>
+    <div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
+            <br>
+        <form method="POST" class="text">
+            {% csrf_token %}
+            <p>Are you sure you want to delete location "{{ object }}" ?</p>
+            <input class="btn btn-primary" type="submit" value="Delete" style="float: right;"/>
+        </form>
+    </div>
 {% endblock %}

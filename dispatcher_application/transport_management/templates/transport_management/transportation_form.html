@@ -4,24 +4,40 @@
 
 {% block static_imports %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/transport.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/transport.css' %}">
+    
 {% endblock %}
 
 {% block content %}
+{% comment "" %}
     <div class="row">
         <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
-        <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'transportation-list' %}"></a>
+        <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'transportation-list' %}"></a>
         </div>
         <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>Add access</h2></div>
     </div>
+    {% endcomment %}
 
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'transportation-list' %}"></a>
+          </div>
+          <div class="col-6" style="text-align: center;">
+            <h2>Add access</h2>
+          </div>
+          <div class="col">
+          </div>
+        </div>
+    </div>
 
+    <div class="transport d-flex justify-content-center" style="overflow-x:auto;">
     <form method="POST" action="" class="form-class">
         {% csrf_token %}
 
         <div class="input-box">
             <label for="from_id">From:</label>
-            <input list="from_locations" name="from_id" id="from_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
+            <input list="from_locations" class="input" name="from_id" id="from_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
             <datalist id="from_locations">
                 {% for location in location_list %}
                     <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
@@ -32,8 +48,8 @@
         </div>
 
         <div class="input-box">
-            <label for="to_id">To:</label>
-            <input list="to_locations" name="to_id" id="to_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
+            <label for="to_id" class="label">To:</label>
+            <input list="to_locations" class="input" name="to_id" id="to_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
             <datalist id="to_locations">
                 {% for location in location_list %}
                     <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
@@ -46,36 +62,36 @@
         <div class="input-box">
 
             <label for="departure_date">Departure date:</label>
-            <input type="date" name="departure_date" id="departure_date" value="{{ departure_date }}" required>
+            <input type="date" class="input" name="departure_date" id="departure_date" value="{{ departure_date }}" required>
             &emsp;
             <label for="departure_time">Time:</label>
-            <input type="time" name="departure_time" id="departure_time" value="{{ departure_time }}" required>
+            <input type="time" class="input" name="departure_time" id="departure_time" value="{{ departure_time }}" required>
         </div>
 
         <div class="input-box">
-            <label for="arrival_date">Arrival date:</label>
-            <input type="date" name="arrival_date" id="arrival_date" value="{{ arrival_date }}" required>
+            <label for="arrival_date" class="label2">Arrival date:</label>
+            <input type="date" class="input" name="arrival_date" id="arrival_date" value="{{ arrival_date }}" required>
             &emsp;
             <label for="arrival_time">Time:</label>
-            <input type="time" name="arrival_time" id="arrival_time" value="{{ arrival_time }}" required>
+            <input type="time" class="input" name="arrival_time" id="arrival_time" value="{{ arrival_time }}" required>
         </div>
 
         <div class="input-box">
-            <label for="ldm">L(m):</label>
-            <input type="number" name="ldm" id="ldm" value="{{ ldm }}" required min="0" max="100" placeholder="0-100">
+            <label for="ldm" class="label3">L(m):</label>
+            <input type="number" step="0.01" class="input" name="ldm" id="ldm" value="{{ ldm }}" required min="0" max="13.6" placeholder="0-13.6">
         </div>
 
         <div class="input-box">
             <label for="weight">Weight:</label>
-            <input type="number" name="weight" id="weight" value="{{ weight }}" required min="0" max="1000000" placeholder="0-1 000 000">
+            <input type="number" class="input" name="weight" id="weight" value="{{ weight }}" required min="0" max="3000" placeholder="0-3 000">
         </div>
 
         <div class="input-box">
-            <label for="info">Notes:</label>
-            <input type="text" name="info" id="info" value="{{ info }}">
+            <label for="info" class="label4">Notes:</label>
+            <input type="text" class="input" name="info" id="info" value="{{ info }}">
         </div>
 
-        <button type="submit" class="submit-btn">{{ button_text }}</button>
+        <button type="submit" class="btn btn-primary" style="float: right;">{{ button_text }}</button>
 
         {% if error_message %}
             <div>
@@ -84,6 +100,6 @@
         {% endif %}
 
     </form>
-
+</div>
 {% endblock %}
 

@@ -3,7 +3,7 @@
 {% block title %}Delete branch{% endblock %}
 
 {% block content %}
-
+{% comment "" %}
     <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'branch-list' %}" style="text-align: left;"></a>
     <div class="container" style="text-align: center;">
     <form method="POST">
@@ -13,6 +13,19 @@
         <input class="" type="submit" value="Delete"/>
     </form>
 </div>
+{% endcomment %}
+
+<br>
+<a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'branch-list' %}" style="padding-left: 350px"></a>
+    <div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
+            <br>
+        <form method="POST" class="text">
+            {% csrf_token %}
+            <p>Are you sure you want to delete branch with name "{{ object.name }}"?</p>
+            <p>All users under this branch will be delete with it!</p>
+            <input class="btn btn-primary" type="submit" value="Delete" style="float: right;"/>
+        </form>
+    </div>
 
 {% endblock %}
   

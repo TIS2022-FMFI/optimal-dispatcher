@@ -3,15 +3,15 @@
 {% block title %}Delete group access{% endblock %}
 
 {% block content %}
-    <a class="bi bi-arrow-bar-left btn btn-lg" href="{{ request.META.HTTP_REFERER }}" style="text-align: left;"></a>
-    
-    <div class="container" style="text-align: left; padding: auto; margin: auto;">
-        <br>
-    <form method="POST">
-        {% csrf_token %}
-        <p>Are you sure you want to remove group access to user "{{ user.email }}"?</p>
-        <input class="" type="submit" value="Delete"/>
-    </form>
-</div>
+<br>
+<a class="bi bi-arrow-bar-left btn btn-lg" href="{{ request.META.HTTP_REFERER }}" style="padding-left: 350px"></a>
+    <div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
+            <br>
+        <form method="POST" class="text">
+            {% csrf_token %}
+            <p>Are you sure you want to remove group access to user "{{ user.email }}"?</p>
+            <input class="btn btn-primary" type="submit" value="Delete" style="float: right;"/>
+        </form>
+    </div>
 {% endblock %}
   
