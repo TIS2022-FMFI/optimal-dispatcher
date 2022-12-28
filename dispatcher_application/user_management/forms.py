@@ -23,11 +23,11 @@ class GeneralUserForm(forms.ModelForm):
         name = self.cleaned_data[name_type].strip()
 
         if len(name) < 2:
-            raise ValidationError('Must be at least 2 characters long')
+            raise ValidationError('Must be at least 2 characters long.')
 
         pattern = r'^[A-Z][a-z]{1,69}$'
         if not(re.match(pattern, name)):
-            raise ValidationError('Allowed only alphabet characters, must start with capital letter')
+            raise ValidationError('Allowed only alphabet characters, must start with capital letter.')
 
         return name
 
@@ -60,11 +60,11 @@ class CustomUserCreateForm(UserCreationForm, GeneralUserForm):
     def clean_email(self):
         email = self.cleaned_data['email'].strip()
         if len(email) > 60:
-            raise ValidationError("Maximum length is 60 characters")
+            raise ValidationError("Maximum length is 60 characters.")
 
         pattern = r'^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'
         if not(re.match(pattern, email)):
-            raise ValidationError("Invalid format, allowed alphanumeric characters and .-_@")
+            raise ValidationError("Invalid format, allowed alphanumeric characters and .-_@ characters.")
         return email
 
 

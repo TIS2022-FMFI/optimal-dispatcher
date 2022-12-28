@@ -80,6 +80,10 @@ form input[type=checkbox] {
     justify-content: space-between;
 }
 
+.functions-bar input {
+    width: auto;
+}
+
 /* search */
 .search-button {
     border: 0;

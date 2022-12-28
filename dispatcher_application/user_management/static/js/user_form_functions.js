@@ -7,14 +7,14 @@ function checkName(input) {
     let result = { status : true, message : "" }
     if (input.length < 2) {
         result.status = false;
-        result.message = "Must be at least 2 characters long. adasda";
+        result.message = "Must be at least 2 characters long.";
         return result;
     }
 
     const format = /^[A-Z][a-z]{1,69}$/;
     if (!input.match(format)) {
         result.status = false;
-        result.message = "Allowed only alphabet characters, must start with capital letter. adasda";
+        result.message = "Allowed only alphabet characters, must start with capital letter.";
         return result;
     }
     return result
@@ -25,14 +25,14 @@ function checkEmail(input) {
     let result = { status : true, message : "" }
     if (input.length > 60) {
         result.status = false;
-        result.message = "Maximum length is 60 characters. adasda";
+        result.message = "Maximum length is 60 characters.";
         return result;
     } 
 
     const format = /^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/;
     if (!input.match(format)) {
         result.status = false;
-        result.message = "Invalid format, allowed alphanumeric characters and .-_@ characters. adasda";
+        result.message = "Invalid format, allowed alphanumeric characters and .-_@ characters.";
     }
 
     return result;
