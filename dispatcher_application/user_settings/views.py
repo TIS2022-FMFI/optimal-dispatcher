@@ -16,7 +16,8 @@ class UserSettingsView(View):
 
     def get(self, request):
         user = request.user
-        branch_access = {i.branch_id for i in UserBranchAccess.objects.filter(user_id=user.id)}
+        branch_access = { request.user.branch }
+        branch_access.update({i.branch_id for i in UserBranchAccess.objects.filter(user_id=user.id)})
         groups = {group_access.group_id for group_access in UserGroupAccess.objects.filter(user_id=user.id)}
         user_group_access = {access.branch_id for group in groups for access in GroupBranchAccess.objects.filter(group_id=group)} 
         branch_access.update(user_group_access)

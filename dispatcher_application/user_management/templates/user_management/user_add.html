@@ -6,6 +6,11 @@
     {% include "navbar.html" %}
 {% endblock nav %}
 
+{% block static_imports %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_form_style.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -21,21 +26,58 @@
 </div>
 <br>
 
-{% comment "" %}
-<div class="row">
-    <div class="col-xl-3 col-md-2 col-sm-1 col-1 p-1" style="text-align: left;">
-    <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'user-list' %}"></a>
-    </div>
-    <div class="col-xl-7 col-md-2 col-sm-1 col-4 p-1" style="text-align: center;"><h2>Add User</h2></div>
-</div>
-{% endcomment %}
 
 <div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
     <br>
-    <form method="POST" class="formular2">
+    <form method="POST" class="formular2" onSubmit="return validateCreateForm()">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>
+            <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label><br>
+            {{ form.first_name }}
+        </p>
+        <p>
+            <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label><br>
+            {{ form.last_name }}
+        </p>
+        <p>
+            <label for="{{ form.email.auto_id }}">{{form.email.label}}</label><br>
+            {{ form.email }}
+        </p>
+        <p>
+            <label for="{{ form.branch.auto_id }}">{{form.branch.label}}</label><br>
+            {{ form.branch }}
+        </p>
+        <p>
+            <label for="{{ form.password1.auto_id }}">{{form.password1.label}}</label><br>
+            {{ form.password1 }}
+        </p>
+        <p>
+            <label for="{{ form.password2.auto_id }}">{{form.password2.label}}</label><br>
+            {{ form.password2 }}
+        </p>
+        <p>
+            <label for="{{ form.is_superuser.auto_id }}">{{form.is_superuser.label}}</label>
+            {{ form.is_superuser }}
+        </p>
+
         <input class="btn btn-primary" id="btn-f2" type="submit" value="Add" style="float: right;">
+
+        <div id="err">
+            {% for field in form %}
+                {% if field.errors %}
+                    <li>{{ field.label }} : {{ field.errors|striptags }}</li>
+                {% endif %}
+            {% endfor %} 
+            {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+            {% endif %}
+        </div>
     </form>
 </div>
+{% endblock %}
+
+
+{% block js_content %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/user_form_functions.js' %}"></script> 
 {% endblock %}

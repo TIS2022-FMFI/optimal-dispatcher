@@ -25,7 +25,7 @@ class GroupAddForm(forms.Form):
        
 
     def clean_name(self):
-        group_name = self.cleaned_data['name']
+        group_name = self.cleaned_data['name'].strip()
         pattern = r'^[a-zA-Z0-9._-]{5,50}$'
         if not(re.match(pattern, group_name)):
             raise ValidationError(('Allowed only alphanumeric characters and .-_'))
@@ -62,7 +62,7 @@ class GroupUpdateForm(GroupAddForm):
 
     
     def clean_name(self):
-        group_name = self.cleaned_data['name']
+        group_name = self.cleaned_data['name'].strip()
         pattern = r'^[a-zA-Z0-9._-]{5,50}$'
         if not(re.match(pattern, group_name)):
             raise ValidationError(('Name must consist only from alphanumeric characters and .-_.'))

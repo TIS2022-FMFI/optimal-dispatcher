@@ -3,35 +3,6 @@
 {% block title %}Settings{% endblock %}
 
 {% block content %}
-    {% comment %} <a class="back-link" href="{% url '' %}"><i class="bi bi-arrow-bar-left"></i></a> {% endcomment %}
-    <br>
-    {% comment "" %}
-    <div class="container" style="text-align:center;">
-        <h2>Settings</h2>
-        
-        <p class="settings-data"><a href="{% url 'user-password-change' %}">Change password</a></p>
-        
-        {% if messages %}    
-            {% for message in messages %}
-                <p class="message">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-
-        <div class="">    
-            <h4>Profile Information</h4>
-            <p>Name: {{ last_name }} {{ first_name }}</p>
-            <p>Email: {{ email }}</p>
-            <p>Root branch: {{ branch }}</p>
-        </div>
-
-        <div class="">
-            <h4>Branch Access</h4>
-            {% for access in access_list %}
-                <p>{{ access }}</p>
-            {% endfor %}
-        </div>
-    </div>
-{% endcomment %}
 <div class="d-flex justify-content-center">
     <div class="card" style="width: 18rem;;">
 		<div class="card-body">
