@@ -54,6 +54,9 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'branch']
 
+    class Meta:
+       ordering = ['last_name']
+
     def __str__(self):
         return f'{self.email}, {self.last_name} {self.first_name}, admin: {self.is_superuser}'
 

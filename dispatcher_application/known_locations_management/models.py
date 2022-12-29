@@ -9,6 +9,8 @@ class Location(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['zip_code', 'city', 'country'], name='unique_location'),
         ]
+    
+        ordering = ['zip_code']
 
     def __str__(self):
         return f'{self.zip_code},{self.city},{self.country}'

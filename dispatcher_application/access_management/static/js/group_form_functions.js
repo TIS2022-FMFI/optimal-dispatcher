@@ -1,4 +1,9 @@
+function strip(string) {
+    return string.replace(/^\s+|\s+$/g, '');
+}
+
 function checkGroupName(input) {
+    input = strip(input);
     const format = /^[a-zA-Z0-9._-]{5,50}$/;
     if (input.match(format)) {
         return true;
@@ -17,7 +22,7 @@ function checkedCount(checkboxes) {
 }
 
 function validateForm() {
-    let name = document.getElementById("id_name").value;
+    let groupName = document.getElementById("id_name");
     let checkboxes = document.getElementsByName('branch');
     let checked = checkedCount(checkboxes);
     
@@ -25,14 +30,18 @@ function validateForm() {
     err_section.innerHTML = "";
 
     let no_err = true;
-    if (!checkGroupName(name)) {
-        err_section.innerHTML += "<li>Group name: Allowed only alphanumeric characters and .-_</li>";
+    if (!checkGroupName(groupName.value)) {
+        err_section.innerHTML += "<li>Group name: Invalid format, allowed only alphanumeric characters and .-_ characters.</li>";
+        groupName.classList.add('errInput');
         no_err = false;
-    } 
+    } else {
+        groupName.classList.value = '';
+    }
     
     if (checked == 0) {
         err_section.innerHTML += "<li>Branch: This field is required</li>";
         no_err = false;
-    }
+    } 
+
     return no_err;
 }

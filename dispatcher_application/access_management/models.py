@@ -4,6 +4,9 @@ from branch_management.models import Branch
 
 class Group(models.Model):
     name = models.CharField(max_length=50,null=False,unique=True)
+
+    class Meta:
+        ordering = ['name']
     
     def __str__(self):
         return f'{self.name}'
@@ -17,6 +20,7 @@ class GroupBranchAccess(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['group_id', 'branch_id'], name='unique_group_record'),
         ]
+       
 
     def __str__(self):
         return f'{self.group_id}, {self.branch_id}'

@@ -35,16 +35,6 @@ class GroupAddForm(forms.Form):
             raise ValidationError(('\"%(value)s\" already exists'), params={'value': group_name})
         return group_name
 
-
-    def as_p(self):
-        return self._html_output(
-            normal_row = u'<p%(html_class_attr)s>%(label)s %(field)s%(help_text)s</p>',
-            error_row = u'%s',
-            row_ender = '</p>',
-            help_text_html = u' <span class="helptext">%s</span>',
-            errors_on_separate_row = False)
-
-
 class GroupUpdateForm(GroupAddForm):
 
     def __init__(self, g_id, *args, **kwargs):

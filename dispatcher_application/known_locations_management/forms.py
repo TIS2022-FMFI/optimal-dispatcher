@@ -20,7 +20,7 @@ class LocationForm(forms.ModelForm):
         city = self.cleaned_data['city']
         pattern = r'^[A-Z][a-z]{1,69}$'
         if not(re.match(pattern, city)):
-            raise ValidationError(('City must consist of letters and start with capital letter'))
+            raise ValidationError('Invalid format, allowed alphabet characters, must start with capital letter.')
         return city
 
 
@@ -28,5 +28,5 @@ class LocationForm(forms.ModelForm):
         country = self.cleaned_data['country']
         pattern = r'^[A-Z]{2,3}$'
         if not(re.match(pattern, country)):
-            raise ValidationError(('Country must consist of capital letters, format(SK, SVK, FR, FRA)'))
+            raise ValidationError('Invalid format, allowed capital letters, format(SK, SVK, FR, FRA).')
         return country
