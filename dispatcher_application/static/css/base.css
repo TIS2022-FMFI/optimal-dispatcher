@@ -128,7 +128,10 @@ h2 {
 
 #back {
     float: right;
-    padding-right: 35px;
+}
+
+.transportlabel {
+    margin-right: 25px;
 }
 
 .text {
@@ -140,10 +143,20 @@ h2 {
     color:black;
 }
 
-.formular2 input, select{
+.formular2 input{
     color:black;
     float: right;
     width: 300px;
+    /*padding-bottom: 10px;*/
+}
+
+.formular2 select {
+    color:black;
+    float: right;
+    width: 300px;
+    padding-right: 105px;
+    height: 39px;
+    margin-top: 2px;
 }
 
 .formular2{
@@ -151,6 +164,10 @@ h2 {
     display: flex;
     flex-direction: column;
     width: 500px;
+}
+
+.formular2 label {
+    margin-top: 10px;
 }
 
 #btn-f2{
@@ -167,9 +184,10 @@ h2 {
 }
 
 #id_is_superuser {
-    width: 15px;
-    float: right;
-    margin-left: auto;
+    width: 584px;
+    height: 17px;
+    /* margin-left: auto; */
+    margin-top: -19px;
 }
 
 #id_is_active {
@@ -186,4 +204,7 @@ h2 {
 
 #id_branch {
     padding-right: 105px;
+    height: 39px;
+    margin-top: 2px;
 }
+
