@@ -1,5 +1,4 @@
 from django.urls import reverse_lazy
-from django.db.models import Q
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from .forms import LocationForm
@@ -10,7 +9,7 @@ from django.contrib.postgres.search import SearchVector
 class ListLocatiosView(ListView):
     model = Location
     template_name = 'known_locations_management/location_list.html'
-    paginate_by = 3
+    paginate_by = 25
 
 
     def get_queryset(self): 

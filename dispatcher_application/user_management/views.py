@@ -1,25 +1,21 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.contrib.postgres.search import SearchVector
 
 # view imports
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.views.generic.edit import FormView
 
-# model imports
 from .models import MyUser
+from .forms import CustomUserCreateForm, CustomUserUpdateForm
 
-from django.contrib.postgres.search import SearchVector
-
-from .user_form import CreateRegistrationForm, CustomUserChangeForm
 
 
 class ListAllUsersView(ListView):
     model = MyUser
     template_name = 'user_management/user_list.html'
     paginate_by = 25
-    
-    
+
     def get_queryset(self): 
         search_value = self.request.GET.get('search-box')
         self.filtered_by = ''
@@ -29,9 +25,13 @@ class ListAllUsersView(ListView):
 
         self.search_val = search_value
         self.filtered_by = f'&search-box={search_value}'
-        result = MyUser.objects.annotate(
-            search=SearchVector('last_name'),
-            ).filter(search=search_value)
+        result = MyUser.objects.filter(email__startswith=search_value)
+        # result = MyUser.objects.annotate(
+        #     search=SearchVector('email'),
+        #     ).filter(search=search_value)
+        # result = MyUser.objects.annotate(
+        #     search=SearchVector('last_name'),
+        #     ).filter(search=search_value)
         return result
 
 
@@ -41,19 +41,18 @@ class ListAllUsersView(ListView):
         context['search_value'] = self.search_val
         return context
     
-
+    
 class RegisterNewUserView(CreateView):
     model = MyUser
     template_name = 'user_management/user_add.html'
-    form_class = CreateRegistrationForm
-    # fields = ['first_name', 'last_name', 'email', 'password', 'branch', 'is_superuser']
+    form_class = CustomUserCreateForm
     success_url = reverse_lazy('user-list')
 
 
 class UpdateUserView(UpdateView):
     model = MyUser
     template_name = 'user_management/user_update.html'
-    form_class = CustomUserChangeForm
+    form_class = CustomUserUpdateForm
     success_url = reverse_lazy('user-list')
 
 

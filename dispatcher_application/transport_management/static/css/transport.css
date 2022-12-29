@@ -6,9 +6,6 @@
 
 /* form style */
 .form-class {
-  /* border: 1px solid #e7e7e7; */
-  /* margin: 80px auto; */
-  /* width: 300px; */
   padding: 40px 40px 40px 40px;
 }
 
@@ -18,7 +15,6 @@ form div {
 
 input {
     background: none;
-    /*width: 260px;*/
     outline: none;
 }
 
