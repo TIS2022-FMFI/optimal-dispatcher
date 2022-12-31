@@ -7,8 +7,17 @@
 {% endblock nav %}
 
 {% block content %}
+    {% comment "" %}
+    <a class="back-link" href="{% url 'group-list' %}"><i class="bi bi-arrow-bar-left"></i></a>
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure you want to delete group "{{ object.name }}"?</p>
+        <p>All users under this group will lost their access of this group!</p>
+        <input class="" type="submit" value="Delete"/>
+    </form>
+    {% endcomment %}
 <br>
-<a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'group-list' %}" style="padding-left: 350px"></a>
+<a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'group-list' %}" style="margin-left: 350px"></a>
     <div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
             <br>
         <form method="POST" class="text">

@@ -15,7 +15,7 @@
             <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'transportation-list' %}"></a>
           </div>
           <div class="col-6" style="text-align: center;">
-            <h2>Add access</h2>
+            <h2>Add transport</h2>
           </div>
           <div class="col">
           </div>
@@ -27,7 +27,7 @@
         {% csrf_token %}
 
         <div class="input-box">
-            <label for="from_id">From:</label>
+            <label for="from_id" class="transportlabel">From:</label>
             <input list="from_locations" class="input" name="from_id" id="from_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
             <datalist id="from_locations">
                 {% for location in location_list %}
@@ -38,7 +38,7 @@
             </datalist>
         </div>
         <div class="input-box">
-            <label for="to_id" class="label">To:</label>
+            <label for="to_id" class="label" class="transportlabel">To:</label>
             <input list="to_locations" class="input" name="to_id" id="to_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
             <datalist id="to_locations">
                 {% for location in location_list %}
@@ -51,33 +51,33 @@
 
         <div class="input-box">
 
-            <label for="departure_date">Departure date:</label>
+            <label for="departure_date" class="transportlabel">Departure date:</label>
             <input type="date" class="input" name="departure_date" id="departure_date" value="{{ departure_date }}" required>
             &emsp;
-            <label for="departure_time">Time:</label>
+            <label for="departure_time" class="transportlabel">Time:</label>
             <input type="time" class="input" name="departure_time" id="departure_time" value="{{ departure_time }}" required>
         </div>
 
         <div class="input-box">
-            <label for="arrival_date" class="label2">Arrival date:</label>
+            <label for="arrival_date" class="label2 transportlabel">Arrival date:</label>
             <input type="date" class="input" name="arrival_date" id="arrival_date" value="{{ arrival_date }}" required>
             &emsp;
-            <label for="arrival_time">Time:</label>
+            <label for="arrival_time" class="transportlabel">Time:</label>
             <input type="time" class="input" name="arrival_time" id="arrival_time" value="{{ arrival_time }}" required>
         </div>
 
         <div class="input-box">
-            <label for="ldm" class="label3">L(m):</label>
+            <label for="ldm" class="label3 transportlabel">L(m):</label>
             <input type="number" step="0.01" class="input" name="ldm" id="ldm" value="{{ ldm }}" required min="0" max="13.6" placeholder="0-13.6">
         </div>
 
         <div class="input-box">
-            <label for="weight">Weight:</label>
+            <label for="weight" class="transportlabel">Weight:</label>
             <input type="number" class="input" name="weight" id="weight" value="{{ weight }}" required min="0" max="3000" placeholder="0-3 000">
         </div>
 
         <div class="input-box">
-            <label for="info" class="label4">Notes:</label>
+            <label for="info" class="label4 transportlabel">Notes:</label>
             <input type="text" class="input" name="info" id="info" value="{{ info }}">
         </div>
 
