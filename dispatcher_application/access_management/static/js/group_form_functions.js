@@ -4,7 +4,7 @@ function strip(string) {
 
 function checkGroupName(input) {
     input = strip(input);
-    const format = /^[a-zA-Z0-9._-]{5,50}$/;
+    const format = /^[a-zA-Z0-9._ -]{5,50}$/;
     if (input.match(format)) {
         return true;
     }
@@ -31,7 +31,7 @@ function validateForm() {
 
     let no_err = true;
     if (!checkGroupName(groupName.value)) {
-        err_section.innerHTML += "<li>Group name: Invalid format, allowed only alphanumeric characters and .-_ characters.</li>";
+        err_section.innerHTML += "<li>Group name: Invalid format, allowed only alphanumeric characters, space and .-_ characters.</li>";
         groupName.classList.add('errInput');
         no_err = false;
     } else {
