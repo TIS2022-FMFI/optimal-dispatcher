@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ListGroupsView, CreateGroupView, UpdateGroupView, DeleteGroupView, GroupAccessView, AddGroupAccessView, DeleteGroupAccessView
+from .views import ListGroupsView, CreateGroupView, UpdateGroupView, DeleteGroupView, GroupAccessView, AddGroupAccessView, DeleteGroupAccessView, NotFoundView
 
 
 urlpatterns = [
@@ -12,5 +12,8 @@ urlpatterns = [
     path('group/access/<int:pk>/', GroupAccessView.as_view(), name="group-access"),
     path('group/access/<int:pk>/add/', AddGroupAccessView.as_view(), name="group-access-add"),
     path('group/access/<int:pk>/delete/<int:upk>', DeleteGroupAccessView.as_view(), name="group-access-delete"),
+    
+    # redirect to 404 template
+    path('page-not-found', NotFoundView.as_view(), name='page-not-found'),
 ]
 

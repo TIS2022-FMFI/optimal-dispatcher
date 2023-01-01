@@ -10,7 +10,12 @@ from access_management.models import UserBranchAccess, UserGroupAccess, GroupBra
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 
+# decorators
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+decorators = [login_required()]
 
+@method_decorator(decorators, name="dispatch")
 class UserSettingsView(View):
     template = 'user_settings/profile_settings.html'
 
@@ -32,6 +37,7 @@ class UserSettingsView(View):
         return render(request, self.template, context)
 
 
+@method_decorator(decorators, name="dispatch")
 class ChangePasswordView(View):
     template = 'user_settings/profile_password_change.html'
 

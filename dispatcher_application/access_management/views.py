@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, Http404
 from django.db import transaction
 
 from django.views.generic.list import ListView
-from django.views.generic import CreateView, DeleteView, DetailView, FormView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, TemplateView
 
 from .forms import GroupAddForm, GroupUpdateForm, AddGroupAccessForm
 
@@ -19,7 +19,14 @@ from django.db.models import Q
 from django.contrib.postgres.search import SearchVector
 
 
+# decorators
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from decorators import admin_permission
+decorators = [login_required(), admin_permission()]
 
+
+@method_decorator(decorators, name="dispatch")
 class ListGroupsView(ListView):
     model = Group
     template_name = 'access_management/group_list.html'
@@ -47,6 +54,7 @@ class ListGroupsView(ListView):
         return context
 
 
+@method_decorator(decorators, name="dispatch")
 class CreateGroupView(FormView):
     template_name = 'access_management/group_manage.html'
     form_class = GroupAddForm
@@ -74,7 +82,7 @@ class CreateGroupView(FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-
+@method_decorator(decorators, name="dispatch")
 class UpdateGroupView(FormView):
     template_name = 'access_management/group_manage.html'
     form_class = GroupUpdateForm
@@ -121,12 +129,14 @@ class UpdateGroupView(FormView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+@method_decorator(decorators, name="dispatch")
 class DeleteGroupView(DeleteView):
     model = Group
     template_name = 'access_management/group_delete.html'
     success_url = reverse_lazy('group-list')
 
 
+@method_decorator(decorators, name="dispatch")
 class GroupAccessView(DetailView):
     model = Group
     template_name = 'access_management/group_access.html'
@@ -140,7 +150,8 @@ class GroupAccessView(DetailView):
         context['users'] = users_with_access
         return context
 
-        
+
+@method_decorator(decorators, name="dispatch")     
 class AddGroupAccessView(CreateView):
     template_name = 'access_management/group_access_add.html'
     form_class = AddGroupAccessForm
@@ -170,6 +181,7 @@ class AddGroupAccessView(CreateView):
         return reverse_lazy('group-list')
 
 
+@method_decorator(decorators, name="dispatch")
 class DeleteGroupAccessView(DeleteView):
     model = UserGroupAccess
     template_name = 'access_management/group_access_delete.html'
@@ -203,4 +215,10 @@ class DeleteGroupAccessView(DeleteView):
             return reverse_lazy('group-access', kwargs = {'pk': pk})
         return reverse_lazy('group-list')
 
+
+
+@method_decorator(login_required(), name="dispatch")
+class NotFoundView(TemplateView):
+    template_name = 'access_management/user_404.html'
+     
 

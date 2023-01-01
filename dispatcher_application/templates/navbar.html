@@ -7,26 +7,12 @@
         </div>
         
         {% if request.user.is_superuser %}
-        {% comment %}
-            <div class="col-xl-6 col-md-2 col-sm-1 col-4 p-1">
-                
-        
-                <form method="GET">
-                    {{filter.form}}
-                    <button class="bi bi-search btn btn-lg" type="submit"></button>
-                </form>
-                
-                
+            <div class="col-xl-3 col-md-5 col-sm-6 col-7 p-1">
+                <a class="bi bi-person-fill btn btn-lg icon" style="font-size: 1.6rem;" href="{% url 'user-list' %}"></a>
+                <a class="bi bi-people-fill btn btn-lg" style="font-size: 1.6rem;" href="{% url 'group-list' %}"></a>
+                <a class="bi bi-diagram-3 btn btn-lg" style="font-size: 1.6rem;" href="{% url 'branch-list' %}"></a>
+                <a class="bi bi-geo-alt btn btn-lg" style="font-size: 1.6rem;" href="{% url 'location-list' %}"></a>
             </div>
-            {% endcomment %}
-
         {% endif %}
-
-        <div class="col-xl-3 col-md-5 col-sm-6 col-7 p-1">
-            <a class="bi bi-person-fill btn btn-lg icon" style="font-size: 1.6rem;" href="{% url 'user-list' %}"></a>
-            <a class="bi bi-people-fill btn btn-lg" style="font-size: 1.6rem;" href="{% url 'group-list' %}"></a>
-            <a class="bi bi-diagram-3 btn btn-lg" style="font-size: 1.6rem;" href="{% url 'branch-list' %}"></a>
-            <a class="bi bi-geo-alt btn btn-lg" style="font-size: 1.6rem;" href="{% url 'location-list' %}"></a>
-        </div>
     </div>
 </div>
