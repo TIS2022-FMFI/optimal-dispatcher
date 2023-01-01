@@ -23,7 +23,7 @@ from django.contrib.postgres.search import SearchVector
 class ListGroupsView(ListView):
     model = Group
     template_name = 'access_management/group_list.html'
-    paginate_by = 20
+    paginate_by = 25
     
     def get_queryset(self): 
         search_value = self.request.GET.get('search-box')
@@ -69,8 +69,8 @@ class CreateGroupView(FormView):
                 for b_id in form_fields['branch']:
                     branch = Branch.objects.get(id=b_id)
                     GroupBranchAccess.objects.create(group_id=group, branch_id=branch)
-        except IntegrityError:
-            ...
+        except IntegrityError as error_message:
+            print(error_message)
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -110,15 +110,14 @@ class UpdateGroupView(FormView):
         
         try:
             with transaction.atomic():
-                # to_delete_branch_id_list = [obj.id for obj in to_delete_access]
                 to_delete_access_list = GroupBranchAccess.objects.filter(Q(group_id=group) & Q(branch_id__in=to_delete_access))
                 for obj in to_delete_access_list:
                     obj.delete()
 
                 for branch in to_add_access:
                     GroupBranchAccess.objects.create(group_id=group, branch_id=branch)
-        except IntegrityError:
-            ...
+        except IntegrityError as error_message:
+            print(error_message)
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -191,9 +190,7 @@ class DeleteGroupAccessView(DeleteView):
 
         group = self.kwargs['pk']
         user = self.kwargs['upk']
-
         queryset = UserGroupAccess.objects.filter(group_id=group, user_id=user)
-
         if not queryset:
            raise Http404
 

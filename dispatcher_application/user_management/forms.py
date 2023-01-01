@@ -22,12 +22,15 @@ class GeneralUserForm(forms.ModelForm):
     def name_check(self, name_type):
         name = self.cleaned_data[name_type].strip()
 
+        if len(name) > 70:
+            raise ValidationError("Maximum length is 70 characters.")
+
         if len(name) < 2:
-            raise ValidationError('Must be at least 2 characters long.')
+            raise ValidationError('Minimum length is 2 characters.')
 
         pattern = r'^[A-Z][a-z]{1,69}$'
         if not(re.match(pattern, name)):
-            raise ValidationError('Allowed only alphabet characters, must start with capital letter.')
+            raise ValidationError('Invalid format, allowed alphabet characters, must start with capital letter.')
 
         return name
 

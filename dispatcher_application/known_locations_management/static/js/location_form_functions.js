@@ -1,4 +1,9 @@
+function strip(string) {
+    return string.replace(/^\s+|\s+$/g, '');
+}
+
 function checkCity(input) {
+    input = strip(input);
     const format = /^[A-Z][a-z]{1,69}$/;
     if (input.match(format)) {
         return true;
@@ -7,6 +12,7 @@ function checkCity(input) {
 }
 
 function checkCountry(input) {
+    input = strip(input);
     const format = /^[A-Z]{2,3}$/;
     if (input.match(format)) {
         return true;
@@ -15,22 +21,28 @@ function checkCountry(input) {
 }
 
 function validateForm() {
-    let zip_code = document.getElementById("id_zip_code").value;
-    let city = document.getElementById("id_city").value;
-    let country = document.getElementById("id_country").value;
+    let zip_code = document.getElementById("id_zip_code");
+    let city = document.getElementById("id_city");
+    let country = document.getElementById("id_country");
    
     err_section = document.getElementById("err");
     err_section.innerHTML = "";
    
     let no_err = true;
-    if (!checkCity(city)) {
-        err_section.innerHTML += "<li>City : Must consist of letters and start with capital letter</li>";
+    if (!checkCity(city.value)) {
+        err_section.innerHTML += "<li>City : Invalid format, allowed alphabet characters, must start with capital letter.</li>";
+        city.classList.add('errInput');
         no_err = false;
-    } 
+    } else {
+        city.classList.value = '';
+    }
     
-    if (!checkCountry(country)) {
-        err_section.innerHTML += "<li>Country : Must consist of capital letters, format(SK, SVK, FR, FRA)</li>";
+    if (!checkCountry(country.value)) {
+        err_section.innerHTML += "<li>Country : Invalid format, allowed capital letters, format(SK, SVK, FR, FRA).</li>";
+        country.classList.add('errInput');
         no_err = false;
+    } else {
+        country.classList.value = '';
     }
     return no_err;
 }

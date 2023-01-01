@@ -5,16 +5,23 @@ function strip(string) {
 function checkName(input) {
     input = strip(input);
     let result = { status : true, message : "" }
+
+    if (input.length > 70) {
+        result.status = false;
+        result.message = "Maximum length is 70 characters.";
+        return result;
+    } 
+
     if (input.length < 2) {
         result.status = false;
-        result.message = "Must be at least 2 characters long.";
+        result.message = "Minimum length is 2 characters.";
         return result;
     }
 
     const format = /^[A-Z][a-z]{1,69}$/;
     if (!input.match(format)) {
         result.status = false;
-        result.message = "Allowed only alphabet characters, must start with capital letter.";
+        result.message = "Invalid format, allowed alphabet characters, must start with capital letter.";
         return result;
     }
     return result
@@ -23,6 +30,7 @@ function checkName(input) {
 function checkEmail(input) {
     input = strip(input);
     let result = { status : true, message : "" }
+    
     if (input.length > 60) {
         result.status = false;
         result.message = "Maximum length is 60 characters.";
