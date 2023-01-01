@@ -18,6 +18,15 @@ from user_management.models import MyUser
 from .models import Branch
 ###########################
 
+
+# decorators
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from decorators import admin_permission
+decorators = [login_required(), admin_permission()]
+
+
+@method_decorator(decorators, name="dispatch")
 class  BranchListView(ListView):
     model = Branch
     template_name = 'branch_management/branch_list.html'
@@ -45,6 +54,7 @@ class  BranchListView(ListView):
         return context
 
 
+@method_decorator(decorators, name="dispatch")
 class AddBranchView(CreateView):
     model = Branch
     template_name = 'branch_management/branch_add.html'
@@ -52,7 +62,7 @@ class AddBranchView(CreateView):
     form_class = AddBranch
     
 
-
+@method_decorator(decorators, name="dispatch")
 class UpdateBranchView(UpdateView):
     model = Branch
     template_name = 'branch_management/branch_update.html'
@@ -60,6 +70,7 @@ class UpdateBranchView(UpdateView):
     form_class = AddBranch
 
 
+@method_decorator(decorators, name="dispatch")
 class DeleteBranchView(DeleteView):
     model = Branch
     template_name = 'branch_management/branch_delete.html'
@@ -75,6 +86,7 @@ class DeleteBranchView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 
+@method_decorator(decorators, name="dispatch")
 class BranchAccessView(DetailView):
     model = Branch
     template_name = 'branch_management/branch_access.html'
@@ -89,6 +101,7 @@ class BranchAccessView(DetailView):
         return context
 
 
+@method_decorator(decorators, name="dispatch")
 class AddAccessView(CreateView):
     template_name = 'branch_management/branch_access_add.html'
     form_class = AddBranchAccessForm
@@ -111,7 +124,7 @@ class AddAccessView(CreateView):
         return context
    
 
-
+@method_decorator(decorators, name="dispatch")
 class RemoveAccessView(DeleteView):
     model = UserBranchAccess
     template_name = 'branch_management/branch_access_delete.html'

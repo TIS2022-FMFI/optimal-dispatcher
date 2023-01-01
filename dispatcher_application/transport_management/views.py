@@ -13,12 +13,20 @@ from django.db import IntegrityError
 from django.views.generic.list import ListView
 
 
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from decorators import admin_permission
+decorators = [login_required()]
+
+
+@method_decorator(decorators, name="dispatch")
 class ListTransportationsView(ListView):
     model = Transportations
     template_name = 'transport_management/transportation_list.html'
     paginate_by = 20
     
 
+@method_decorator(decorators, name="dispatch")
 class TransportationView(View):
     template = "transport_management/transportation_form.html"
 
@@ -72,7 +80,7 @@ class TransportationView(View):
 
 
 
-
+# @method_decorator(decorators, name="dispatch")
 # class EditTransportationView(View):
 #     template = "transport_management/transportation_form.html"
 
