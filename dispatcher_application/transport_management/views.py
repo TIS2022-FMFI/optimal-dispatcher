@@ -11,7 +11,9 @@ from django.db import transaction
 from django.db import IntegrityError
 
 from django.views.generic.list import ListView
-
+from django.contrib.postgres.search import SearchVector
+from django.db.models import Q
+import re
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -23,7 +25,66 @@ decorators = [login_required()]
 class ListTransportationsView(ListView):
     model = Transportations
     template_name = 'transport_management/transportation_list.html'
-    paginate_by = 20
+    paginate_by = 25
+
+
+    def get_queryset(self): 
+        search_from_value = self.request.GET.get('from-location')
+        search_departure_value = self.request.GET.get('departure-date')
+        search_arrival_value = self.request.GET.get('arrival-date')
+        
+        self.filtered_by = ''
+        self.search_val = ''
+        result = Transportations.objects.none()
+
+        if (search_from_value is None and search_departure_value is None and search_arrival_value is None or 
+            search_from_value.strip() == '' and search_departure_value.strip() == '' and search_arrival_value.strip() == ''):
+           return Transportations.objects.all()
+
+        # self.search_val = search_value
+        # self.filtered_by = f'&search-box={search_value}'
+        search_from_value = search_from_value.strip()
+        search_departure_value = search_departure_value.strip()
+        search_arrival_value = search_arrival_value.strip()
+
+        self.filtered_by = f'&from-location={search_from_value}&departure-date={search_departure_value}&arrival-date={search_arrival_value}'
+        self.search_val = {
+            'from' : search_from_value, 
+            'departure' : search_departure_value, 
+            'arrival' : search_arrival_value
+        }
+        
+        locations = {i for i in self.get_location_ids(search_from_value)}
+        result = self.get_transportations_queryset(locations, search_departure_value, search_arrival_value)
+        return result
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.filtered_by
+        context['search_value'] = self.search_val
+        return context
+
+
+    def get_location_ids(self, input):
+        pattern = r"^([0-9]{5,10})[, -;]([A-Za-z]{2,70})[, -;]([A-Za-z]{2,3})$"
+        if not(re.match(pattern, input)):
+            return Location.objects.none()
+        location_groups = re.search(pattern, input)
+        formated_location = f'{location_groups.group(1)} {location_groups.group(2)} {location_groups.group(3)}'
+        locations = Location.objects.annotate(
+            search=SearchVector('zip_code', 'city', 'country'),
+            ).filter(search=formated_location).values_list('id')
+        return locations
+
+
+    def get_transportations_queryset(self, from_ids, departure, arrival):
+        if len(from_ids) < 1:
+            from_ids = ''
+        result = Transportations.objects.annotate(
+                search=SearchVector('from_id', 'departure_time', 'arrival_time'),
+                ).filter(search=f"{from_ids} {departure} {arrival}") 
+        return result
     
 
 @method_decorator(decorators, name="dispatch")
