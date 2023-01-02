@@ -22,11 +22,11 @@
 		<ul class="list-group list-group-flush"></ul>
         <div class="card-body">
             <h3 class="card-title">Account Information</h3>
-            <p class="card-text">Name: {{ user.last_name }} {{ user.first_name }}</p>
-            <p class="card-text">Email: {{ user.email }}</p>
-            <p class="card-text">Root branch: {{ user.branch }}</p>
-            <p class="card-text">Is admin: {{ user.is_superuser }}</p>
-            <p class="card-text">Account active: {{ user.is_active }}</p>
+            <p class="card-text">Name: {{ object.last_name }} {{ object.first_name }}</p>
+            <p class="card-text">Email: {{ object.email }}</p>
+            <p class="card-text">Root branch: {{ object.branch }}</p>
+            <p class="card-text">Is admin: {{ object.is_superuser }}</p>
+            <p class="card-text">Account active: {{ object.is_active }}</p>
         </div>
         <ul class="list-group list-group-flush"></ul>
         <div class="card-body">

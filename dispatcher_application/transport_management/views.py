@@ -5,6 +5,7 @@ from django.utils.dateparse import parse_date, parse_time
 from django.views import View
 from datetime import datetime
 from .models import Location, Transportations
+from access_management.models import UserBranchAccess, GroupBranchAccess, UserGroupAccess
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.db import transaction
@@ -33,16 +34,25 @@ class ListTransportationsView(ListView):
         search_departure_value = self.request.GET.get('departure-date')
         search_arrival_value = self.request.GET.get('arrival-date')
         
+
+        user = self.request.user
+        user_branch_access = { self.request.user.branch }
+        user_branch_access.update({i.branch_id for i in UserBranchAccess.objects.filter(user_id=user.id)})
+        groups = {group_access.group_id for group_access in UserGroupAccess.objects.filter(user_id=user.id)}
+        user_group_access = {access.branch_id for group in groups for access in GroupBranchAccess.objects.filter(group_id=group)} 
+        user_branch_access.update(user_group_access)
+
+
+
         self.filtered_by = ''
-        self.search_val = ''
+        self.search_val = { 'from' : '', 'departure' : '', 'arrival' : ''}
         result = Transportations.objects.none()
 
         if (search_from_value is None and search_departure_value is None and search_arrival_value is None or 
             search_from_value.strip() == '' and search_departure_value.strip() == '' and search_arrival_value.strip() == ''):
-           return Transportations.objects.all()
+           return Transportations.objects.filter(owner_id__branch__in=user_branch_access)
+           
 
-        # self.search_val = search_value
-        # self.filtered_by = f'&search-box={search_value}'
         search_from_value = search_from_value.strip()
         search_departure_value = search_departure_value.strip()
         search_arrival_value = search_arrival_value.strip()
@@ -55,7 +65,11 @@ class ListTransportationsView(ListView):
         }
         
         locations = {i for i in self.get_location_ids(search_from_value)}
-        result = self.get_transportations_queryset(locations, search_departure_value, search_arrival_value)
+        result = self.get_transportations_queryset(locations, search_departure_value, search_arrival_value, user_branch_access)
+
+        
+        print(user_branch_access)
+
         return result
 
 
@@ -78,12 +92,12 @@ class ListTransportationsView(ListView):
         return locations
 
 
-    def get_transportations_queryset(self, from_ids, departure, arrival):
+    def get_transportations_queryset(self, from_ids, departure, arrival, user_branch_access):
         if len(from_ids) < 1:
             from_ids = ''
         result = Transportations.objects.annotate(
                 search=SearchVector('from_id', 'departure_time', 'arrival_time'),
-                ).filter(search=f"{from_ids} {departure} {arrival}") 
+                ).filter(search=f"{from_ids} {departure} {arrival}").filter(owner_id__branch__in=user_branch_access) 
         return result
     
 
