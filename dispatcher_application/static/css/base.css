@@ -1,20 +1,21 @@
 :root {
-    --gray: rgb(100, 100, 100);
-    --dark-gray: rgb(73, 73, 73);
+    --dark-gray: rgb(100, 100, 100);
     --white: #ffffff;
     --gefco-blue: #021D49;
     --gefco-red: #E1261C;
   }
 
 body {
-    color: var(--dark-gray);
+    color: rgb(100, 100, 100);
     font-family: 'Nunito', sans-serif;
 }
 
 .container {
+    /* max-width: 750px; */
     margin: auto;
     background-color: #fff;
     padding: 0;
+    
 }
 
 table {
@@ -23,31 +24,21 @@ table {
     width: 100%;
 }
 
-
-/* GENERAL FORM */
 form div {
     margin: 5px;
 }
 
-form input, form select {
-    border: 2px solid var(--dark-gray);
-    color: var(--dark-gray);
-    background-color: white;
+form input {
+    border: 2px solid rgb(100, 100, 100);
+    color: rgb(51, 50, 50);
+    background-color: #fff;
     border-radius: 4px;
     padding: 7px;
-    width: 35%;
 }
 
-form input[type=checkbox] {
-    width: auto;
-}
-
-
-/* BUTTONOS */
 .submit-btn { 
     background-color: white;
-    color: var(--dark-gray);
-    border: 2px solid var(--dark-gray);
+    border: 2px solid rgb(100, 100, 100);
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 17px;
@@ -55,13 +46,9 @@ form input[type=checkbox] {
 }
 
 .submit-btn:hover {
-    background-color: var(--gefco-blue);
-    border-color: var(--gefco-blue);
     color: white;
-    transition: all 0.8s
+    background-color: rgb(100, 100, 100);
 }
-
-
 
 .blue {
     background-color: var(--gefco-blue);
@@ -80,14 +67,10 @@ form input[type=checkbox] {
     justify-content: space-between;
 }
 
-.functions-bar input {
-    width: auto;
-}
-
 /* search */
 .search-button {
     border: 0;
-    color: var(--gray);
+    color: var(--dark-gray);
     background-color: var(--white);
     border-radius: 3px;
     padding-top: 1.5px;
@@ -103,7 +86,7 @@ form input[type=checkbox] {
 }
 
 .search-field {
-    border: 2px solid var(--gray);
+    border: 2px solid var(--dark-gray);
     padding: 0.5px; 
 } 
 
@@ -118,20 +101,10 @@ form input[type=checkbox] {
 }
 
 .pagination a {
-    color: var(--gray);
-}
-
-
-#err {
-    color : var(--gefco-red);
-}
-
-.errInput {
-    border-color: var(--gefco-red);
     color: var(--dark-gray);
 }
 
-h2 {
+h2, h3, h4 {
     color:var(--gefco-blue); 
 }
 
@@ -193,6 +166,23 @@ h2 {
     width: 500px;
 }
 
+.formular3{
+    color: black;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.formular3 input {
+    color: black;
+    float: right;
+    width: 279px;
+}
+
+.formular3 label {
+    margin-top: 10px;
+}
+
 .formular2 label {
     margin-top: 10px;
 }
@@ -218,9 +208,15 @@ h2 {
 }
 
 #id_is_active {
+    /*
     width: 15px;
     float: right;
     margin-left: auto;
+    */
+    width: 584px;
+    height: 17px;
+    /* margin-left: auto; */
+    margin-top: -19px;
 }
 
 #btn-f2:hover {
@@ -235,3 +231,23 @@ h2 {
     margin-top: 2px;
 }
 
+a:link {
+    text-decoration: none;
+  }
+  
+  a:visited {
+    text-decoration: none;
+  }
+  
+  a:hover {
+   text-decoration: underline;
+  }
+  
+  a:active {
+   text-decoration: underline;
+  }
+
+
+p {
+    color: black;
+}

@@ -27,8 +27,6 @@
     <form action="" method="POST" onSubmit="return validateForm()" class="formular">
         {% csrf_token %}
         {{ form.as_p }}
-        <input class="btn btn-primary" type="submit" value="{{ form_action_type }}" style="float: right;">
-        
         <div id="err">
             {% for field in form %}
                 {% if field.errors %}
@@ -36,6 +34,7 @@
                 {% endif %}
             {% endfor %} 
         </div>
+        <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}" style="float: right;">
     </form>
     
 </div>
