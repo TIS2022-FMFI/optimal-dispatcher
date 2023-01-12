@@ -10,24 +10,36 @@
 {% block content %}
 <br>
 <div class="transport-search">
-    <form method="GET">
+    <form method="GET" id="transport-searchbar">
         
-        <label for="from-location">From:</label>
-        <input list="from-location"  name="from-location" id="from_id" value="{{ search_value.from }}" placeholder="zip-code,city,country-code" >
-        <datalist id="from-location">
-            {% for location in location_list %}
-                <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
+        <label for="owner">Owner:</label>
+        <input list="owner"  name="owner" id="owner_id" value="{{ search_value.owner }}" placeholder="user email" >
+        <datalist id="owner">
+            {% for owner in owners_list %}
+                <option id="{{ owner.id }}" value="{{ owner.email }}"></option>
             {% empty %}
                 <option></option>
             {% endfor %}
         </datalist>
-        <label for="departure-date" class="">Departure date:</label>
-        <input type="date" class="" name="departure-date" id="departure-date" value="{{ search_value.departure }}">
+        
+        <label for="from_location">From:</label>
+        <input list="from_location" class="" name="from_location" id="from_location_id" value="{{ search_value.from }}" placeholder="zip code,city,conutry">
+        <datalist id="from_location">
+            {% for location in location_list %}
+                <option id="{{ location.id }}" value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
+            {% empty %}
+                <option></option>
+            {% endfor %}
+        </datalist>
 
-        <label for="arrival-date" class="">Arrival date:</label>
-        <input type="date" class="" name="arrival-date" id="arrival-date" value="{{ search_value.arrival }}">
+        <label for="departure_date" class="">Departure date:</label>
+        <input type="date" class="" name="departure_date" id="departure_date_id" value="{{ search_value.departure }}">
+
+        <label for="arrival_date" class="">Arrival date:</label>
+        <input type="date" class="" name="arrival_date" id="arrival_date_id" value="{{ search_value.arrival }}">
 
         <button type="submit" class="search-button"><i class="bi bi-search"></i></button>
+        <button type="button" class="search-button" onclick="cleanFields()"><i class="bi bi-arrow-clockwise"></i></button>
     </form>
 </div>
 <br>
@@ -72,3 +84,8 @@
 {% include 'pagination.html' %}
 
 {% endblock  %}
+
+{% block js_content %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/search_functions.js' %}"></script> 
+{% endblock %}

@@ -5,6 +5,7 @@ from django.utils.dateparse import parse_date, parse_time
 from django.views import View
 from datetime import datetime
 from .models import Location, Transportations
+from user_management.models import MyUser
 from access_management.models import UserBranchAccess, GroupBranchAccess, UserGroupAccess
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -29,41 +30,60 @@ class ListTransportationsView(ListView):
     paginate_by = 25
 
 
-    def get_queryset(self): 
-        search_from_value = self.request.GET.get('from-location')
-        search_departure_value = self.request.GET.get('departure-date')
-        search_arrival_value = self.request.GET.get('arrival-date')
-        
-        self.user_branch_access = {obj.object for obj in serializers.deserialize("json", self.request.session['logged_in_user_access']) }
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.filtered_by = ''
-        self.search_val = { 'from' : '', 'departure' : '', 'arrival' : ''}
-        result = Transportations.objects.none()
+        self.search_val = { 'owner' : '', 'from' : '', 'departure' : '', 'arrival' : ''}
 
-        if (search_from_value is None and search_departure_value is None and search_arrival_value is None or 
-            search_from_value.strip() == '' and search_departure_value.strip() == '' and search_arrival_value.strip() == ''):
-           return Transportations.objects.filter(owner_id__branch__in=self.user_branch_access)
+
+    def get_queryset(self): 
+        self.user_branch_access = {obj.object for obj in serializers.deserialize("json", self.request.session['logged_in_user_access'])}
+
+        search_owner_value = self.request.GET.get('owner')
+        search_from_value = self.request.GET.get('from_location')
+        search_departure_value = self.request.GET.get('departure_date')
+        search_arrival_value = self.request.GET.get('arrival_date')
+        
+        if (self.is_empty_filter(search_owner_value) and self.is_empty_filter(search_from_value) and 
+            self.is_empty_filter(search_departure_value) and self.is_empty_filter(search_arrival_value)):
+            return Transportations.objects.filter(owner_id__branch__in=self.user_branch_access)
            
-
+        search_owner_value = search_owner_value.strip()
         search_from_value = search_from_value.strip()
         search_departure_value = search_departure_value.strip()
         search_arrival_value = search_arrival_value.strip()
 
-        self.filtered_by = f'&from-location={search_from_value}&departure-date={search_departure_value}&arrival-date={search_arrival_value}'
+        self.filtered_by = f'&owner={search_owner_value}&from-location={search_from_value}&departure-date={search_departure_value}&arrival-date={search_arrival_value}'
         self.search_val = {
+            'owner' : search_owner_value,
             'from' : search_from_value, 
             'departure' : search_departure_value, 
             'arrival' : search_arrival_value
         }
         
-        locations = {i for i in self.get_location_ids(search_from_value)}
-        result = self.get_transportations_queryset(locations, search_departure_value, search_arrival_value)
+        # extract locations ids from QuerySet
+        locations = self.get_location_ids(search_from_value)
+
+        if len(locations) < 1:
+            locations = ''
+        search_string = f"{search_owner_value} {locations} {search_departure_value} {search_arrival_value}"
+
+        result = self.get_transportations_queryset(search_string)
         return result
+
+
+    def is_empty_filter(self, input_value):
+        if input_value is None or input_value.strip() == '':
+            return True
+        return False
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter'] = self.filtered_by
         context['search_value'] = self.search_val
+        context['owners_list'] = MyUser.objects.filter(branch_id__in=self.user_branch_access)
+        context['location_list'] = Location.objects.all()
         return context
 
 
@@ -71,20 +91,24 @@ class ListTransportationsView(ListView):
         pattern = r"^([0-9]{5,10})[, -;]([A-Za-z]{2,70})[, -;]([A-Za-z]{2,3})$"
         if not(re.match(pattern, input)):
             return Location.objects.none()
+
         location_groups = re.search(pattern, input)
         formated_location = f'{location_groups.group(1)} {location_groups.group(2)} {location_groups.group(3)}'
+
         locations = Location.objects.annotate(
             search=SearchVector('zip_code', 'city', 'country'),
             ).filter(search=formated_location).values_list('id')
-        return locations
+
+        return {pk for pk in locations}
 
 
-    def get_transportations_queryset(self, from_ids, departure, arrival):
-        if len(from_ids) < 1:
-            from_ids = ''
+    def get_transportations_queryset(self, serach_string):
         result = Transportations.objects.annotate(
-                search=SearchVector('from_id', 'departure_time', 'arrival_time'),
-                ).filter(search=f"{from_ids} {departure} {arrival}").filter(owner_id__branch__in=self.user_branch_access) 
+                search=SearchVector('owner_id__email', 'from_id', 'departure_time', 'arrival_time'),
+                ).filter(
+                    Q(search=serach_string) & 
+                    Q(owner_id__branch__in=self.user_branch_access)
+                )
         return result
     
 
