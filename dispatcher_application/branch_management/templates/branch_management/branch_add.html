@@ -24,10 +24,30 @@
     
 <div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
     <br>
-    <form method="POST" class="formular2">
+    <form method="POST" class="formular2" onSubmit="return validateForm()">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        <p>
+          <label for="{{ form.name.auto_id }}">{{ form.name.label }}</label><br>
+          {{ form.name }}
+        </p>
         <input class="btn btn-primary" id="btn-f2" type="submit" value="Add" >
+
+        <div id="err">
+          {% for field in form %}
+              {% if field.errors %}
+                  <li>{{ field.label }} : {{ field.errors|striptags }}</li>
+              {% endif %}
+          {% endfor %} 
+          {% if form.non_field_errors %}
+              {{ form.non_field_errors }}
+          {% endif %}
+      </div>
     </form>
 </div>
+{% endblock %}
+
+{% block js_content %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/branch_form_functions.js' %}"></script> 
 {% endblock %}

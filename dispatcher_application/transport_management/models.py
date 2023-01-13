@@ -13,5 +13,9 @@ class Transportations(models.Model):
     weight = models.FloatField(null=False)
     info = models.TextField(null=True)
 
+    class Meta:
+        ordering = ['-departure_time']
+
+
     def __str__(self):
         return f'owner : {self.owner_id}, from : {self.from_id}, to : {self.to_id}'

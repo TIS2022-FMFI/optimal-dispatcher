@@ -17,7 +17,7 @@
 
         <form method="GET">
             <button type="submit" class="search-button"><i class="bi bi-search"></i></button>
-            <input class="search-field" type="text" name="search-box" id="s-box" value="{{ search_value }}" placeholder="Email">
+            <input class="search-field" type="text" name="search-box" id="s-box" value="{{ search_value }}" placeholder="email">
         </form>
     </div>
     <table class="table table-hover">
@@ -28,6 +28,7 @@
             <th>First Name</th>
             <th>Branch Name</th>
             <th>Edit</th>
+            <th>Detail</th>
             <th>Delete</th>
         </tr>
     </thead>
@@ -39,6 +40,7 @@
             <td>{{ user.first_name }}</td>
             <td>{{ user.branch }}</td>
             <td><a class="bi bi-pencil-square btn btn-sm" href="{% url 'user-update' user.id %}"></a></td>
+            <td><a class="bi bi-eye btn btn-sm" href="{% url 'user-detail' user.id %}"></a></td>
             <td><a class="bi bi-x-lg btn btn-sm" href="{% url 'user-delete' user.id %}"></a></td>
         </tr>
     {% endfor %}

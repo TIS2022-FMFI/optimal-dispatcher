@@ -6,6 +6,14 @@ from .models import Location
 from django.contrib.postgres.search import SearchVector
 
 
+# decorators
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from decorators import admin_permission
+decorators = [login_required(), admin_permission()]
+
+
+@method_decorator(decorators, name="dispatch")
 class ListLocatiosView(ListView):
     model = Location
     template_name = 'known_locations_management/location_list.html'
@@ -34,7 +42,7 @@ class ListLocatiosView(ListView):
         return context
         
 
-
+@method_decorator(decorators, name="dispatch")
 class AddLocationView(CreateView):
     model = Location
     template_name = 'known_locations_management/location_manage.html'
@@ -48,6 +56,7 @@ class AddLocationView(CreateView):
         return context
 
 
+@method_decorator(decorators, name="dispatch")
 class UpdateLocationView(UpdateView):
     model = Location
     template_name = 'known_locations_management/location_manage.html'
@@ -61,6 +70,7 @@ class UpdateLocationView(UpdateView):
         return context
 
 
+@method_decorator(decorators, name="dispatch")
 class DeleteLocationView(DeleteView):
     model = Location
     template_name = 'known_locations_management/location_delete.html'

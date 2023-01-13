@@ -10,7 +10,7 @@ from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.views.generic.list import ListView 
 
 
-from .forms import AddBranchAccessForm
+from .forms import AddBranchAccessForm, AddBranch
 
 ############################
 from access_management.models import UserBranchAccess 
@@ -18,10 +18,19 @@ from user_management.models import MyUser
 from .models import Branch
 ###########################
 
+
+# decorators
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from decorators import admin_permission
+decorators = [login_required(), admin_permission()]
+
+
+@method_decorator(decorators, name="dispatch")
 class  BranchListView(ListView):
     model = Branch
     template_name = 'branch_management/branch_list.html'
-    paginate_by = 20
+    paginate_by = 25
     
     def get_queryset(self): 
         search_value = self.request.GET.get('search-box')
@@ -45,22 +54,23 @@ class  BranchListView(ListView):
         return context
 
 
+@method_decorator(decorators, name="dispatch")
 class AddBranchView(CreateView):
     model = Branch
     template_name = 'branch_management/branch_add.html'
     success_url = reverse_lazy('branch-list')
+    form_class = AddBranch
+    
 
-    fields = [ 'name' ]
-
-
+@method_decorator(decorators, name="dispatch")
 class UpdateBranchView(UpdateView):
     model = Branch
     template_name = 'branch_management/branch_update.html'
     success_url = reverse_lazy('branch-list')
+    form_class = AddBranch
 
-    fields = [ 'name' ]
 
-
+@method_decorator(decorators, name="dispatch")
 class DeleteBranchView(DeleteView):
     model = Branch
     template_name = 'branch_management/branch_delete.html'
@@ -76,6 +86,7 @@ class DeleteBranchView(DeleteView):
         return HttpResponseRedirect(success_url)
 
 
+@method_decorator(decorators, name="dispatch")
 class BranchAccessView(DetailView):
     model = Branch
     template_name = 'branch_management/branch_access.html'
@@ -90,6 +101,7 @@ class BranchAccessView(DetailView):
         return context
 
 
+@method_decorator(decorators, name="dispatch")
 class AddAccessView(CreateView):
     template_name = 'branch_management/branch_access_add.html'
     form_class = AddBranchAccessForm
@@ -112,7 +124,7 @@ class AddAccessView(CreateView):
         return context
    
 
-
+@method_decorator(decorators, name="dispatch")
 class RemoveAccessView(DeleteView):
     model = UserBranchAccess
     template_name = 'branch_management/branch_access_delete.html'

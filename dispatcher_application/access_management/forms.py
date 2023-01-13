@@ -11,7 +11,6 @@ import re
 
 class GroupAddForm(forms.Form):
     
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'] = forms.CharField(label='Group name', max_length=50)
@@ -26,23 +25,14 @@ class GroupAddForm(forms.Form):
 
     def clean_name(self):
         group_name = self.cleaned_data['name'].strip()
-        pattern = r'^[a-zA-Z0-9._-]{5,50}$'
+        pattern = r'^[a-zA-Z0-9._ -]{5,50}$'
         if not(re.match(pattern, group_name)):
-            raise ValidationError(('Allowed only alphanumeric characters and .-_'))
+            raise ValidationError('Invalid format, allowed only alphanumeric characters, space and .-_ characters.')
 
         exists = Group.objects.filter(name=group_name).exists()
         if exists:
             raise ValidationError(('\"%(value)s\" already exists'), params={'value': group_name})
         return group_name
-
-
-    def as_p(self):
-        return self._html_output(
-            normal_row = u'<p%(html_class_attr)s>%(label)s %(field)s%(help_text)s</p>',
-            error_row = u'%s',
-            row_ender = '</p>',
-            help_text_html = u' <span class="helptext">%s</span>',
-            errors_on_separate_row = False)
 
 
 class GroupUpdateForm(GroupAddForm):

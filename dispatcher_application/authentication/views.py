@@ -1,18 +1,17 @@
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.views.generic import View
+from django.core import serializers
 
 # decorators
-from .decorators import is_not_authenticated
+from decorators import is_not_authenticated
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 
-from django.contrib.auth.views import LoginView
-from django.contrib.messages.views import SuccessMessageMixin
+from access_management.models import UserBranchAccess, GroupBranchAccess, UserGroupAccess
 
 
-class LoginView(View):
+class CustomLoginView(View):
     template = 'authentication/login.html'
 
     @method_decorator(is_not_authenticated())
@@ -30,6 +29,8 @@ class LoginView(View):
 
         if user is not None:
             login(request, user)
+            self.setup_user_access()
+        
             if user.is_superuser:
                 return redirect('user-list')
             return redirect('transportation-list')
@@ -38,18 +39,15 @@ class LoginView(View):
         return render(request, self.template, context)
 
 
+    def setup_user_access(self):
+        user = self.request.user
+        user_branch_access = { user.branch }
+        user_branch_access.update({i.branch_id for i in UserBranchAccess.objects.filter(user_id=user.id)})
+        groups = {group_access.group_id for group_access in UserGroupAccess.objects.filter(user_id=user.id)}
+        user_group_access = {access.branch_id for group in groups for access in GroupBranchAccess.objects.filter(group_id=group)} 
+        user_branch_access.update(user_group_access)
+        self.request.session['logged_in_user_access'] = serializers.serialize('json', user_branch_access)
 
 
-# class CustomLoginView(SuccessMessageMixin, LoginView):
-#     template_name = 'authentication/login.html'
-#     fields = '__all__'
-#     redirect_authenticated_user = True
-#     success_message = 'Hello, '
 
-#     def get_success_url(self):
-#         # if self.user.is_superuser:
-#         return redirect('/admin-panel/create-user')
-        # return redirect('/transports')
-        
-        
-        
+

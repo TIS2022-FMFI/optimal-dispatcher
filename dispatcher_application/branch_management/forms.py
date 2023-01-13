@@ -3,6 +3,8 @@ from django.db.models import Q
 from access_management.models import UserBranchAccess
 from user_management.models import MyUser
 from .models import Branch
+from django.core.exceptions import ValidationError
+import re
  
 
 
@@ -37,3 +39,23 @@ class AddBranchAccessForm(forms.ModelForm):
         user_list = self.get_user_without_access(branch_id)
         self.fields['user_id'].choices = user_list
 
+
+class AddBranch(forms.ModelForm):
+
+    class Meta:
+        model = Branch
+        fields = [ 'name' ]
+
+
+    def clean_name(self):
+        name = self.cleaned_data['name'].strip()
+        if len(name) > 70:
+            raise ValidationError("Maximum length is 70 characters.")
+        
+        if len(name) < 4:
+            raise ValidationError("Minimum length is 4 characters.")
+
+        pattern = r'^[a-zA-Z0-9_ -]{4,70}$'
+        if not(re.match(pattern, name)):
+            raise ValidationError("Invalid format, allowed alphanumeric characters, space and _- characters.")
+        return name
