@@ -1,15 +1,22 @@
 from django.test import TestCase
 from user_management.models import MyUser
+from branch_management.models import Branch
 
 class UserTests(TestCase):
 
     @classmethod
-    def set_up_test_data(self):
+    def setUpTestData(self):
+        
+        self.branch1 = Branch.objects.create(
+            name = "Trnava"
+        )
+        
         MyUser.objects.create(
             email="test.account@gefco.net", 
             first_name = "John",
             last_name = "Snow",
             password="password",
+            branch = self.branch1
         )
 
         MyUser.objects.create(
@@ -17,6 +24,7 @@ class UserTests(TestCase):
             first_name = "Admin",
             last_name = "Admin",
             password="admin",
+            branch = self.branch1,
             is_superuser = True
         )
 
@@ -44,6 +52,7 @@ class UserTests(TestCase):
             first_name = "John",
             last_name = "Snow",
             password="password",
+            branch = self.branch1
         )
 
         MyUser.objects.create(
@@ -51,7 +60,10 @@ class UserTests(TestCase):
             first_name = "Admin",
             last_name = "Admin",
             password="admin",
+            branch = self.branch1,
             is_superuser = True
         )
+        
+        self.assertEqual(MyUser.objects.all().count(),4)
 
         
