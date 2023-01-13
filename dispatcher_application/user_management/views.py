@@ -70,6 +70,7 @@ class DeleteUserView(DeleteView):
     success_url = reverse_lazy('user-list')
 
 
+@method_decorator(decorators, name="dispatch")
 class UserDetailView(DetailView):
     model = MyUser
     template_name = 'user_management/user_detail.html'

@@ -1,12 +1,11 @@
 from django.urls import path
-from .views import LoginView#, CustomLoginView
+from .views import CustomLoginView
 from django.contrib.auth.views import LogoutView
-from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
-    path('login/', LoginView.as_view(), name='login'),
-    # path('login/', CustomLoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(next_page = 'login'), name='logout'),
     
 
     # reset password via email
