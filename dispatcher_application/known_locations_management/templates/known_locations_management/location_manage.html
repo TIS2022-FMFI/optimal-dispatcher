@@ -33,9 +33,6 @@
             <label for="{{ form.country.auto_id }}">{{ form.country.label}}:</label>
             {{ form.country }}
         </p>
-        
-        
-        <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}">
 
         <div id="err">
             {% for field in form %}
@@ -47,6 +44,7 @@
                 {{ form.non_field_errors }}
             {% endif %}
         </div>
+        <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}">
     </form>
 </div>
 

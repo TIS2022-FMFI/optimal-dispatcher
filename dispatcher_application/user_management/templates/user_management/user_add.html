@@ -32,35 +32,33 @@
     <form method="POST" class="formular2" onSubmit="return validateCreateForm()">
         {% csrf_token %}
         <p>
-            <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}</label><br>
+            <label for="{{ form.first_name.auto_id }}">{{ form.first_name.label }}:</label>
             {{ form.first_name }}
         </p>
         <p>
-            <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}</label><br>
+            <label for="{{ form.last_name.auto_id }}">{{ form.last_name.label }}:</label>
             {{ form.last_name }}
         </p>
         <p>
-            <label for="{{ form.email.auto_id }}">{{form.email.label}}</label><br>
+            <label for="{{ form.email.auto_id }}">{{form.email.label}}:</label>
             {{ form.email }}
         </p>
         <p>
-            <label for="{{ form.branch.auto_id }}">{{form.branch.label}}</label><br>
+            <label for="{{ form.branch.auto_id }}">{{form.branch.label}}:</label>
             {{ form.branch }}
         </p>
         <p>
-            <label for="{{ form.password1.auto_id }}">{{form.password1.label}}</label><br>
+            <label for="{{ form.password1.auto_id }}">{{form.password1.label}}:</label>
             {{ form.password1 }}
         </p>
         <p>
-            <label for="{{ form.password2.auto_id }}">{{form.password2.label}}</label><br>
+            <label for="{{ form.password2.auto_id }}">{{form.password2.label}}:</label>
             {{ form.password2 }}
         </p>
         <p>
-            <label for="{{ form.is_superuser.auto_id }}">{{form.is_superuser.label}}</label>
+            <label for="{{ form.is_superuser.auto_id }}">{{form.is_superuser.label}}:</label>
             {{ form.is_superuser }}
         </p>
-
-        <input class="btn btn-primary" id="btn-f2" type="submit" value="Add" style="float: right;">
 
         <div id="err">
             {% for field in form %}
@@ -72,6 +70,7 @@
                 {{ form.non_field_errors }}
             {% endif %}
         </div>
+        <input class="btn btn-primary" id="btn-f2" type="submit" value="Add" style="float: right;">
     </form>
 </div>
 {% endblock %}

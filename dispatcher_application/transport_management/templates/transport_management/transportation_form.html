@@ -80,14 +80,12 @@
             <input type="text" class="input" name="info" id="info" value="{{ info }}">
         </div>
 
-        <button type="submit" class="btn btn-primary" style="float: right;">{{ button_text }}</button>
-
         {% if error_message %}
             <div>
                 {{ error_message }}
             </div>
         {% endif %}
-
+        <button type="submit" class="btn btn-primary" id="btn-f2" style="float: right;">{{ button_text }}</button>
     </form>
 </div>
 {% endblock %}
