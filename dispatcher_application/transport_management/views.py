@@ -1,5 +1,6 @@
 import datetime
 from django.db import connections
+from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
 from django.utils.dateparse import parse_date, parse_time
 from django.views import View
@@ -14,6 +15,7 @@ from django.db import IntegrityError
 from django.core import serializers
 
 from django.views.generic.list import ListView
+from django.views.generic import UpdateView, DetailView
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Q
 import re
@@ -114,7 +116,7 @@ class ListTransportationsView(ListView):
 
 
 @method_decorator(decorators, name="dispatch")
-class TransportationView(View):
+class TransportationAddView(View):
     template = "transport_management/transportation_form.html"
 
     def get(self, request):
@@ -165,55 +167,30 @@ class TransportationView(View):
         return redirect('transportation-add')
 
 
+    ...
+@method_decorator(decorators, name="dispatch")
+class TransportationUpdateView(UpdateView):
+    model = Transportations
+    template_name = "transport_management/transportation_form.html"
+    success_url = 'transportation-list'
+    fields = [
+        'from_id', 'to_id', 'departure_time','arrival_time','ldm','weight','info'
+    ]
 
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['button_text'] = 'Edit'
+        return context
 
-# @method_decorator(decorators, name="dispatch")
-# class EditTransportationView(View):
-#     template = "transport_management/transportation_form.html"
+    def get_queryset(self): 
+        user_branch_access = {obj.object for obj in serializers.deserialize("json", self.request.session['logged_in_user_access'])}
+        pk = self.kwargs['pk']
+        transport =  Transportations.objects.filter(Q(id=pk) & Q(owner_id__branch__in=user_branch_access))
+        return transport
 
-#     def get(self, request, **kwargs):
-#         transportation = Transportations.objects.get(id=kwargs["pk"])
-#         context = {'from_id': Location.objects.get(id=transportation.from_id_id),
-#                    'to_id': Location.objects.get(id=transportation.to_id_id),
-#                    'departure_date': str(transportation.departure_time.date()),
-#                    'departure_time': str(transportation.departure_time.time()),
-#                    'arrival_date': str(transportation.arrival_time.date()),
-#                    'arrival_time': str(transportation.arrival_time.time()),
-#                    'ldm': transportation.ldm,
-#                    'weight': transportation.weight,
-#                    'info': transportation.info,
-#                    'button_text': 'Edit'}
+  
 
-#         return render(request, self.template, context)
-
-#     def post(self, request, **kwargs):
-#         transportation_id = kwargs["pk"]
-
-#         from_location = request.POST['from_id']
-#         to_location = request.POST['to_id']
-#         departure_date = request.POST['departure_date']
-#         departure_time = request.POST['departure_time']
-#         arrival_date = request.POST['arrival_date']
-#         arrival_time = request.POST['arrival_time']
-#         ldm = request.POST['ldm']
-#         weight = request.POST['weight']
-#         info = request.POST['info']
-
-#         from_id = get_location_id(from_location.split(","))
-#         to_id = get_location_id(to_location.split(","))
-
-#         departure = datetime.combine(parse_date(departure_date), parse_time(departure_time))
-#         arrival = datetime.combine(parse_date(arrival_date), parse_time(arrival_time))
-
-#         error_message = check_data(from_id, to_id, departure, arrival)
-#         if error_message != "":
-#             context = {'from_id': from_location, 'to_id': to_location, 'departure_date': departure_date,
-#                        'departure_time': departure_time, 'arrival_date': arrival_date, 'arrival_time': arrival_time,
-#                        'ldm': ldm, 'weight': weight, 'info': info, 'error_message': error_message, 'button_text': 'Add'}
-#             return render(request, self.template, context)
-
-#         update_transport(transportation_id, from_id, to_id, departure, arrival, ldm, weight, info)
-#         return redirect('/transports')
 
 
 def get_location(location):
@@ -226,28 +203,6 @@ def get_location(location):
     except ObjectDoesNotExist:
         return Location.objects.create(zip_code=location[0], city=location[1], country=location[2])
     
-
-    # new_location = Location()
-    # new_location.zip_code = location[0]
-    # new_location.city = location[1]
-    # new_location.country = location[2]
-    # new_location.save()
-
-    # try:
-    #     return Location.objects.get(zip_code=location[0], city=location[1], country=location[2]).id
-    # except IndexError:
-    #     return -1
-    # except ObjectDoesNotExist:
-    #     if len(location[0]) > 10 or len(location[1]) > 70 or len(location[2]) > 4:
-    #         return -1
-
-    #     new_location = Location()
-    #     new_location.zip_code = location[0]
-    #     new_location.city = location[1]
-    #     new_location.country = location[2]
-    #     new_location.save()
-    #     return new_location.id
-
 
 def insert_transport(user_id, from_id, to_id, departure, arrival, ldm, weight, info):
     cursor = connections['default'].cursor()
@@ -277,3 +232,16 @@ def check_data(from_id, to_id, departure, arrival):
         error_message += "Departure cannot be later than arrival"
 
     return error_message
+
+
+class TransportationDetailView(DetailView):
+    model = Transportations
+    template_name = 'transport_management/transportation_detail.html'
+
+    def get_queryset(self): 
+        user_branch_access = {obj.object for obj in serializers.deserialize("json", self.request.session['logged_in_user_access'])}
+        pk = self.kwargs['pk']
+        transport = Transportations.objects.filter(Q(id=pk) & Q(owner_id__branch__in=user_branch_access))
+        return transport
+
+    

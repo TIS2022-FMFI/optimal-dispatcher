@@ -1,0 +1,34 @@
+{% extends 'base_template.html' %}
+
+{% block title %}Transportation detail{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'transportation-list' %}"></a>
+      </div>
+      <div class="col-6" style="text-align: center;">
+        <h2>Transportation detail</h2>
+      </div>
+      <div class="col">
+      </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    
+    <div class="card" style="width: 38rem;;">
+		<ul class="list-group list-group-flush"></ul>
+        <div class="card-body">
+            <p class="card-text">Owner email: {{ object.owner_id.email }}</p>
+            <p class="card-text">From: {{ object.from_id }}</p>
+            <p class="card-text">To: {{ object.to_id }}</p>
+            <p class="card-text">Departure date: {{ object.departure_time }}</p>
+            <p class="card-text">Arrival date: {{ object.arrival_time }}</p>
+            <p class="card-text">Ldm: {{ object.ldm }}</p>
+            <p class="card-text">Weight: {{ object.weight }}</p>
+            <p class="card-text">Info: {{ object.info }}</p>
+        </div>
+	</div>
+</div>
+{% endblock %}
