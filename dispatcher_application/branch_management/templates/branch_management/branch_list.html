@@ -32,10 +32,10 @@
                 <td>{{ branch.id }}</td>
                 <td>{{ branch.name }}</td>
                 <td>
-                    <a class="bi bi-pencil-square btn btn-sm" href="{% url 'branch-update' branch.id %}"></a>
+                    <a class="bi bi-pencil-fill btn btn-sm" href="{% url 'branch-update' branch.id %}"></a>
                 </td>
                 <td>
-                    <a class="bi bi-gear btn btn-sm" href="{% url 'branch-access' branch.id %}"></a>
+                    <a class="bi bi-gear-fill btn btn-sm" href="{% url 'branch-access' branch.id %}"></a>
                 </td>
                 <td>
                     <a class="bi bi-x-lg btn btn-sm" href="{% url 'branch-delete' branch.id %}"></a>

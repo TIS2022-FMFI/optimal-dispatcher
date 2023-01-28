@@ -16,8 +16,11 @@ from django.core import serializers
 
 from django.views.generic.list import ListView
 from django.views.generic import UpdateView, DetailView
+from django.views.generic.base import RedirectView
+
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Q
+from django.db import connection
 import re
 
 from django.contrib.auth.decorators import login_required
@@ -41,19 +44,17 @@ class ListTransportationsView(ListView):
     def get_queryset(self): 
         self.user_branch_access = {obj.object for obj in serializers.deserialize("json", self.request.session['logged_in_user_access'])}
 
-        search_owner_value = self.request.GET.get('owner')
-        search_from_value = self.request.GET.get('from_location')
-        search_departure_value = self.request.GET.get('departure_date')
-        search_arrival_value = self.request.GET.get('arrival_date')
-        
+        search_owner_value = self.request.GET.get('owner') or ''
+        search_from_value = self.request.GET.get('from-location') or ''
+        search_departure_value = self.request.GET.get('departure-date') or ''
+        search_arrival_value = self.request.GET.get('arrival-date') or '' 
+
+ 
+        print(self.paginate_orphans)
+
         if (self.is_empty_filter(search_owner_value) and self.is_empty_filter(search_from_value) and 
             self.is_empty_filter(search_departure_value) and self.is_empty_filter(search_arrival_value)):
-            return Transportations.objects.filter(owner_id__branch__in=self.user_branch_access)
-           
-        search_owner_value = search_owner_value.strip()
-        search_from_value = search_from_value.strip()
-        search_departure_value = search_departure_value.strip()
-        search_arrival_value = search_arrival_value.strip()
+            return self.custom_transport_select()#Transportations.objects.filter(owner_id__branch__in=self.user_branch_access)
 
         self.filtered_by = f'&owner={search_owner_value}&from-location={search_from_value}&departure-date={search_departure_value}&arrival-date={search_arrival_value}'
         self.search_val = {
@@ -112,6 +113,36 @@ class ListTransportationsView(ListView):
                     Q(owner_id__branch__in=self.user_branch_access)
                 )
         return result
+
+    
+    def custom_transport_select(self):
+        queryset = Transportations.objects.none()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                    SELECT  tra.id, 
+                            email,
+                            u.id AS owner_id,
+                            concat_ws(', ', zip_code, city, country) AS from_id, 
+                            concat_ws(', ', zip_code, city, country) AS to_id, 
+                            departure_time, 
+                            arrival_time, 
+                            ldm 
+                    FROM transport_management_transportations AS tra 
+					LEFT JOIN known_locations_management_location AS l ON l.id = from_id_id AND l.id = to_id_id
+                    LEFT JOIN user_management_myuser AS u ON u.id = tra.owner_id_id;
+                """)
+            queryset = self.refactor_as_dictionary(cursor)
+        return queryset
+
+
+    def refactor_as_dictionary(self, cursor):
+        columns = [col[0] for col in cursor.description]
+        return [
+            dict(zip(columns, row))
+            for row in cursor.fetchall()
+        ]
+        
     
 
 
@@ -243,5 +274,25 @@ class TransportationDetailView(DetailView):
         pk = self.kwargs['pk']
         transport = Transportations.objects.filter(Q(id=pk) & Q(owner_id__branch__in=user_branch_access))
         return transport
+
+
+class TransportationDeleteView(RedirectView):
+    permanent = False
+    query_string = True
+    pattern_name = 'transportation-list'
+
+    def get_redirect_url(self, *args, **kwargs):
+        to_delete_ids = self.request.POST.getlist('data')
+        logged_in_user = self.request.user
+
+        try:
+            with transaction.atomic():
+                to_delete_transport_list = Transportations.objects.filter(Q(id__in=to_delete_ids) & Q(owner_id=logged_in_user.id))
+                to_delete_transport_list.delete() 
+        except IntegrityError as error_message:
+            print(error_message)
+
+        
+        return super().get_redirect_url(*args, **kwargs)
 
     

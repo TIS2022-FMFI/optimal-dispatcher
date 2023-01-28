@@ -39,8 +39,8 @@
             <td>{{ user.last_name }}</td>
             <td>{{ user.first_name }}</td>
             <td>{{ user.branch }}</td>
-            <td><a class="bi bi-pencil-square btn btn-sm" href="{% url 'user-update' user.id %}"></a></td>
-            <td><a class="bi bi-eye btn btn-sm" href="{% url 'user-detail' user.id %}"></a></td>
+            <td><a class="bi bi-pencil-fill btn btn-sm" href="{% url 'user-update' user.id %}"></a></td>
+            <td><a class="bi bi-eye-fill btn btn-sm" href="{% url 'user-detail' user.id %}"></a></td>
             <td><a class="bi bi-x-lg btn btn-sm" href="{% url 'user-delete' user.id %}"></a></td>
         </tr>
     {% endfor %}

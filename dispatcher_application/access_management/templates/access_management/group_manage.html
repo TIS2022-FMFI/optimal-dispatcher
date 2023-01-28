@@ -1,6 +1,6 @@
 {% extends 'base_template.html' %}
 
-{% block title %}Add group{% endblock %}
+{% block title %}{{ form_name }}{% endblock %}
 
 {% block static_imports %}
     {% load static %}
@@ -15,7 +15,7 @@
         <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'group-list' %}"></a>
       </div>
       <div class="col-6" style="text-align: center;">
-        <h2>Add Group</h2>
+        <h2>{{ form_name }}</h2>
       </div>
       <div class="col">
       </div>
@@ -34,7 +34,7 @@
             <label for="{{ form.branch.auto_id }}">{{ form.branch.label }}</label><br>
             {{ form.branch }}
         </p>
-        <input class="btn btn-primary" type="submit" value="{{ form_action_type }}" style="float: right;">
+        <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}" style="float: right;">
         
         <div id="err">
             {% for field in form %}
@@ -43,7 +43,7 @@
                 {% endif %}
             {% endfor %} 
         </div>
-        <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}" style="float: right;">
+        
     </form>
     
 </div>
