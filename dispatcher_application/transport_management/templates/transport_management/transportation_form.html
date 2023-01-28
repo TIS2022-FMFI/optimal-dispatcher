@@ -77,16 +77,21 @@
                 {{ form.info }}
             </p>
 
-            {% if error_message %}
-                <div>
-                    {{ error_message }}
-                </div>
-            {% endif %}
-
-            <button type="submit" class="btn btn-primary" id="btn-f2"
-                    style="float: right;">{{ form_action_type }}</button>
-
+            <div id="err">
+                {% for field in form %}
+                    {% if field.errors %}
+                        <li>{{ field.label }} : {{ field.errors|striptags }}</li>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}"
+                   style="float: right;">
         </form>
     </div>
+{% endblock %}
+
+{% block js_content %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/transport_form_functions.js' %}"></script>
 {% endblock %}
 
