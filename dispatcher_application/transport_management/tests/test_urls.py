@@ -9,6 +9,6 @@ class TestUrls(SimpleTestCase):
     
     def test_transportation_add_url(self):
         url = reverse("transportation-add")
-        self.assertEquals(resolve(url).func.view_class,TransportationView)
+        self.assertEquals(resolve(url).func.view_class, AddTransportationView)
         
     

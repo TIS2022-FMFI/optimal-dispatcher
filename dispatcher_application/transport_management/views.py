@@ -1,12 +1,11 @@
-import datetime
-from django.db import connections
-from django.shortcuts import render, redirect
-from django.utils.dateparse import parse_date, parse_time
-from django.views import View
-from datetime import datetime
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+
+from django.views.generic import FormView
+
+from .forms import CreateTransportForm, UpdateTransportForm
 from .models import Location, Transportations
 from user_management.models import MyUser
-from access_management.models import UserBranchAccess, GroupBranchAccess, UserGroupAccess
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.db import transaction
@@ -20,6 +19,7 @@ import re
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+
 decorators = [login_required()]
 
 
@@ -29,25 +29,24 @@ class ListTransportationsView(ListView):
     template_name = 'transport_management/transportation_list.html'
     paginate_by = 25
 
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.filtered_by = ''
-        self.search_val = { 'owner' : '', 'from' : '', 'departure' : '', 'arrival' : ''}
+        self.search_val = {'owner': '', 'from': '', 'departure': '', 'arrival': ''}
 
-
-    def get_queryset(self): 
-        self.user_branch_access = {obj.object for obj in serializers.deserialize("json", self.request.session['logged_in_user_access'])}
+    def get_queryset(self):
+        self.user_branch_access = {obj.object for obj in
+                                   serializers.deserialize("json", self.request.session['logged_in_user_access'])}
 
         search_owner_value = self.request.GET.get('owner')
         search_from_value = self.request.GET.get('from_location')
         search_departure_value = self.request.GET.get('departure_date')
         search_arrival_value = self.request.GET.get('arrival_date')
-        
-        if (self.is_empty_filter(search_owner_value) and self.is_empty_filter(search_from_value) and 
-            self.is_empty_filter(search_departure_value) and self.is_empty_filter(search_arrival_value)):
+
+        if (self.is_empty_filter(search_owner_value) and self.is_empty_filter(search_from_value) and
+                self.is_empty_filter(search_departure_value) and self.is_empty_filter(search_arrival_value)):
             return Transportations.objects.filter(owner_id__branch__in=self.user_branch_access)
-           
+
         search_owner_value = search_owner_value.strip()
         search_from_value = search_from_value.strip()
         search_departure_value = search_departure_value.strip()
@@ -55,12 +54,12 @@ class ListTransportationsView(ListView):
 
         self.filtered_by = f'&owner={search_owner_value}&from-location={search_from_value}&departure-date={search_departure_value}&arrival-date={search_arrival_value}'
         self.search_val = {
-            'owner' : search_owner_value,
-            'from' : search_from_value, 
-            'departure' : search_departure_value, 
-            'arrival' : search_arrival_value
+            'owner': search_owner_value,
+            'from': search_from_value,
+            'departure': search_departure_value,
+            'arrival': search_arrival_value
         }
-        
+
         # extract locations ids from QuerySet
         locations = self.get_location_ids(search_from_value)
 
@@ -71,12 +70,10 @@ class ListTransportationsView(ListView):
         result = self.get_transportations_queryset(search_string)
         return result
 
-
     def is_empty_filter(self, input_value):
         if input_value is None or input_value.strip() == '':
             return True
         return False
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -86,10 +83,9 @@ class ListTransportationsView(ListView):
         context['location_list'] = Location.objects.all()
         return context
 
-
     def get_location_ids(self, input):
         pattern = r"^([0-9]{5,10})[, -;]([A-Za-z]{2,70})[, -;]([A-Za-z]{2,3})$"
-        if not(re.match(pattern, input)):
+        if not (re.match(pattern, input)):
             return Location.objects.none()
 
         location_groups = re.search(pattern, input)
@@ -97,183 +93,155 @@ class ListTransportationsView(ListView):
 
         locations = Location.objects.annotate(
             search=SearchVector('zip_code', 'city', 'country'),
-            ).filter(search=formated_location).values_list('id')
+        ).filter(search=formated_location).values_list('id')
 
         return {pk for pk in locations}
 
-
     def get_transportations_queryset(self, serach_string):
         result = Transportations.objects.annotate(
-                search=SearchVector('owner_id__email', 'from_id', 'departure_time', 'arrival_time'),
-                ).filter(
-                    Q(search=serach_string) & 
-                    Q(owner_id__branch__in=self.user_branch_access)
-                )
+            search=SearchVector('owner_id__email', 'from_id', 'departure_time', 'arrival_time'),
+        ).filter(
+            Q(search=serach_string) &
+            Q(owner_id__branch__in=self.user_branch_access)
+        )
         return result
-    
 
 
 @method_decorator(decorators, name="dispatch")
-class TransportationView(View):
-    template = "transport_management/transportation_form.html"
+class AddTransportationView(FormView):
+    template_name = "transport_management/transportation_form.html"
+    form_class = CreateTransportForm
+    success_url = reverse_lazy('transportation-list')
 
-    def get(self, request):
-        location_list = Location.objects.all()
-        context = {'location_list': location_list, 'button_text': 'Add'}
-        return render(request, self.template, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
+        context['form_name'] = 'Update Transport'
+        context['form_action_type'] = 'Update'
+        context['location_list'] = Location.objects.all()
+        return context
 
-    def post(self, request):
-        from_location = request.POST['from_id']
-        to_location = request.POST['to_id']
-        departure_date = request.POST['departure_date']
-        departure_time = request.POST['departure_time']
-        arrival_date = request.POST['arrival_date']
-        arrival_time = request.POST['arrival_time']
-        ldm = request.POST['ldm']
-        weight = request.POST['weight']
-        info = request.POST['info']
+    def form_invalid(self, form):
+        print(form.cleaned_data)
+        return self.render_to_response(self.get_context_data(form=form))
 
-        departure = datetime.combine(parse_date(departure_date), parse_time(departure_time))
-        arrival = datetime.combine(parse_date(arrival_date), parse_time(arrival_time))
-
-        
-        # error_message = check_data(from_id, to_id, departure, arrival)
-        # if error_message != "":
-        #     context = {'from_id': from_location, 'to_id': to_location, 'departure_date': departure_date,
-        #                'departure_time': departure_time, 'arrival_date': arrival_date, 'arrival_time': arrival_time,
-        #                'ldm': ldm, 'weight': weight, 'info': info, 'error_message': error_message, 'button_text': 'Add'}
-        #     return render(request, self.template, context)
-
+    def form_valid(self, form):
+        form_fields = form.cleaned_data
         try:
-            with transaction.atomic(): 
-                from_location = get_location(from_location.split(","))
-                to_location = get_location(to_location.split(","))
+            with transaction.atomic():
+
+                pattern = r'([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})'
+                from_location = re.match(pattern, str(form_fields['from_id']).strip())
+
+                try:
+                    from_location_id = Location.objects.get(zip_code=from_location.group(1),
+                                                            city=from_location.group(2),
+                                                            country=from_location.group(3))
+                except ObjectDoesNotExist:
+                    from_location_id = Location.objects.create(
+                        zip_code=from_location.group(1),
+                        city=from_location.group(2),
+                        country=from_location.group(3)
+                    )
+
+                to_location = re.match(pattern, str(form_fields['to_id']).strip())
+
+                try:
+                    to_location_id = Location.objects.get(zip_code=to_location.group(1),
+                                                          city=to_location.group(2),
+                                                          country=to_location.group(3))
+                except ObjectDoesNotExist:
+                    to_location_id = Location.objects.create(
+                        zip_code=to_location.group(1),
+                        city=to_location.group(2),
+                        country=to_location.group(3)
+                    )
+
                 Transportations.objects.create(
-                    owner_id=self.request.user, 
-                    from_id=from_location, 
-                    to_id=to_location, 
-                    departure_time=departure, 
-                    arrival_time=arrival, 
-                    ldm=ldm, 
-                    weight=weight, 
-                    info=info
+                    owner_id=self.request.user,
+                    from_id=from_location_id,
+                    to_id=to_location_id,
+                    departure_time=form_fields['departure_time'],
+                    arrival_time=form_fields['arrival_time'],
+                    ldm=form_fields['ldm'],
+                    weight=form_fields['weight'],
+                    info=form_fields['info']
                 )
-                # insert_transport(self.request.user.id, from_id, to_id, departure, arrival, ldm, weight, info)
-        except IntegrityError:
-            ...
-        return redirect('transportation-add')
+
+        except IntegrityError as error_message:
+            print(error_message)
+        return HttpResponseRedirect(self.get_success_url())
 
 
+@method_decorator(decorators, name="dispatch")
+class UpdateTransportationView(FormView):
+    template_name = "transport_management/transportation_form.html"
+    form_class = UpdateTransportForm
+    success_url = reverse_lazy('transportation-list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-# @method_decorator(decorators, name="dispatch")
-# class EditTransportationView(View):
-#     template = "transport_management/transportation_form.html"
+        context['form_name'] = 'Update Transport'
+        context['form_action_type'] = 'Update'
+        context['location_list'] = Location.objects.all()
+        return context
 
-#     def get(self, request, **kwargs):
-#         transportation = Transportations.objects.get(id=kwargs["pk"])
-#         context = {'from_id': Location.objects.get(id=transportation.from_id_id),
-#                    'to_id': Location.objects.get(id=transportation.to_id_id),
-#                    'departure_date': str(transportation.departure_time.date()),
-#                    'departure_time': str(transportation.departure_time.time()),
-#                    'arrival_date': str(transportation.arrival_time.date()),
-#                    'arrival_time': str(transportation.arrival_time.time()),
-#                    'ldm': transportation.ldm,
-#                    'weight': transportation.weight,
-#                    'info': transportation.info,
-#                    'button_text': 'Edit'}
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
 
-#         return render(request, self.template, context)
+        kwargs = self.get_form_kwargs()
+        kwargs['t_id'] = self.kwargs['pk']
+        return form_class(**kwargs)
 
-#     def post(self, request, **kwargs):
-#         transportation_id = kwargs["pk"]
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
 
-#         from_location = request.POST['from_id']
-#         to_location = request.POST['to_id']
-#         departure_date = request.POST['departure_date']
-#         departure_time = request.POST['departure_time']
-#         arrival_date = request.POST['arrival_date']
-#         arrival_time = request.POST['arrival_time']
-#         ldm = request.POST['ldm']
-#         weight = request.POST['weight']
-#         info = request.POST['info']
+    def form_valid(self, form):
+        form_fields = form.cleaned_data
+        try:
+            with transaction.atomic():
 
-#         from_id = get_location_id(from_location.split(","))
-#         to_id = get_location_id(to_location.split(","))
+                pattern = r'([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})'
+                from_location = re.match(pattern, str(form_fields['from_id']).strip())
 
-#         departure = datetime.combine(parse_date(departure_date), parse_time(departure_time))
-#         arrival = datetime.combine(parse_date(arrival_date), parse_time(arrival_time))
+                try:
+                    from_location_id = Location.objects.get(zip_code=from_location.group(1),
+                                                            city=from_location.group(2),
+                                                            country=from_location.group(3))
+                except ObjectDoesNotExist:
+                    from_location_id = Location.objects.create(
+                        zip_code=from_location.group(1),
+                        city=from_location.group(2),
+                        country=from_location.group(3)
+                    )
 
-#         error_message = check_data(from_id, to_id, departure, arrival)
-#         if error_message != "":
-#             context = {'from_id': from_location, 'to_id': to_location, 'departure_date': departure_date,
-#                        'departure_time': departure_time, 'arrival_date': arrival_date, 'arrival_time': arrival_time,
-#                        'ldm': ldm, 'weight': weight, 'info': info, 'error_message': error_message, 'button_text': 'Add'}
-#             return render(request, self.template, context)
+                to_location = re.match(pattern, str(form_fields['to_id']).strip())
 
-#         update_transport(transportation_id, from_id, to_id, departure, arrival, ldm, weight, info)
-#         return redirect('/transports')
+                try:
+                    to_location_id = Location.objects.get(zip_code=to_location.group(1),
+                                                          city=to_location.group(2),
+                                                          country=to_location.group(3))
 
+                except ObjectDoesNotExist:
+                    to_location_id = Location.objects.create(
+                        zip_code=to_location.group(1),
+                        city=to_location.group(2),
+                        country=to_location.group(3)
+                    )
 
-def get_location(location):
-    """
-    returns id number of the location parameter
-    if it doesn't already exist, creates a new location in the known_locations_management_location table
-    """
-    try:
-        return Location.objects.get(zip_code=location[0], city=location[1], country=location[2])
-    except ObjectDoesNotExist:
-        return Location.objects.create(zip_code=location[0], city=location[1], country=location[2])
-    
+                Transportations.objects.update(
+                    owner_id=self.request.user,
+                    from_id=from_location_id,
+                    to_id=to_location_id,
+                    departure_time=form_fields['departure_time'],
+                    arrival_time=form_fields['arrival_time'],
+                    ldm=form_fields['ldm'],
+                    weight=form_fields['weight'],
+                    info=form_fields['info']
+                )
 
-    # new_location = Location()
-    # new_location.zip_code = location[0]
-    # new_location.city = location[1]
-    # new_location.country = location[2]
-    # new_location.save()
-
-    # try:
-    #     return Location.objects.get(zip_code=location[0], city=location[1], country=location[2]).id
-    # except IndexError:
-    #     return -1
-    # except ObjectDoesNotExist:
-    #     if len(location[0]) > 10 or len(location[1]) > 70 or len(location[2]) > 4:
-    #         return -1
-
-    #     new_location = Location()
-    #     new_location.zip_code = location[0]
-    #     new_location.city = location[1]
-    #     new_location.country = location[2]
-    #     new_location.save()
-    #     return new_location.id
-
-
-def insert_transport(user_id, from_id, to_id, departure, arrival, ldm, weight, info):
-    cursor = connections['default'].cursor()
-    cursor.execute(
-        "INSERT INTO transport_management_transportations(owner_id_id,from_id_id,to_id_id,departure_time, arrival_time, ldm, weight, info) "
-        "VALUES( %s, %s, %s, %s, %s, %s, %s, %s)",
-        [user_id, from_id, to_id, departure, arrival, ldm, weight, info])
-
-
-def update_transport(transportation_id, from_id, to_id, departure, arrival, ldm, weight, info):
-    cursor = connections['default'].cursor()
-    cursor.execute(
-        "UPDATE transportations "
-        "SET from_id = %s, to_id= %s, departure= %s, arrival= %s, ldm= %s, weight= %s, info= %s) "
-        "WHERE id = %s",
-        [from_id, to_id, departure, arrival, ldm, weight, info, transportation_id])
-
-
-def check_data(from_id, to_id, departure, arrival):
-    error_message = ""
-    if from_id == -1 or to_id == -1 or from_id == to_id:
-        error_message = "Wrong location input"
-
-    if departure >= arrival:
-        if error_message != "":
-            error_message += '\n'
-        error_message += "Departure cannot be later than arrival"
-
-    return error_message
+        except IntegrityError as error_message:
+            print(error_message)
+        return HttpResponseRedirect(self.get_success_url())
