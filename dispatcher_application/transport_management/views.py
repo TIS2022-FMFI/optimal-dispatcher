@@ -116,8 +116,8 @@ class AddTransportationView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context['form_name'] = 'Add Transport'
-        context['form_action_type'] = 'Add'
+        context['form_name'] = 'Update Transport'
+        context['form_action_type'] = 'Update'
         context['location_list'] = Location.objects.all()
         return context
 
