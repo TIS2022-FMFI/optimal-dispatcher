@@ -37,10 +37,10 @@
                 <td>{{ group.id }}</td>
                 <td>{{ group.name }}</td>
                 <td>
-                    <a class="bi bi-pencil-square btn btn-sm" href="{% url 'group-update' group.id %}"></a>
+                    <a class="bi bi-pencil-fill btn btn-sm" href="{% url 'group-update' group.id %}"></a>
                 </td>
                 <td>
-                    <a class="bi bi-gear btn btn-sm" href="{% url 'group-access' group.id %}"></a>
+                    <a class="bi bi-gear-fill btn btn-sm" href="{% url 'group-access' group.id %}"></a>
                 </td>
                 <td>
                     <a class="bi bi-x-lg btn btn-sm" href="{% url 'group-delete' group.id %}"></a>

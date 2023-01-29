@@ -12,42 +12,41 @@
 <div class="transport-search">
     <form method="GET" id="transport-searchbar">
         
-        <label for="owner">Owner:</label>
-        <input list="owner"  name="owner" id="owner_id" value="{{ search_value.owner }}" placeholder="user email" >
+        <label for="owner-id">Owner:</label>
+        <input list="owner"  name="owner" id="owner-id" value="{{ search_value.owner }}" placeholder="user email" >
         <datalist id="owner">
             {% for owner in owners_list %}
-                <option id="{{ owner.id }}" value="{{ owner.email }}"></option>
-            {% empty %}
-                <option></option>
+                <option id="owner_{{ owner.id }}" value="{{ owner.email }}"></option>
             {% endfor %}
         </datalist>
-        
-        <label for="from_location">From:</label>
-        <input list="from_location" class="" name="from_location" id="from_location_id" value="{{ search_value.from }}" placeholder="zip code,city,conutry">
-        <datalist id="from_location">
+
+        <label for="from-location-id">From:</label>
+        <input list="from-location" name="from-location" id="from-location-id" value="{{ search_value.from }}" placeholder="zip code,city,conutry">
+        <datalist id="from-location">
             {% for location in location_list %}
-                <option id="{{ location.id }}" value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
-            {% empty %}
-                <option></option>
+                <option id="location_{{ location.id }}" value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
             {% endfor %}
         </datalist>
 
-        <label for="departure_date" class="">Departure date:</label>
-        <input type="date" class="" name="departure_date" id="departure_date_id" value="{{ search_value.departure }}">
+        <label for="departure-date-id">Departure date:</label>
+        <input type="date" class="" name="departure-date" id="departure-date-id" value="{{ search_value.departure }}">
 
-        <label for="arrival_date" class="">Arrival date:</label>
-        <input type="date" class="" name="arrival_date" id="arrival_date_id" value="{{ search_value.arrival }}">
+        <label for="arrival-date-id">Arrival date:</label>
+        <input type="date" class="" name="arrival-date" id="arrival-date-id" value="{{ search_value.arrival }}">
 
         <button type="submit" class="search-button"><i class="bi bi-search"></i></button>
         <button type="button" class="search-button" onclick="cleanFields()"><i class="bi bi-arrow-clockwise"></i></button>
     </form>
 </div>
 <br>
+
 <h2>Transportations</h2>
-<a class="bi bi-plus-circle btn btn-lg" href="{% url 'transportation-add' %}"></a>
-<button class="bi bi-trash3-fill btn btn-lg" style="font-size: 1.6rem;" type="submit"></button>
-<form action="" method="POST">
+
+<form action="{% url 'transportation-delete' %}" method="POST">
     {% csrf_token %}
+    <a class="bi bi-plus-circle btn btn-lg" href="{% url 'transportation-add' %}"></a>
+    <button class="bi bi-trash btn btn-lg" style="font-size: 1.6rem;" type="submit"></button>
+    
     <div style="overflow-x:auto;">
     <table class="table table-hover">
         <thead class="thead-dark">
@@ -65,16 +64,27 @@
         <tbody>
 
         {% for t in object_list %}
-            <td>{{ t.departure_time }}</td>
-            <td>{{ t.from_id }}</td>
-            <td>{{ t.arrival_time }}</td>
-            <td>{{ t.to_id }}</td>
-            <td>{{ t.ldm }}</td>
-            <td>{{ t.owner_id.email }}</td>
-            <td><a class="bi bi-eye-fill btn btn-sm" href=""></a></td>
-            <td><input href="" class="form-check-input" type="checkbox" name="data" id="data" value={{ t.id }}></td>
+            <tr>
+                <td>{{ t.departure_time }}</td>
+                <td>{{ t.from_id }}</td>
+                <td>{{ t.arrival_time }}</td>
+                <td>{{ t.to_id }}</td>
+                <td>{{ t.ldm }}</td>
+
+                {% if t.email is not None %}
+                    <td>{{ t.email }}</td>
+                {% elif t.owner_id.email is not None %}
+                    <td>{{ t.owner_id.email }}</td>
+                {% endif %}
+
+                {% if t.owner_id.id == user.id or t.owner_id == user.id %}
+                    <td><a class="bi bi-pencil-fill btn btn-sm" href="{% url 'transportation-update' t.id %}"></a></td> 
+                    <td><input class="form-check-input" type="checkbox" name="data" id="check_{{ t.id }}" value={{ t.id }}></td>
+                {% else %}
+                    <td><a class="bi bi-eye-fill btn btn-sm" href="{% url 'transportation-detail' t.id %}"></a></td>
+                    <td></td>
+                {% endif %}
             </tr>
-        
         {% endfor %}
         </tbody>
     </table>

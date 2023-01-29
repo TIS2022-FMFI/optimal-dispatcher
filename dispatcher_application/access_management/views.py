@@ -116,14 +116,17 @@ class UpdateGroupView(FormView):
         to_delete_access = group_access_list - new_group_access_list
         to_add_access = new_group_access_list - group_access_list 
         
+        group_id = self.kwargs['pk']
+        new_group_name = form_fields['name']
         try:
             with transaction.atomic():
                 to_delete_access_list = GroupBranchAccess.objects.filter(Q(group_id=group) & Q(branch_id__in=to_delete_access))
-                for obj in to_delete_access_list:
-                    obj.delete()
+                to_delete_access_list.delete()
 
                 for branch in to_add_access:
                     GroupBranchAccess.objects.create(group_id=group, branch_id=branch)
+                
+                Group.objects.filter(id=group_id).update(name=new_group_name)
         except IntegrityError as error_message:
             print(error_message)
         return HttpResponseRedirect(self.get_success_url())

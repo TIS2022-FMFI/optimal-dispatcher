@@ -34,6 +34,7 @@ class  BranchListView(ListView):
     
     def get_queryset(self): 
         search_value = self.request.GET.get('search-box')
+
         self.filtered_by = ''
         self.search_val = ''
         if search_value is None or search_value.strip() == '':

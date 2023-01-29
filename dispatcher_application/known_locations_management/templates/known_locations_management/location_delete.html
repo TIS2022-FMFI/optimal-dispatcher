@@ -9,12 +9,12 @@
 {% block content %}
 <br>
 <a class="bi bi-arrow-bar-left btn btn-lg" href="{% url 'location-list' %}" style="margin-left: 350px"></a>
-    <div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
+    <div class="container d-flex justify-content-center" style="text-align: left;">
             <br>
         <form method="POST" class="text">
             {% csrf_token %}
             <p>Are you sure you want to delete location "{{ object }}" ?</p>
-            <input class="btn btn-primary" type="submit" value="Delete" style="float: right;"/>
+            <input class="btn btn-primary" type="submit" value="Delete" style="float: right;">
         </form>
     </div>
 {% endblock %}

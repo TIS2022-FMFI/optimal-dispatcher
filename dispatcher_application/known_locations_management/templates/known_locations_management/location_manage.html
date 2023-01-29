@@ -1,6 +1,6 @@
 {% extends "base_template.html" %}
 
-{% block title %}Add location{% endblock %}
+{% block title %}{{ form_name }}{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -9,7 +9,7 @@
         <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'location-list' %}"></a>
       </div>
       <div class="col-6" style="text-align: center;">
-        <h2>Add location</h2>
+        <h2>{{ form_name }}</h2>
       </div>
       <div class="col">
       </div>
@@ -17,7 +17,7 @@
 </div>
 <br>
 
-<div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
+<div class="container d-flex justify-content-center" style="text-align: left;">
     <br>
     <form method="POST" onSubmit="return validateForm()" class="formular2">
         {% csrf_token %}
