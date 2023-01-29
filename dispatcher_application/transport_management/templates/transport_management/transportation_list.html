@@ -77,7 +77,7 @@
                     <td>{{ t.owner_id.email }}</td>
                 {% endif %}
 
-                {% if t.owner_id == user.id %}
+                {% if t.owner_id.id == user.id or t.owner_id == user.id %}
                     <td><a class="bi bi-pencil-fill btn btn-sm" href="{% url 'transportation-update' t.id %}"></a></td> 
                     <td><input class="form-check-input" type="checkbox" name="data" id="check_{{ t.id }}" value={{ t.id }}></td>
                 {% else %}

@@ -121,7 +121,7 @@ function validateUpdateForm() {
     let firstNameElement = document.getElementById("id_first_name");
     let lastNameElement = document.getElementById("id_last_name");
   
-    err_section = document.getElementById("err");
+    let err_section = document.getElementById("err");
     err_section.innerHTML = "";
     let no_err = true;
 

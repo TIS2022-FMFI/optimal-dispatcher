@@ -25,7 +25,7 @@ function validateForm() {
     let city = document.getElementById("id_city");
     let country = document.getElementById("id_country");
    
-    err_section = document.getElementById("err");
+    let err_section = document.getElementById("err");
     err_section.innerHTML = "";
    
     let no_err = true;

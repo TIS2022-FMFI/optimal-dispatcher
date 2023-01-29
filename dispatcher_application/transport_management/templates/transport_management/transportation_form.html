@@ -10,83 +10,87 @@
 {% block content %}
     <div class="container">
         <div class="row">
-          <div class="col">
-            <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'transportation-list' %}"></a>
-          </div>
-          <div class="col-6" style="text-align: center;">
-            <h2>Add transport</h2>
-          </div>
-          <div class="col">
-          </div>
+            <div class="col">
+                <a class="bi bi-arrow-bar-left btn btn-lg" id="back" href="{% url 'transportation-list' %}"></a>
+            </div>
+            <div class="col-6" style="text-align: center;">
+                <h2>{{ form_name }}</h2>
+            </div>
+            <div class="col">
+            </div>
         </div>
     </div>
 
     <div class="transport d-flex justify-content-center" style="overflow-x:auto;">
-    <form method="POST" action="" class="form-class">
-        {% csrf_token %}
+        <form action="" method="POST" onSubmit="return validateForm()" class="formular"> 
+            {% csrf_token %}
 
-        <div class="input-box">
-            <label for="from_id" class="transportlabel">From:</label>
-            <input list="from_locations" class="input" name="from_id" id="from_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
-            <datalist id="from_locations">
-                {% for location in location_list %}
-                    <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
-                {% empty %}
-                    <option></option>
+            <p>
+                <label for="{{ form.from_id.auto_id }}">{{ form.from_id.label }}</label><br>
+                {{ form.from_id }}
+
+                <datalist id="from_locations">
+                    {% for location in location_list %}
+                        <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
+                    {% empty %}
+                        <option></option>
+                    {% endfor %}
+                </datalist>
+            </p>
+
+            <p>
+                <label for="{{ form.to_id.auto_id }}">{{ form.to_id.label }}</label><br>
+                {{ form.to_id }}
+
+                <datalist id="to_locations">
+                    {% for location in location_list %}
+                        <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
+                    {% empty %}
+                        <option></option>
+                    {% endfor %}
+                </datalist>
+            </p>
+
+            <p>
+                <label for="{{ form.departure_time.auto_id }}">{{ form.departure_time.label }}</label><br>
+                {{ form.departure_time }}
+            </p>
+
+            <p>
+                <label for="{{ form.arrival_time.auto_id }}">{{ form.arrival_time.label }}</label><br>
+                {{ form.arrival_time }}
+            </p>
+
+            <p>
+                <label for="{{ form.ldm.auto_id }}">{{ form.ldm.label }}</label><br>
+                {{ form.ldm }}
+            </p>
+
+            <p>
+                <label for="{{ form.weight.auto_id }}">{{ form.weight.label }}</label><br>
+                {{ form.weight }}
+            </p>
+
+            <p>
+                <label for="{{ form.info.auto_id }}">{{ form.info.label }}</label><br>
+                {{ form.info }}
+            </p>
+
+            <div id="err">
+                {% for field in form %}
+                    {% if field.errors %}
+                        <li>{{ field.label }} : {{ field.errors|striptags }}</li>
+                    {% endif %}
                 {% endfor %}
-            </datalist>
-        </div>
-        <div class="input-box">
-            <label for="to_id" class="label" class="transportlabel">To:</label>
-            <input list="to_locations" class="input" name="to_id" id="to_id" required pattern="([0-9]{5,10})[ ,/.]([A-Z][a-z]{1,69})[ ,/.]([A-Z]{2,4})" placeholder="12345,City,COUNTRY CODE">
-            <datalist id="to_locations">
-                {% for location in location_list %}
-                    <option id={{ location.id }} value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
-                {% empty %}
-                    <option value></option>
-                {% endfor %}
-            </datalist>
-        </div>
-
-        <div class="input-box">
-
-            <label for="departure_date" class="transportlabel">Departure date:</label>
-            <input type="date" class="input" name="departure_date" id="departure_date" value="{{ departure_date }}" required>
-            &emsp;
-            <label for="departure_time" class="transportlabel">Time:</label>
-            <input type="time" class="input" name="departure_time" id="departure_time" value="{{ departure_time }}" required>
-        </div>
-
-        <div class="input-box">
-            <label for="arrival_date" class="label2 transportlabel">Arrival date:</label>
-            <input type="date" class="input" name="arrival_date" id="arrival_date" value="{{ arrival_date }}" required>
-            &emsp;
-            <label for="arrival_time" class="transportlabel">Time:</label>
-            <input type="time" class="input" name="arrival_time" id="arrival_time" value="{{ arrival_time }}" required>
-        </div>
-
-        <div class="input-box">
-            <label for="ldm" class="label3 transportlabel">L(m):</label>
-            <input type="number" step="0.01" class="input" name="ldm" id="ldm" value="{{ ldm }}" required min="0" max="13.6" placeholder="0-13.6">
-        </div>
-
-        <div class="input-box">
-            <label for="weight" class="transportlabel">Weight:</label>
-            <input type="number" class="input" name="weight" id="weight" value="{{ weight }}" required min="0" max="3000" placeholder="0-3 000">
-        </div>
-
-        <div class="input-box">
-            <label for="info" class="label4 transportlabel">Notes:</label>
-            <input type="text" class="input" name="info" id="info" value="{{ info }}">
-        </div>
-
-        {% if error_message %}
-            <div>
-                {{ error_message }}
             </div>
-        {% endif %}
-        <button type="submit" class="btn btn-primary" id="btn-f2" style="float: right;">{{ button_text }}</button>
-    </form>
-</div>
+            <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}"
+                   style="float: right;">
+        </form>
+    </div>
+{% endblock %}
+
+{% block js_content %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/transport_form_functions.js' %}"></script>
 {% endblock %}
 

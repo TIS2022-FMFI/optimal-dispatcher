@@ -30,7 +30,7 @@ function checkBranchName(input) {
 function validateForm() {
     let branchName = document.getElementById("id_name");
   
-    err_section = document.getElementById("err");
+    let err_section = document.getElementById("err");
     err_section.innerHTML = "";
     let no_err = true;
 

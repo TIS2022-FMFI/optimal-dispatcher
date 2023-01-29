@@ -26,7 +26,7 @@ function validateForm() {
     let checkboxes = document.getElementsByName('branch');
     let checked = checkedCount(checkboxes);
     
-    err_section = document.getElementById("err");
+    let err_section = document.getElementById("err");
     err_section.innerHTML = "";
 
     let no_err = true;
