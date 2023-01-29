@@ -22,10 +22,11 @@
     </div>
 </div>
 <br>
-<div class="container d-flex justify-content-center" style="text-align: left; padding: auto;">
+<div class="container d-flex justify-content-center" style="text-align: left;">
     <br>
-    <form action="" method="POST" onSubmit="return validateForm()" class="formular">
+    <form action="POST" method="POST" onSubmit="return validateForm()" class="formular">
         {% csrf_token %}
+        {% comment "" %}
         <p>
             <label for="{{ form.name.auto_id }}">{{ form.name.label }}</label><br>
             {{ form.name }}
@@ -34,6 +35,9 @@
             <label for="{{ form.branch.auto_id }}">{{ form.branch.label }}</label><br>
             {{ form.branch }}
         </p>
+        {% endcomment %}
+        
+        {{ form.as_p }}  
         <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}" style="float: right;">
         
         <div id="err">

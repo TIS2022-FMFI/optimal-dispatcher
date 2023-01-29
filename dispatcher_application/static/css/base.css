@@ -188,7 +188,7 @@ h2, h3, h4 {
 }
 
 #btn-f2{
-    width: 100px;
+    width: auto; /*width: 100px;*/
     float: right;
     background-color: grey;
     color: white;
@@ -250,4 +250,10 @@ a:link {
 
 p {
     color: black;
+}
+
+.formular3 textarea {
+    height: 50px;
+    float: right;
+    width: 56%;
 }

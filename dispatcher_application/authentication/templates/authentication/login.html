@@ -15,19 +15,19 @@
         {% csrf_token %}
     
         <div class="input-box">
-            <input type="text" name="email" placeholder="Email" id="email-field" value="{{ email }}" required>
+            <input type="text" name="email" placeholder="Email" id="email-field" value="{{ email }}" style="width: 80%;" required>
         </div>
 
         <div class="input-box">
-            <input type="password" name="password" placeholder="Password" id="password-field" required>
+            <input type="password" name="password" placeholder="Password" id="password-field" style="width: 80%;" required>
         </div>
 
         <div>
-            <button class="btn btn-primary">Login</button>
+            <button class="btn btn-primary" style="margin: 15px;">Login</button>
         </div>
 
         <div class="bottom-links">
-            <p>Forgot password? <a href="{% url 'password_reset' %}">Reset password</a></p>
+            <p style="font-size: small;">Forgot password? <a href="{% url 'password_reset' %}">Reset password</a></p>
         </div>
         
         {% if error_message %}

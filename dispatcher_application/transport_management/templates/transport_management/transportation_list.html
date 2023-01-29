@@ -9,33 +9,43 @@
 
 {% block content %}
 <br>
-<div class="transport-search">
-    <form method="GET" id="transport-searchbar">
-        
-        <label for="owner-id">Owner:</label>
+<div class="container">
+    <form method="GET">
+        <div class="row" style="flex-wrap: nowrap;">
+
+            <div class="col-xl-3 col-md-3 col-sm-3 col-3">
+        <label for="owner-id" style="color: black;">Owner:</label>
         <input list="owner"  name="owner" id="owner-id" value="{{ search_value.owner }}" placeholder="user email" >
         <datalist id="owner">
             {% for owner in owners_list %}
                 <option id="owner_{{ owner.id }}" value="{{ owner.email }}"></option>
             {% endfor %}
         </datalist>
-
-        <label for="from-location-id">From:</label>
+            </div>
+            
+            <div class="col-xl-3 col-md-3 col-sm-3 col-3">
+        <label for="from-location-id" style="color: black;">From:</label>
         <input list="from-location" name="from-location" id="from-location-id" value="{{ search_value.from }}" placeholder="zip code,city,conutry">
         <datalist id="from-location">
             {% for location in location_list %}
                 <option id="location_{{ location.id }}" value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>
             {% endfor %}
         </datalist>
+            </div>
 
-        <label for="departure-date-id">Departure date:</label>
-        <input type="date" class="" name="departure-date" id="departure-date-id" value="{{ search_value.departure }}">
+            <div class="col-xl-3 col-md-3 col-sm-3 col-3">
+        <label for="departure-date-id" style="color: black;">Departure:</label>
+        <input type="date" class="" name="departure" id="departure-date-id" value="{{ search_value.departure }}">
+            </div>
 
-        <label for="arrival-date-id">Arrival date:</label>
-        <input type="date" class="" name="arrival-date" id="arrival-date-id" value="{{ search_value.arrival }}">
-
-        <button type="submit" class="search-button"><i class="bi bi-search"></i></button>
-        <button type="button" class="search-button" onclick="cleanFields()"><i class="bi bi-arrow-clockwise"></i></button>
+            <div class="col-xl-3 col-md-3 col-sm-2 col-3" style="width: 21%">
+        <label for="arrival-date-id" style="color: black;">Arrival:</label>
+        <input type="date" class="" name="arrival" id="arrival-date-id" value="{{ search_value.arrival }}">
+            
+        <button type="submit" class="search-button" style="color: black;"><i class="bi bi-search"></i></button>
+        <button type="button" class="search-button" onclick="cleanFields()" style="color: black;"><i class="bi bi-arrow-clockwise"></i></button>
+        </div>
+    </div>
     </form>
 </div>
 <br>

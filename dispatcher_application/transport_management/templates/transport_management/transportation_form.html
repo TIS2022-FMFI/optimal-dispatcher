@@ -20,13 +20,12 @@
             </div>
         </div>
     </div>
-
-    <div class="transport d-flex justify-content-center" style="overflow-x:auto;">
-        <form action="" method="POST" onSubmit="return validateForm()" class="formular"> 
+<br>
+    <div class="container d-flex justify-content-center" style="overflow-x:auto;">
+        <form action="POST" method="POST" onSubmit="return validateForm()" class="formular3"> 
             {% csrf_token %}
-
-            <p>
-                <label for="{{ form.from_id.auto_id }}">{{ form.from_id.label }}</label><br>
+                <p>
+                <label for="{{ form.from_id.auto_id }}">{{ form.from_id.label }}:</label>
                 {{ form.from_id }}
 
                 <datalist id="from_locations">
@@ -37,9 +36,10 @@
                     {% endfor %}
                 </datalist>
             </p>
+          
 
             <p>
-                <label for="{{ form.to_id.auto_id }}">{{ form.to_id.label }}</label><br>
+                <label for="{{ form.to_id.auto_id }}">{{ form.to_id.label }}:</label>
                 {{ form.to_id }}
 
                 <datalist id="to_locations">
@@ -52,27 +52,27 @@
             </p>
 
             <p>
-                <label for="{{ form.departure_time.auto_id }}">{{ form.departure_time.label }}</label><br>
+                <label for="{{ form.departure_time.auto_id }}">{{ form.departure_time.label }}:</label>
                 {{ form.departure_time }}
             </p>
 
             <p>
-                <label for="{{ form.arrival_time.auto_id }}">{{ form.arrival_time.label }}</label><br>
+                <label for="{{ form.arrival_time.auto_id }}">{{ form.arrival_time.label }}:</label>
                 {{ form.arrival_time }}
             </p>
 
             <p>
-                <label for="{{ form.ldm.auto_id }}">{{ form.ldm.label }}</label><br>
+                <label for="{{ form.ldm.auto_id }}">{{ form.ldm.label }}:</label>
                 {{ form.ldm }}
             </p>
 
             <p>
-                <label for="{{ form.weight.auto_id }}">{{ form.weight.label }}</label><br>
+                <label for="{{ form.weight.auto_id }}">{{ form.weight.label }}:</label>
                 {{ form.weight }}
             </p>
 
             <p>
-                <label for="{{ form.info.auto_id }}">{{ form.info.label }}</label><br>
+                <label for="{{ form.info.auto_id }}">{{ form.info.label }}:</label>
                 {{ form.info }}
             </p>
 
