@@ -11,9 +11,9 @@
 <br>
 <div class="container">
     <form method="GET">
-        <div class="row" style="flex-wrap: nowrap;">
+        <div class="row">
 
-            <div class="col-xl-3 col-md-3 col-sm-3 col-3">
+            <div class="col-xl-3 col-md-3 col-sm-3 col-12" style="width: auto;">
         <label for="owner-id" style="color: black;">Owner:</label>
         <input list="owner"  name="owner" id="owner-id" value="{{ search_value.owner }}" placeholder="user email" >
         <datalist id="owner">
@@ -23,7 +23,7 @@
         </datalist>
             </div>
             
-            <div class="col-xl-3 col-md-3 col-sm-3 col-3">
+            <div class="col-xl-3 col-md-3 col-sm-3 col-12" style="width: auto;">
         <label for="from-location-id" style="color: black;">From:</label>
         <input list="from-location" name="from-location" id="from-location-id" value="{{ search_value.from }}" placeholder="zip code,city,conutry">
         <datalist id="from-location">
@@ -33,12 +33,12 @@
         </datalist>
             </div>
 
-            <div class="col-xl-3 col-md-3 col-sm-3 col-3">
+            <div class="col-xl-3 col-md-3 col-sm-3 col-12" style="width: auto;">
         <label for="departure-date-id" style="color: black;">Departure:</label>
         <input type="date" class="" name="departure" id="departure-date-id" value="{{ search_value.departure }}">
             </div>
 
-            <div class="col-xl-3 col-md-3 col-sm-2 col-3" style="width: 21%">
+            <div class="col-xl-3 col-md-3 col-sm-3 col-12" style="width: auto;">
         <label for="arrival-date-id" style="color: black;">Arrival:</label>
         <input type="date" class="" name="arrival" id="arrival-date-id" value="{{ search_value.arrival }}">
             
