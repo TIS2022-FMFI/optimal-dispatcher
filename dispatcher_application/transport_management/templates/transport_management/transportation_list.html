@@ -25,7 +25,7 @@
             
             <div class="col-xl-3 col-md-3 col-sm-3 col-12" style="width: auto;">
         <label for="from-location-id" style="color: black;">From:</label>
-        <input list="from-location" name="from-location" id="from-location-id" value="{{ search_value.from }}" placeholder="zip code,city,conutry">
+        <input list="from-location" name="from-location" id="from-location-id" value="{{ search_value.from }}" placeholder="zip code,city,country">
         <datalist id="from-location">
             {% for location in location_list %}
                 <option id="location_{{ location.id }}" value="{{ location.zip_code }},{{ location.city }},{{ location.country }}"></option>

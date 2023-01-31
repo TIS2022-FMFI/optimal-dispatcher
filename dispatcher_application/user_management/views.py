@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.postgres.search import SearchVector
-from django.db.models import Q
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.urls import reverse
 
 # view imports
 from django.views.generic.list import ListView
@@ -51,8 +53,36 @@ class ListAllUsersView(ListView):
 class RegisterNewUserView(CreateView):
     model = MyUser
     template_name = 'user_management/user_add.html'
+    email_template_name = 'user_management/user_created_email_message.html'
     form_class = CustomUserCreateForm
     success_url = reverse_lazy('user-list')
+
+    def form_valid(self, form):
+        self.object = form.save()
+        to_email = form.cleaned_data['email']
+        self.send_welcome_email(to_email)
+        return super().form_valid(form)
+
+
+    def send_welcome_email(self, to_email):
+        html_message = render_to_string(self.email_template_name, {
+            'new_user_email' : to_email,
+            'request' : self.request,
+            })
+        absolute_url = self.request.build_absolute_uri(reverse('password_reset'))
+        plain_message = (f'Welcome { to_email }, to GEFCO transportation application\n\n'
+                        f'Your account was successfully created.\n\nTo access your account procceed to {absolute_url}\n'
+                        'and reset your password to a new one. Then you will be able to login to your new account.')
+    
+        send_mail(
+            'GEFCO transportation application',
+            plain_message,
+            None,
+            [to_email],
+            fail_silently=True,
+            html_message=html_message
+        )
+
 
 
 @method_decorator(decorators, name="dispatch")

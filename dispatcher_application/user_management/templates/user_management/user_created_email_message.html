@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <h3>Welcome {{ new_user_email }}, to GEFCO transportation application.</h3>
+    <p>Your account was successfully created.</p>
+    <p>
+        To access your account procceed to 
+        <a href="{{ request.scheme }}://{{ request.get_host }}{% url 'password_reset' %}">reset password page</a> 
+        and reset your password to a new one. Then you will be able to login to your new account.
+    </p>
+</body>
+</html>

@@ -166,7 +166,6 @@ class AddTransportationView(FormView):
 
 
     def form_invalid(self, form):
-        print(form.cleaned_data)
         return self.render_to_response(self.get_context_data(form=form))
 
 
