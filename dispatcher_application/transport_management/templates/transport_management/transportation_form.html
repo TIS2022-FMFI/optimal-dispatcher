@@ -22,7 +22,7 @@
     </div>
 <br>
     <div class="container d-flex justify-content-center" style="overflow-x:auto;">
-        <form action="POST" method="POST" onSubmit="return validateForm()" class="formular3"> 
+        <form method="POST" onSubmit="return validateForm()" class="formular3"> 
             {% csrf_token %}
                 <p>
                 <label for="{{ form.from_id.auto_id }}">{{ form.from_id.label }}:</label>
