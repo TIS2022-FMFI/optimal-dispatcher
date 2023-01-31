@@ -15,19 +15,20 @@
       </div>
     </div>
 </div>
+<br>
+
 <div class="d-flex justify-content-center">
-    
     <div class="card" style="width: 38rem;">
 		<ul class="list-group list-group-flush"></ul>
         <div class="card-body">
-            <p class="card-text">Owner email: {{ object.owner_id.email }}</p>
-            <p class="card-text">From: {{ object.from_id }}</p>
-            <p class="card-text">To: {{ object.to_id }}</p>
-            <p class="card-text">Departure date: {{ object.departure_time }}</p>
-            <p class="card-text">Arrival date: {{ object.arrival_time }}</p>
-            <p class="card-text">Ldm: {{ object.ldm }}</p>
-            <p class="card-text">Weight: {{ object.weight }}</p>
-            <p class="card-text">Info: {{ object.info }}</p>
+            <p class="card-text"><b>Owner email:</b> {{ object.owner_id.email }}</p>
+            <p class="card-text"><b>From:</b> {{ object.from_id }}</p>
+            <p class="card-text"><b>To:</b> {{ object.to_id }}</p>
+            <p class="card-text"><b>Departure date: </b>{{ object.departure_time }}</p>
+            <p class="card-text"><b>Arrival date:</b> {{ object.arrival_time }}</p>
+            <p class="card-text"><b>Ldm:</b> {{ object.ldm }}</p>
+            <p class="card-text"><b>Weight:</b> {{ object.weight }}</p>
+            <p class="card-text"><b>Info:</b> {{ object.info }}</p>
         </div>
 	</div>
 </div>
