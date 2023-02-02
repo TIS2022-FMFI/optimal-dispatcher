@@ -28,10 +28,10 @@ class GeneralUserForm(forms.ModelForm):
         if len(name) < 2:
             raise ValidationError('Minimum length is 2 characters.')
 
-        pattern = r'^[A-Z][a-z]{1,69}$'
-        if not(re.match(pattern, name)):
-            raise ValidationError('Invalid format, allowed alphabet characters, must start with capital letter.')
+        if not(name.isalpha()):
+            raise ValidationError('Your name must contain only alphabet characters')
 
+        name = name[0].upper() + name[1:].lower()
         return name
 
     
@@ -75,7 +75,6 @@ class CustomUserUpdateForm(GeneralUserForm):
         fields = [
             'first_name', 'last_name', 'branch', 'is_active'
         ]
-
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

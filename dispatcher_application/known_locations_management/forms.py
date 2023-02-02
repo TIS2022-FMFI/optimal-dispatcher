@@ -11,9 +11,12 @@ class LocationForm(forms.ModelForm):
         fields = ['zip_code', 'city', 'country']
 
 
-    # def clean_zip_code(self):
-    #     zip_code = self.cleaned_data['zip_code']
-    #     return zip_code
+    def clean_zip_code(self):
+        zip_code = self.cleaned_data['zip_code']
+        pattern = r'^[0-9A-Za-z- _]{4,13}$'
+        if not(re.match(pattern, zip_code)):
+            raise ValidationError('Invalid format, allowed alphanumeric characters, space, - and _.')
+        return zip_code
 
 
     def clean_city(self):

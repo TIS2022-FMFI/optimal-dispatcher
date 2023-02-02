@@ -2,15 +2,10 @@
 
 {% block title %}Trasportations{% endblock %}
 
-{% block static_imports %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/transport_list.css' %}">
-{% endblock %}
-
 {% block content %}
 <br>
 <div class="container">
-    <form method="GET">
+    <form method="GET" id="transport-searchbar">
         <div class="row">
 
             <div class="col-xl-3 col-md-3 col-sm-3 col-12" style="width: auto;">

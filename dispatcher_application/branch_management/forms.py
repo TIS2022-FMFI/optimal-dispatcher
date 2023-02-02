@@ -40,6 +40,7 @@ class AddBranchAccessForm(forms.ModelForm):
         self.fields['user_id'].choices = user_list
 
 
+
 class AddBranch(forms.ModelForm):
 
     class Meta:

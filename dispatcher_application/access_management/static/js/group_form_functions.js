@@ -31,15 +31,12 @@ function validateForm() {
 
     let no_err = true;
     if (!checkGroupName(groupName.value)) {
-        err_section.innerHTML += "<li>Group name: Invalid format, allowed only alphanumeric characters, space and .-_ characters.</li>";
-        groupName.classList.add('errInput');
+        err_section.innerHTML += "<li>Group name : Invalid format, allowed only alphanumeric characters, space and .-_ characters.</li>";
         no_err = false;
-    } else {
-        groupName.classList.value = '';
     }
     
     if (checked == 0) {
-        err_section.innerHTML += "<li>Branch: This field is required</li>";
+        err_section.innerHTML += "<li>Branch : This field is required</li>";
         no_err = false;
     } 
 

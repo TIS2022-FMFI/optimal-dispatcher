@@ -47,10 +47,10 @@ class ChangePasswordView(View):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            messages.success(request, 'Your password has been successfully changed')
+            messages.success(request, 'Your password has been successfully changed.')
             return redirect('user-settings')
         
-        messages.error(request, 'Old password is invalid or new password does not meet requirements')
+        messages.error(request, 'Old password is invalid or new password does not meet requirements.')
         form = ChangePasswordForm(request.user)
         context = { 'form' : form }
         return render(request, self.template, context) 

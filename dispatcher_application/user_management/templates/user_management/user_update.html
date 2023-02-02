@@ -6,11 +6,6 @@
     {% include "navbar.html" %}
 {% endblock nav %}
 
-{% block static_imports %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/user_form_style.css' %}">
-{% endblock %}
-
 {% block content %}
 <div class="container">
     <div class="row">
@@ -48,6 +43,7 @@
             {{ form.is_active }}
         </p>
 
+        <input class="btn btn-primary" id="btn-f2" type="submit" value="Update">
         <div id="err">
             {% for field in form %}
                 {% if field.errors %}
@@ -58,7 +54,6 @@
                 {{ form.non_field_errors }}
             {% endif %}
         </div>
-        <input class="btn btn-primary" id="btn-f2" type="submit" value="Update" style="float: right;">
     </form>
 </div>
 {% endblock %}

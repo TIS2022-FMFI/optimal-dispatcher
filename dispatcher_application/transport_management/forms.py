@@ -39,7 +39,7 @@ class CreateTransportForm(forms.ModelForm):
 
     def location_check(self, location_type):
         location_input = str(self.cleaned_data[location_type]).strip()
-        pattern = r'([0-9]{5,10}),([A-Z][a-z]{1,69}),([A-Z]{2,4})'
+        pattern = r'([0-9A-Za-z- _]{4,13}),([A-Z][a-z]{1,69}),([A-Z]{2,4})'
         if not re.match(pattern, location_input):
             raise ValidationError('Invalid format, expected: zip code,city,country code.')
         return self.cleaned_data[location_type]
