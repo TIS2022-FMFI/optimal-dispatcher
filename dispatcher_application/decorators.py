@@ -1,7 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.http import Http404
-from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.shortcuts import redirect
 
 
 '''

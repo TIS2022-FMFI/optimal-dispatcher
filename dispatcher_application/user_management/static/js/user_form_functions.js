@@ -17,13 +17,6 @@ function checkName(input) {
         result.message = "Minimum length is 2 characters.";
         return result;
     }
-
-    const format = /^[A-Z][a-z]{1,69}$/;
-    if (!input.match(format)) {
-        result.status = false;
-        result.message = "Invalid format, allowed alphabet characters, must start with capital letter.";
-        return result;
-    }
     return result
 }
 
@@ -78,40 +71,26 @@ function validateCreateForm() {
     let result = checkName(firstNameElement.value);
     if (!result.status) {
         err_section.innerHTML += "<li>First name : " + result.message + "</li>";
-        firstNameElement.classList.add('errInput');
         no_err = false;
-    } else {
-        firstNameElement.classList.value = '';
-    }
+    } 
 
     result = checkName(lastNameElement.value);
     if (!result.status) {
         err_section.innerHTML += "<li>Second name : " + result.message + "</li>";
-        lastNameElement.classList.add('errInput');
         no_err = false;
-    } else {
-        lastNameElement.classList.value = '';
-    }
+    } 
 
     result = checkEmail(emailElement.value);
     if (!result.status) {
         err_section.innerHTML += "<li>Email : " + result.message + "</li>";
-        emailElement.classList.add('errInput');
         no_err = false;
-    } else {
-        emailElement.classList.value = '';
-    }
+    } 
 
     result = checkPassword(pass1Element.value, pass2Element.value);
     if (!result.status) {
         err_section.innerHTML += "<li> Password confirmation : " + result.message + "</li>"
-        pass1Element.classList.add('errInput');
-        pass2Element.classList.add('errInput');
         no_err = false;
-    } else {
-        pass1Element.classList.value = '';
-        pass2Element.classList.value = '';
-    }
+    } 
 
     return no_err;
 }
@@ -128,20 +107,14 @@ function validateUpdateForm() {
     let result = checkName(firstNameElement.value);
     if (!result.status) {
         err_section.innerHTML += "<li>First name : " + result.message + "</li>";
-        firstNameElement.classList.add('errInput');
         no_err = false;
-    } else {
-        firstNameElement.classList.value = '';
     }
 
     result = checkName(lastNameElement.value);
     if (!result.status) {
         err_section.innerHTML += "<li>Second name : " + result.message + "</li>";
-        lastNameElement.classList.add('errInput');
         no_err = false;
-    } else {
-        lastNameElement.classList.value = '';
-    }
+    } 
 
     return no_err;
 }

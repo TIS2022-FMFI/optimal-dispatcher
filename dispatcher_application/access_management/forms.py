@@ -31,7 +31,7 @@ class GroupAddForm(forms.Form):
 
         exists = Group.objects.filter(name=group_name).exists()
         if exists:
-            raise ValidationError(('\"%(value)s\" already exists'), params={'value': group_name})
+            raise ValidationError(('\"%(value)s\" already exists.'), params={'value': group_name})
         return group_name
 
 
@@ -59,7 +59,7 @@ class GroupUpdateForm(GroupAddForm):
 
         exists = Group.objects.filter(name=group_name).exclude(name=self.group_obj.name).exists()
         if exists:
-            raise ValidationError(('Group with name \"%(value)s\" already exists'), params={'value': group_name})
+            raise ValidationError(('Group with name \"%(value)s\" already exists.'), params={'value': group_name})
         return group_name
 
 

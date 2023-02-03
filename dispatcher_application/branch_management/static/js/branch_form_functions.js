@@ -37,11 +37,8 @@ function validateForm() {
     let result = checkBranchName(branchName.value);
     if (!result.status) {
         err_section.innerHTML += "<li>Name : " + result.message + "</li>";
-        branchName.classList.add('errInput');
         no_err = false;
-    } else {
-        branchName.classList.value = '';
-    }
+    } 
 
     return no_err;
 }

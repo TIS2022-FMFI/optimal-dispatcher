@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from django.core import serializers
+from django.contrib.auth import views as auth_views
 
 # decorators
 from decorators import is_not_authenticated
@@ -48,6 +49,28 @@ class CustomLoginView(View):
         user_branch_access.update(user_group_access)
         self.request.session['logged_in_user_access'] = serializers.serialize('json', user_branch_access)
 
+
+
+decorators = [is_not_authenticated()]
+
+@method_decorator(decorators, name="dispatch")
+class CustomPasswordResetView(auth_views.PasswordResetView):
+    template_name='authentication/reset_password.html'
+
+
+@method_decorator(decorators, name="dispatch")
+class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name='authentication/reset_password_confirm.html'
+
+
+@method_decorator(decorators, name="dispatch")
+class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name='authentication/reset_password_done.html'
+
+
+@method_decorator(decorators, name="dispatch")    
+class CustomPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name='authentication/reset_password_complete.html'
 
 
 
