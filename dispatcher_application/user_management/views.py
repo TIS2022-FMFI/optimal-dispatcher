@@ -4,6 +4,9 @@ from django.contrib.postgres.search import SearchVector
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.http import HttpResponseRedirect
+import random
+import string
 
 # view imports
 from django.views.generic.list import ListView
@@ -57,7 +60,22 @@ class RegisterNewUserView(CreateView):
     form_class = CustomUserCreateForm
     success_url = reverse_lazy('user-list')
 
+    def generate_random_password(self):
+        length = 25
+        lower = string.ascii_lowercase
+        upper = string.ascii_uppercase
+        num = string.digits
+        symbols = string.punctuation
+        all = lower + upper + num + symbols
+        all = string.ascii_letters + string.digits + string.punctuation
+        passwd = "".join(random.sample(all,length))
+        return passwd
+
+
     def form_valid(self, form):
+        passwd = self.generate_random_password()
+        form.cleaned_data['password1'] = passwd
+        form.cleaned_data['password2'] = passwd
         self.object = form.save()
         to_email = form.cleaned_data['email']
         self.send_welcome_email(to_email)
@@ -93,11 +111,21 @@ class UpdateUserView(UpdateView):
     success_url = reverse_lazy('user-list')
 
 
+
 @method_decorator(decorators, name="dispatch")
 class DeleteUserView(DeleteView):
     model = MyUser
     template_name = 'user_management/user_delete.html'
     success_url = reverse_lazy('user-list')
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+
+        if self.object.id != self.request.user.id:
+            self.object.delete()
+            
+        return HttpResponseRedirect(success_url)
+
 
 
 @method_decorator(decorators, name="dispatch")

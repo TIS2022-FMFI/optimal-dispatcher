@@ -39,30 +39,11 @@ function checkEmail(input) {
     return result;
 }
 
-function checkPassword(pass1, pass2) {
-    pass1 = strip(pass1);
-    pass2 = strip(pass2);
-    let result = { status : true, message : "" }
-
-    if (pass1 != pass2) {
-        result.status = false;
-        result.message = "The two password fields didn\’t match."
-    }
-
-    if (pass1.length < 8) {
-        result.status = false;
-        result.message = "This password is too short. It must contain at least 8 characters."
-    }
-    return result
-}
-
 
 function validateCreateForm() {
     let firstNameElement = document.getElementById("id_first_name");
     let lastNameElement = document.getElementById("id_last_name");
     let emailElement = document.getElementById("id_email");
-    let pass1Element = document.getElementById("id_password1");
-    let pass2Element = document.getElementById("id_password2");
     
     err_section = document.getElementById("err");
     err_section.innerHTML = "";
@@ -85,13 +66,6 @@ function validateCreateForm() {
         err_section.innerHTML += "<li>Email : " + result.message + "</li>";
         no_err = false;
     } 
-
-    result = checkPassword(pass1Element.value, pass2Element.value);
-    if (!result.status) {
-        err_section.innerHTML += "<li> Password confirmation : " + result.message + "</li>"
-        no_err = false;
-    } 
-
     return no_err;
 }
 
