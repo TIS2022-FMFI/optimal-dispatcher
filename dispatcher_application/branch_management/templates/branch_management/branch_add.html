@@ -26,10 +26,14 @@
     <br>
     <form method="POST" class="formular2" onSubmit="return validateForm()">
         {% csrf_token %}
+        {% comment "" %}
         <p>
           <label for="{{ form.name.auto_id }}">{{ form.name.label }}</label><br>
           {{ form.name }}
         </p>
+        {% endcomment %}
+
+        {{form.as_p}}
             
         <input class="btn btn-primary" id="btn-f2" type="submit" value="Add" >
 
