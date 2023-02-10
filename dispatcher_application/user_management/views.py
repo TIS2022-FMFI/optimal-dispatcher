@@ -82,19 +82,8 @@ class RegisterNewUserView(CreateView):
         self.send_welcome_email(to_email)
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        
-        self.send_welcome_email('ropjakm@gmail.com')
-        return context
-
     def send_welcome_email(self, to_email):
         url_address = self.build_url()
-        html_message = render_to_string(self.email_template_name, {
-            'new_user_email' : to_email,
-            'url_address' : url_address
-            })
-        
         plain_message = (f'Welcome { to_email }, to GEFCO transportation application\n\n'
                         f'Your account was successfully created.\n\nTo access your account procceed to {url_address}\n'
                         'and reset your password to a new one. Then you will be able to login to your new account.')
@@ -105,14 +94,14 @@ class RegisterNewUserView(CreateView):
             None,
             [to_email],
             fail_silently=True,
-            html_message=html_message
         )
 
     def build_url(self):
         scheme = self.request.scheme
+        scheme = scheme.strip('\'')
         domain = Site.objects.get_current().domain
         address = reverse('password_reset')
-        return f'{scheme}://{domain}{address}'
+        return f"{scheme}://{domain}{address}"
     
 
 

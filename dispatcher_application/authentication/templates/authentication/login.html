@@ -30,11 +30,13 @@
             <p style="font-size: small;">Forgot password? <a href="{% url 'password_reset' %}">Reset password</a></p>
         </div>
         
-        {% if error_message %}
-            <div>
-                {{ error_message }}
-            </div> 
-        {% endif %}
+        <div id="err">
+            {% if error_message %}
+                <div>
+                    {{ error_message }}
+                </div> 
+            {% endif %} 
+        </div>
     </form>
 
     
