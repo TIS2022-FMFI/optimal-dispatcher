@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 config = dotenv_values("./config/.env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "config_key_123"
+SECRET_KEY = config["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -89,8 +89,8 @@ DATABASES = {
         'NAME': config["DB_NAME"],
         'USER': config["DB_USER"],
         'PASSWORD': config["DB_PASSWORD"],
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'HOST': config["HOST"],
+        'PORT': config["PORT"],
     }
 }
 
@@ -155,3 +155,6 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = config["EMAIL"]
 EMAIL_HOST_PASSWORD = config["EMAIL_PASSWORD"]
 DEFAULT_FROM_EMAIL = config["EMAIL"]
+
+
+SITE_ID = 1

@@ -303,5 +303,5 @@ def get_or_create_location(input):
             city=from_location.group(2),
             country=from_location.group(3)
         )
-
+        
     return from_location_id

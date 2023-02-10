@@ -27,7 +27,7 @@
     <form method="POST" class="formular2" onSubmit="return validateForm()">
         {% csrf_token %}
         <p>
-          <label for="{{ form.name.auto_id }}">{{ form.name.label }}</label><br>
+          <label for="{{ form.name.auto_id }}">{{ form.name.label }}:</label>
           {{ form.name }}
         </p>
             

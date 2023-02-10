@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.sites.models import Site
 import random
 import string
 
@@ -81,15 +82,21 @@ class RegisterNewUserView(CreateView):
         self.send_welcome_email(to_email)
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        self.send_welcome_email('ropjakm@gmail.com')
+        return context
 
     def send_welcome_email(self, to_email):
+        url_address = self.build_url()
         html_message = render_to_string(self.email_template_name, {
             'new_user_email' : to_email,
-            'request' : self.request,
+            'url_address' : url_address
             })
-        absolute_url = self.request.build_absolute_uri(reverse('password_reset'))
+        
         plain_message = (f'Welcome { to_email }, to GEFCO transportation application\n\n'
-                        f'Your account was successfully created.\n\nTo access your account procceed to {absolute_url}\n'
+                        f'Your account was successfully created.\n\nTo access your account procceed to {url_address}\n'
                         'and reset your password to a new one. Then you will be able to login to your new account.')
     
         send_mail(
@@ -100,6 +107,13 @@ class RegisterNewUserView(CreateView):
             fail_silently=True,
             html_message=html_message
         )
+
+    def build_url(self):
+        scheme = self.request.scheme
+        domain = Site.objects.get_current().domain
+        address = reverse('password_reset')
+        return f'{scheme}://{domain}{address}'
+    
 
 
 
