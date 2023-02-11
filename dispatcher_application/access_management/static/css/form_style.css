@@ -26,3 +26,11 @@
 ::-webkit-scrollbar-thumb:hover {
     background: var(--dark-grey); 
 }
+
+#id_name {
+	width: 350px;
+}
+
+#id_branch {
+	width: 495px;
+}

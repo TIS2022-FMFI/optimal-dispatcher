@@ -1,6 +1,5 @@
 from django import forms
 import re
-
 from django.contrib.auth.forms import UserCreationForm
 from .models import MyUser
 from django.core.exceptions import ValidationError
@@ -48,13 +47,19 @@ class CustomUserCreateForm(UserCreationForm, GeneralUserForm):
     class Meta:
         model = MyUser
         fields = [
-            'first_name', 'last_name', 'email', 'branch', 'password1', 'password2', 'is_superuser',
+            'first_name', 'last_name', 'email', 'branch', 'is_superuser', 'password1', 'password2',
         ]
 
      
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+        self.fields['password1'].required = False
+        self.fields['password2'].required = False
+        self.fields['password1'].widget.attrs['autocomplete'] = 'off'
+        self.fields['password2'].widget.attrs['autocomplete'] = 'off'
+        self.fields['password1'].widget = forms.HiddenInput()
+        self.fields['password2'].widget = forms.HiddenInput()
+
 
     def clean_email(self):
         email = self.cleaned_data['email'].strip()
@@ -65,7 +70,6 @@ class CustomUserCreateForm(UserCreationForm, GeneralUserForm):
         if not(re.match(pattern, email)):
             raise ValidationError("Invalid format, allowed alphanumeric characters and .-_@ characters.")
         return email
-
 
 
 class CustomUserUpdateForm(GeneralUserForm):

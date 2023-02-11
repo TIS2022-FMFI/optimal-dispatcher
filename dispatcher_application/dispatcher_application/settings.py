@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 config = dotenv_values("./config/.env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "config_key_123"
+SECRET_KEY = config["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'django.contrib.sites',
 
     'user_management',
     'access_management',
@@ -88,8 +89,8 @@ DATABASES = {
         'NAME': config["DB_NAME"],
         'USER': config["DB_USER"],
         'PASSWORD': config["DB_PASSWORD"],
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'HOST': config["HOST"],
+        'PORT': config["PORT"],
     }
 }
 
@@ -130,6 +131,7 @@ AUTH_USER_MODEL = 'user_management.MyUser'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+STATIC_ROOT = '/var/www/static/'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static/"),
@@ -153,3 +155,6 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = config["EMAIL"]
 EMAIL_HOST_PASSWORD = config["EMAIL_PASSWORD"]
 DEFAULT_FROM_EMAIL = config["EMAIL"]
+
+
+SITE_ID = 1

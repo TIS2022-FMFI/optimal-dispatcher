@@ -5,10 +5,10 @@ cur = None
 
 try:
     conn = db.connect(
-            host = 'localhost',
-            dbname = 'test_db_django',
-            user = 'postgres',
-            password = 'Q*dat$18#',
+            host = '',
+            dbname = '',
+            user = '',
+            password = '',
             port = 5432
         )
         

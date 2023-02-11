@@ -29,17 +29,16 @@
         
         {% comment "" %}
         <p>
-            <label for="{{ form.name.auto_id }}">{{ form.name.label }}</label><br>
+            <label for="{{ form.name.auto_id }}">{{ form.name.label }}:</label>
             {{ form.name }}
         </p>
         <p>
-            <label for="{{ form.branch.auto_id }}">{{ form.branch.label }}</label><br>
+            <label for="{{ form.branch.auto_id }}">{{ form.branch.label }}:</label>
             {{ form.branch }}
         </p>
         {% endcomment %}
 
         {{form.as_p}}
-        
         
         <input class="btn btn-primary" id="btn-f2" type="submit" value="{{ form_action_type }}">
         <div id="err">
