@@ -23,8 +23,11 @@ class CustomLoginView(View):
 
     @method_decorator(is_not_authenticated())
     def post(self, request):
-        email = request.POST['email']
+        email = request.POST['email'] or ''
         password = request.POST['password']
+
+        if email is not None:
+            email = email.lower()
 
         user = authenticate(request, email=email, password=password)
 
