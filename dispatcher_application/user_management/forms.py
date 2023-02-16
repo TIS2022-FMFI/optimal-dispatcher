@@ -69,6 +69,8 @@ class CustomUserCreateForm(UserCreationForm, GeneralUserForm):
         pattern = r'^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'
         if not(re.match(pattern, email)):
             raise ValidationError("Invalid format, allowed alphanumeric characters and .-_@ characters.")
+
+        email = email.lower()
         return email
 
 
